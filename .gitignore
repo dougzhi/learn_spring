@@ -1,0 +1,6 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+**/mvnw
+**/mvnw.cmd
+**/.mvn
+**/*.iml
