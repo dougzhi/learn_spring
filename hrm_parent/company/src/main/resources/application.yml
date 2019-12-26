@@ -8,7 +8,7 @@ spring:
     name: company #指定服务名
   #2.数据库连接池
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/hrm?useUnicode=true&characterEncoding=utf8
     username: root
     password: 123456
@@ -17,3 +17,5 @@ spring:
     database: MySQL
     show-sql: true
     open-in-view: true
+    hibernate:
+      ddl-auto: update
