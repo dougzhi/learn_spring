@@ -10,7 +10,11 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "co_compamy")
 public class Company implements Serializable {
     private static final long serialVersionUID = 594829320797158219L;
     //ID
