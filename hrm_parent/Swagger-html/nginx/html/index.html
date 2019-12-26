@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="./img/asset-favicon.ico">
+    <title>Saas-HRM系统API文档</title>
+    
+
+    <style>
+    html,body{width: 100%;height: 100%;margin:0px;padding:0px;}
+    body{overflow: hidden}
+    .nav a{color:#000;padding:0 5px !important;}
+    .nav li{border-bottom: dashed 1px #fff;margin:0 15px;line-height: 30px;}
+    .nav div i{display:inline-block;border-bottom: solid 1px #fff;width:100%;cursor:pointer;line-height: 40px;padding-left: 10px;margin-top: 10px;font-size: 16px;}
+    .nav div i:before{font-size: 12px;position: relative;top:0px;left: -3px;}
+    .active a{color:#f00;}
+    .title{color:#fff;background: #bebebe; font-size: 28px;line-height: 50px;}
+    .row-left,.row-rit{height: 100%;width:1000px;float: left;position: relative;}
+    .row-left{background: #efefef;padding:0px;border-right:solid 2px #999;overflow: auto;width: 200px;position: relative;}
+    .left-show{background: #999;color:#fff;top:50%;left: 200px;z-index:999;position: absolute;width: 10px;height: 60px;border-radius: 0px 5px 5px 0px;}
+    .left-show:before{font-size: 12px;position: relative;top:20px;left:-2px;text-align: center;}
+</style>
+</head>
+<body>
+<!-- 页面头部 -->
+
+
+    <div class="left-show glyphicon glyphicon-step-backward"></div>
+    <div class="row-left">
+        <div class="title text-center">API文档</div>
+        <div class="nav">
+    <div>
+        <i class="glyphicon glyphicon-collapse-down">SAAS-HRM</i>
+        <li><a href="api.html?name=city" target="right">企业</a></li>
+        <li><a href="api.html?name=label" target="right">组织架构</a></li>
+        <li><a href="api.html?name=problem" target="right">用户</a></li>
+        <li><a href="api.html?name=reply" target="right">角色</a></li>
+		<li><a href="api.html?name=reply" target="right">权限</a></li>
+		<li><a href="api.html?name=reply" target="right">工资</a></li>
+		<li><a href="api.html?name=reply" target="right">社保</a></li>
+		<li><a href="api.html?name=reply" target="right">考勤</a></li>
+		<li><a href="api.html?name=reply" target="right">招聘</a></li>
+		<li><a href="api.html?name=reply" target="right">审批</a></li>		
+		<li><a href="api.html?name=reply" target="right">公告</a></li>		
+    </div>
+</div>
+    </div>
+    <div class="row-rit">
+        <iframe name="right" id="iframepage"  src="api.html?name=city" width="100%" height="100%"   frameborder="0" ranat="server"></iframe>
+    </div>
+	
+
+
+</body>
