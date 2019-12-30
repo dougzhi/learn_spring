@@ -1,0 +1,13 @@
+{
+  "description": "learn",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "appid": "wx7620770ecf18a227",
+  "projectname": "wx-app",
+  "miniprogramRoot": "./dist"
+}
