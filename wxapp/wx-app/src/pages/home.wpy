@@ -1,0 +1,45 @@
+<template>
+  <view>
+    首页
+  </view>
+  <button @tap="clickMe" data-num1="1">点击</button>
+  <input type="text" value="{{value}}" @input="changeValue"/>
+</template>
+
+
+<script>
+  import wepy from 'wepy'
+  export default class Home extends wepy.page {
+    config = {}
+    data = {
+        value: '默认值'
+    }
+    methods = {
+        clickMe (event) {
+            console.log(event.currentTarget.dataset.num1)
+        },
+        changeValue(event) {
+            console.log(event.detail.value)
+            this.value = event.detail.value
+        }
+    }
+
+    async getData() {
+        const res = await wepy.request({
+            url: 'https://dongz.ngrok2.xiaomiqiu.cn/test'
+        })
+        console.log(res)
+        this.value = res.data
+        this.$apply()
+    }
+
+    onLoad() {
+        console.log("init")
+        this.getData()
+    }
+  }
+</script>
+
+<style lang="less">
+
+</style>
