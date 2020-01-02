@@ -1,11 +1,5 @@
 <style lang="less">
 .container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
 }
 </style>
 
@@ -17,14 +11,51 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-        'pages/home',
-        'pages/index',
+        'pages/tabs/home',
+        'pages/tabs/cars',
+        'pages/tabs/cates',
+        'pages/tabs/search',
+        'pages/tabs/user',
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationBarBackgroundColor: '#ff0000',
+      navigationBarTitleText: '拼夕夕',
+      navigationBarTextStyle: 'white'
+    },
+    tabBar: {
+        list: [
+            {
+                pagePath: 'pages/tabs/home',
+                text: '首页',
+                iconPath: './assets/icons/icon_home@3x.png',
+                selectedIconPath: './assets/icons/icon_home_active@3x.png'
+            },
+            {
+                pagePath: 'pages/tabs/cates',
+                text: '分类',
+                iconPath: './assets/icons/icon_category@3x.png',
+                selectedIconPath: './assets/icons/icon_category_active@3x.png'
+            },
+            {
+                pagePath: 'pages/tabs/search',
+                text: '搜索',
+                iconPath: './assets/icons/icon_show@3x.png',
+                selectedIconPath: './assets/icons/icon_show_active@3x.png'
+            },
+            {
+                pagePath: 'pages/tabs/cars',
+                text: '购物车',
+                iconPath: './assets/icons/icon_cart@3x.png',
+                selectedIconPath: './assets/icons/icon_cart_active@3x.png'
+            },
+            {
+                pagePath: 'pages/tabs/user',
+                text: '我的',
+                iconPath: './assets/icons/icon_me@3x.png',
+                selectedIconPath: './assets/icons/icon_me_active@3x.png'
+            },
+        ]
     }
   }
 
@@ -36,36 +67,6 @@ export default class extends wepy.app {
     super()
     this.use('requestfix')
     this.use('promisify')
-  }
-
-  onLaunch() {
-    this.testAsync()
-  }
-
-  sleep (s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('promise resolved')
-      }, s * 1000)
-    })
-  }
-
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
-  }
-
-  getUserInfo(cb) {
-    const that = this
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo
-    }
-    wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
-      }
-    })
   }
 }
 </script>

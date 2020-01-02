@@ -1,12 +1,11 @@
 package com.dongz.hrm.domain.company;
 
+import com.dongz.hrm.common.Enums.AuditState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,7 +18,8 @@ public class Company implements Serializable {
     private static final long serialVersionUID = 594829320797158219L;
     //ID
     @Id
-    private String id;
+    @GeneratedValue()
+    private Long id;
     /**
      * 公司名称
      */
@@ -79,7 +79,8 @@ public class Company implements Serializable {
     /**
      * 审核状态
      */
-    private String auditState;
+    @Convert(converter = AuditState.MyConverter.class)
+    private AuditState auditState;
     /**
      * 状态
      */

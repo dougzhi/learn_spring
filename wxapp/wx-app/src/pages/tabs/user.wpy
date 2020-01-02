@@ -1,6 +1,6 @@
 <template>
   <view>
-    首页
+    这是用户页
   </view>
 </template>
 
@@ -8,7 +8,7 @@
 <script>
     import wepy from 'wepy'
 
-    export default class index extends wepy.page {
+    export default class user extends wepy.page {
         config = {}
         data = {}
         methods = {}

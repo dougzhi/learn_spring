@@ -1,6 +1,6 @@
 <template>
   <view>
-    首页
+    这是购物车
   </view>
 </template>
 
@@ -8,7 +8,7 @@
 <script>
     import wepy from 'wepy'
 
-    export default class index extends wepy.page {
+    export default class cars extends wepy.page {
         config = {}
         data = {}
         methods = {}
