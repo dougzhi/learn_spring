@@ -1,4 +1,4 @@
-package com.dongz.hrm.common.Enums;
+package com.dongz.hrm.common.enums;
 
 /**
  * @author dong

@@ -1,11 +1,12 @@
-package com.dongz.hrm.common.Enums;
+package com.dongz.hrm.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.util.Assert;
 
-import javax.persistence.Converter;
+import javax.persistence.AttributeConverter;
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * @author dong
@@ -22,9 +23,9 @@ public enum AuditState implements BaseEnum<Integer>{
     private String name;
 
     public AuditState parse(Integer value) {
-        AuditState auditState = Arrays.stream(AuditState.values()).filter(c -> c.value == value).findFirst().orElse(null);
-        Assert.notNull(auditState, "审核状态未找到");
-        return auditState;
+        Optional<AuditState> first = Arrays.stream(AuditState.values()).filter(c -> c.value == value).findFirst();
+        Assert.notNull(first.isPresent(), "审核状态未找到");
+        return first.get();
     }
 
     @Override

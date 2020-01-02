@@ -1,6 +1,7 @@
 package com.dongz.hrm.domain.company;
 
-import com.dongz.hrm.common.Enums.AuditState;
+import com.dongz.hrm.common.enums.AuditState;
+import com.dongz.hrm.common.enums.CompanyState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,12 +14,11 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "co_compamy")
+@Table(name = "co_company")
 public class Company implements Serializable {
     private static final long serialVersionUID = 594829320797158219L;
     //ID
     @Id
-    @GeneratedValue()
     private Long id;
     /**
      * 公司名称
@@ -84,7 +84,8 @@ public class Company implements Serializable {
     /**
      * 状态
      */
-    private Integer state;
+    @Convert(converter = CompanyState.MyConverter.class)
+    private CompanyState state;
     /**
      * 当前余额
      */

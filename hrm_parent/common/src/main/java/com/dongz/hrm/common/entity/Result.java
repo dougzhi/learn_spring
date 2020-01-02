@@ -36,6 +36,10 @@ public class Result {
         return new Result(ResultCode.SUCCESS);
     }
 
+    public static Result SUCCESS(Object data){
+        return new Result(ResultCode.SUCCESS, data);
+    }
+
     public static Result ERROR(){
         return new Result(ResultCode.SERVER_ERROR);
     }

@@ -1,7 +1,6 @@
-package com.dongz.hrm.common.Enums;
+package com.dongz.hrm.common.enums;
 
 import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
@@ -10,8 +9,7 @@ import java.lang.reflect.ParameterizedType;
  * @date 2020/1/3 00:35
  * @desc
  */
-@Converter
-public class BaseEnumConverter<X extends BaseEnum<Y>, Y> implements AttributeConverter<BaseEnum<Y>, Y> {
+public abstract class BaseEnumConverter<X extends BaseEnum<Y>, Y> implements AttributeConverter<BaseEnum<Y>, Y> {
     private Class<X> xclazz;
     private Method valuesMethod;
 
