@@ -3,6 +3,7 @@ package com.dongz.hrm.common.enums;
 import javax.persistence.AttributeConverter;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 
 /**
  * @author dong
@@ -32,14 +33,9 @@ public abstract class BaseEnumConverter<X extends BaseEnum<Y>, Y> implements Att
     public X convertToEntityAttribute(Y y) {
         try {
             X[] values = (X[]) valuesMethod.invoke(null);
-            for (X x : values) {
-                if (x.getValue().equals(y)) {
-                    return x;
-                }
-            }
+            return Arrays.asList(values).stream().filter(c -> c.getValue() == y).findFirst().orElse(null);
         } catch (Exception e) {
             throw new RuntimeException("can't convertToEntityAttribute" + e.getMessage());
         }
-        throw new RuntimeException("unknown y " + y);
     }
 }
