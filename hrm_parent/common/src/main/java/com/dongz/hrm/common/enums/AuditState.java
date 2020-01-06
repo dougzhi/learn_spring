@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.util.Assert;
 
-import javax.persistence.AttributeConverter;
 import java.util.Arrays;
 import java.util.Optional;
 

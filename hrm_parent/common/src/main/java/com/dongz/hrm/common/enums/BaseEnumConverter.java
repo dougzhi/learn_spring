@@ -11,11 +11,10 @@ import java.util.Arrays;
  * @desc
  */
 public abstract class BaseEnumConverter<X extends BaseEnum<Y>, Y> implements AttributeConverter<BaseEnum<Y>, Y> {
-    private Class<X> xclazz;
     private Method valuesMethod;
 
     public BaseEnumConverter() {
-        this.xclazz = (Class<X>) (((ParameterizedType) this.getClass().getGenericSuperclass())
+        Class<X> xclazz = (Class<X>) (((ParameterizedType) this.getClass().getGenericSuperclass())
                 .getActualTypeArguments())[0];
         try {
             valuesMethod = xclazz.getMethod("values");
