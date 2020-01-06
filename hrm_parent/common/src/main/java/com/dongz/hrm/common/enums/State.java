@@ -14,15 +14,15 @@ import java.util.Optional;
  */
 @Getter
 @AllArgsConstructor
-public enum CompanyState implements BaseEnum<Integer>{
-    Enable(1, "停业"),
-    Disable(0, "开业");
+public enum State implements BaseEnum<Integer>{
+    Enable(1, "已激活"),
+    Disable(0, "未激活");
 
     private Integer value;
     private String name;
 
-    public CompanyState parse(Integer value) {
-        Optional<CompanyState> first = Arrays.stream(CompanyState.values()).filter(c -> c.value == value).findFirst();
+    public State parse(Integer value) {
+        Optional<State> first = Arrays.stream(State.values()).filter(c -> c.value == value).findFirst();
         Assert.notNull(first.isPresent(), "审核状态未找到");
         return first.get();
     }
@@ -32,7 +32,7 @@ public enum CompanyState implements BaseEnum<Integer>{
         return this.value;
     }
 
-    public static class MyConverter extends BaseEnumConverter<CompanyState, Integer> {
+    public static class MyConverter extends BaseEnumConverter<State, Integer> {
 
     }
 }

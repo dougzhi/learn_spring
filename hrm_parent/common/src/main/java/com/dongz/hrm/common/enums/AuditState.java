@@ -15,8 +15,8 @@ import java.util.Optional;
 @Getter
 @AllArgsConstructor
 public enum AuditState implements BaseEnum<Integer>{
-    Enable(1, "启用"),
-    Disable(0, "禁用");
+    Audited(1, "已审核"),
+    Unreviewed(0, "未审核");
 
     private Integer value;
     private String name;

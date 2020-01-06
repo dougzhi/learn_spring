@@ -1,6 +1,7 @@
 package com.dongz.hrm.company.services;
 
 import com.dongz.hrm.common.enums.AuditState;
+import com.dongz.hrm.common.enums.State;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.company.Company;
@@ -24,7 +25,8 @@ public class CompanyService extends BaseService {
      */
     public void add(Company company) {
         company.setId(idWorker.nextId());
-        company.setAuditState(AuditState.Enable);
+        company.setAuditState(AuditState.Unreviewed);
+        company.setState(State.Enable);
     }
 
     /**

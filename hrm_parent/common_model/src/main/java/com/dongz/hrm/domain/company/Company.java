@@ -1,7 +1,7 @@
 package com.dongz.hrm.domain.company;
 
 import com.dongz.hrm.common.enums.AuditState;
-import com.dongz.hrm.common.enums.CompanyState;
+import com.dongz.hrm.common.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -84,8 +84,8 @@ public class Company implements Serializable {
     /**
      * 状态
      */
-    @Convert(converter = CompanyState.MyConverter.class)
-    private CompanyState state;
+    @Convert(converter = State.MyConverter.class)
+    private State state;
     /**
      * 当前余额
      */
