@@ -1,7 +1,6 @@
 package com.dongz.hrm.common.entity;
 
 import lombok.Data;
-import org.springframework.util.Assert;
 
 import javax.persistence.MappedSuperclass;
 import java.util.Date;
@@ -9,7 +8,7 @@ import java.util.Date;
 /**
  * @author dong
  * @date 2020/1/6 16:30
- * @desc
+ * @desc 实体基类
  */
 @MappedSuperclass
 @Data

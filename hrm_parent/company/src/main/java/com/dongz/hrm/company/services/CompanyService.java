@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -27,7 +26,7 @@ public class CompanyService extends BaseService {
 
     /**
      * 新增
-     * @param vo
+     * @param vo vo
      */
     public Long add(CompanyVO vo) {
         Assert.hasText(vo.getName(), "企业名称不能为空");
@@ -49,7 +48,7 @@ public class CompanyService extends BaseService {
 
     /**
      * 修改
-     * @param vo
+     * @param vo vo
      */
     public void update(CompanyVO vo) {
         Assert.notNull(vo.getId(), "要修改的企业ID不能为空");
@@ -58,10 +57,11 @@ public class CompanyService extends BaseService {
 
         Company company = em.find(Company.class, vo.getId());
         Assert.notNull(company, "企业信息不存在， 修改失败");
+        Assert.isTrue(company.isDeleted(), "企业信息已删除， 修改失败");
 
         // 如果修改营业执照
         if (!company.getBusinessLicense().equals(vo.getBusinessLicense())) {
-            Optional<Company> first = em.createQuery("select u from Company u where u.businessLicense = ?1", Company.class).setParameter(1, vo.getBusinessLicense()).getResultStream().findFirst();
+            Optional<Company> first = em.createQuery("select u from Company u where u.businessLicense = ?1 and u.isDeleted = false ", Company.class).setParameter(1, vo.getBusinessLicense()).getResultStream().findFirst();
             Assert.isTrue((!first.isPresent()) || (first.get().getBusinessLicense().equals(company.getBusinessLicense())), "企业营业执照重复， 新增失败");
             company.setBusinessLicense(vo.getBusinessLicense());
         }
@@ -74,9 +74,16 @@ public class CompanyService extends BaseService {
 
     /**
      * 删除
-     * @param id
+     * @param id id
      */
     public void delete(Long id) {
         Assert.notNull(id, "要修改的企业ID不能为空");
+
+        Company company = em.find(Company.class, id);
+        Assert.notNull(company, "企业信息不存在， 修改失败");
+        Assert.isTrue(company.isDeleted(), "企业信息已删除， 修改失败");
+
+        setDelete(company);
+        em.merge(company);
     }
 }
