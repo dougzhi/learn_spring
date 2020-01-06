@@ -1,32 +1,20 @@
-package com.dongz.hrm.domain.company;
+package com.dongz.hrm.domain.company.vo;
 
-import com.dongz.hrm.common.entity.BaseEntity;
 import com.dongz.hrm.common.enums.AuditState;
 import com.dongz.hrm.common.enums.State;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Convert;
 import java.util.Date;
 
 /**
  * @author dong
+ * @date 2020/1/6 15:52
+ * @desc
  */
-@EqualsAndHashCode(callSuper = true)
-@Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "co_company")
-public class Company extends BaseEntity implements Serializable {
-    private static final long serialVersionUID = 594829320797158219L;
-    /**
-     * ID
-     */
-    @Id
+public class CompanyVO {
+
     private Long id;
     /**
      * 公司名称
