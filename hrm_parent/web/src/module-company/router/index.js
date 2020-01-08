@@ -26,6 +26,12 @@ export default [
         component: _import('company/pages/index'),
         name: 'company-index',
         meta: {title: '企业管理', icon: 'component', noCache: true}
+      },
+      {
+        path: 'detail/:id',
+        component: _import('company/pages/detail'),
+        name: 'company-detail',
+        meta: {title: '企业详情', icon: 'component', noCache: true}
       }
     ]
   }

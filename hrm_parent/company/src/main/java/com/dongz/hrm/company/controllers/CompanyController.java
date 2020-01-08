@@ -4,10 +4,10 @@ import com.dongz.hrm.common.controllers.BaseController;
 import com.dongz.hrm.common.entity.Result;
 import com.dongz.hrm.domain.company.Company;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,5 +23,14 @@ public class CompanyController extends BaseController {
     public Result list() {
         List<Company> query = jdbcTemplate.query("select * from co_company", new BeanPropertyRowMapper<>(Company.class));
         return Result.SUCCESS(query);
+    }
+
+    @GetMapping("info")
+    public Result info(@RequestParam(value = "id") Long id) {
+        HashMap<String, Object> params = new HashMap<>(1);
+        params.put("id", id);
+        List<Company> query = jdbcTemplate.query("select * from co_company where id = :id ", params, new BeanPropertyRowMapper<>(Company.class));
+        Assert.isTrue(query.size() == 1, "企业信息不存在");
+        return Result.SUCCESS(query.get(0));
     }
 }

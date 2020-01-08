@@ -1,7 +1,7 @@
 package com.dongz.hrm.common.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
  * @author dong
@@ -11,5 +11,5 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public abstract class BaseController {
 
     @Autowired
-    protected JdbcTemplate jdbcTemplate;
+    protected NamedParameterJdbcTemplate jdbcTemplate;
 }
