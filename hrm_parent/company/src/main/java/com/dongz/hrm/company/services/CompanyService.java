@@ -5,7 +5,7 @@ import com.dongz.hrm.common.enums.State;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.company.Company;
-import com.dongz.hrm.domain.company.vo.CompanyVO;
+import com.dongz.hrm.domain.company.vos.CompanyVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

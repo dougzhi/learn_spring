@@ -1,4 +1,4 @@
-package com.dongz.hrm.domain.company.vo;
+package com.dongz.hrm.domain.company.vos;
 
 import com.dongz.hrm.common.enums.AuditState;
 import com.dongz.hrm.common.enums.State;

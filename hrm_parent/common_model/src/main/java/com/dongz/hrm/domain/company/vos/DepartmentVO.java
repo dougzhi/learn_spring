@@ -1,4 +1,4 @@
-package com.dongz.hrm.domain.company;
+package com.dongz.hrm.domain.company.vos;
 
 import com.dongz.hrm.common.entity.BaseEntity;
 import com.dongz.hrm.common.enums.Category;
@@ -11,21 +11,14 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * @author dong
  * @date 2020/2/5 20:19
  * @desc 部门表
  */
-@EqualsAndHashCode(callSuper = true)
-@Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "co_department")
-public class Department extends BaseEntity implements Serializable {
-    private static final long serialVersionUID = -2992493284600889150L;
+public class DepartmentVO {
     /**
      * ID
      */
