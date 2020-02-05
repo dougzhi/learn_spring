@@ -14,6 +14,8 @@ import java.util.Date;
 
 /**
  * @author dong
+ * @date 2020/2/5 20:19
+ * @desc 企业表
  */
 @EqualsAndHashCode(callSuper = true)
 @Entity
