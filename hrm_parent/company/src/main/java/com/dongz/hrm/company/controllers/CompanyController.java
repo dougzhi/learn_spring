@@ -15,6 +15,7 @@ import java.util.List;
  * @date 2020/1/3 01:00
  * @desc
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/company")
 public class CompanyController extends BaseController {

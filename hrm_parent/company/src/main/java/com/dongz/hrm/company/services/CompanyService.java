@@ -29,11 +29,12 @@ public class CompanyService extends BaseService {
      * @param vo vo
      */
     public Long add(CompanyVO vo) {
+        Assert.notNull(vo, "企业信息不能为空");
         Assert.hasText(vo.getName(), "企业名称不能为空");
         Assert.hasText(vo.getBusinessLicense(), "企业营业执照不能为空");
 
-        Optional<Company> first = em.createQuery("select u from Company u where u.businessLicense = ?1 and u.isDeleted = false ", Company.class).setParameter(1, vo.getBusinessLicense()).getResultStream().findFirst();
-        Assert.isTrue(!first.isPresent(), "企业营业执照重复， 新增失败");
+        long count = em.createQuery("select count(1) from Company u where u.businessLicense = ?1 and u.isDeleted = false ", Long.class).setParameter(1, vo.getBusinessLicense()).getFirstResult();
+        Assert.isTrue(count == 0, "企业营业执照重复， 新增失败");
 
         Company company = new Company();
         BeanUtils.copyProperties(vo, company);
@@ -51,6 +52,7 @@ public class CompanyService extends BaseService {
      * @param vo vo
      */
     public void update(CompanyVO vo) {
+        Assert.notNull(vo, "企业信息不能为空");
         Assert.notNull(vo.getId(), "要修改的企业ID不能为空");
         Assert.hasText(vo.getName(), "企业名称不能为空");
         Assert.hasText(vo.getBusinessLicense(), "企业营业执照不能为空");
@@ -62,7 +64,7 @@ public class CompanyService extends BaseService {
         // 如果修改营业执照
         if (!company.getBusinessLicense().equals(vo.getBusinessLicense())) {
             Optional<Company> first = em.createQuery("select u from Company u where u.businessLicense = ?1 and u.isDeleted = false ", Company.class).setParameter(1, vo.getBusinessLicense()).getResultStream().findFirst();
-            Assert.isTrue((!first.isPresent()) || (first.get().getBusinessLicense().equals(company.getBusinessLicense())), "企业营业执照重复， 新增失败");
+            Assert.isTrue((!first.isPresent()) || (first.get().getBusinessLicense().equals(vo.getBusinessLicense())), "企业营业执照重复， 新增失败");
             company.setBusinessLicense(vo.getBusinessLicense());
         }
 

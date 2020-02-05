@@ -22,7 +22,6 @@ public class DepartmentVO {
     /**
      * ID
      */
-    @Id
     private Long id;
     /**
      * 企业id

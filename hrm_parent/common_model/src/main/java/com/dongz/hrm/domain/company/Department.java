@@ -44,7 +44,7 @@ public class Department extends BaseEntity implements Serializable {
      */
     private String name;
     /**
-     * 部门标号
+     * 部门编号
      */
     private String code;
     /**
