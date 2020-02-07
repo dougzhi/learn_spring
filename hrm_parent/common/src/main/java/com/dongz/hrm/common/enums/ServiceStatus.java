@@ -14,15 +14,15 @@ import java.util.Optional;
  */
 @Getter
 @AllArgsConstructor
-public enum State implements BaseEnum<Integer>{
-    Enable(1, "已激活"),
-    Disable(0, "未激活");
+public enum ServiceStatus implements BaseEnum<Integer>{
+    OnJob(1, "在职"),
+    Leave(0, "离职");
 
     private Integer value;
     private String name;
 
-    public State parse(Integer value) {
-        Optional<State> first = Arrays.stream(State.values()).filter(c -> c.value == value).findFirst();
+    public ServiceStatus parse(Integer value) {
+        Optional<ServiceStatus> first = Arrays.stream(ServiceStatus.values()).filter(c -> c.value == value).findFirst();
         Assert.notNull(first.isPresent(), "状态未找到");
         return first.get();
     }
@@ -32,7 +32,7 @@ public enum State implements BaseEnum<Integer>{
         return this.value;
     }
 
-    public static class MyConverter extends BaseEnumConverter<State, Integer> {
+    public static class MyConverter extends BaseEnumConverter<ServiceStatus, Integer> {
 
     }
 }

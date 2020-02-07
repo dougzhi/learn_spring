@@ -11,6 +11,7 @@
         <module>common</module>
         <module>common_model</module>
         <module>company</module>
+        <module>system</module>
     </modules>
 
     <packaging>pom</packaging>

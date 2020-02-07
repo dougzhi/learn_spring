@@ -17,7 +17,15 @@ module.exports = {
         pathRewrite: {
           '^/api/company': ''
         }
-      }
+      },
+      // 部门信息请求的远程服务
+      '/api/department': {
+        target: 'http://localhost:9001/api/department/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api/department': ''
+        }
+      },
     },
 
     // Various Dev Server settings

@@ -10,19 +10,20 @@ import java.util.Optional;
 /**
  * @author dong
  * @date 2020/1/3 00:04
- * @desc
+ * @desc 1为菜单 2为功能 3为API
  */
 @Getter
 @AllArgsConstructor
-public enum State implements BaseEnum<Integer>{
-    Enable(1, "已激活"),
-    Disable(0, "未激活");
+public enum PermissionStatus implements BaseEnum<Integer>{
+    MENU(1, "菜单"),
+    Point(2, "功能"),
+    API(3,"API");
 
     private Integer value;
     private String name;
 
-    public State parse(Integer value) {
-        Optional<State> first = Arrays.stream(State.values()).filter(c -> c.value == value).findFirst();
+    public PermissionStatus parse(Integer value) {
+        Optional<PermissionStatus> first = Arrays.stream(PermissionStatus.values()).filter(c -> c.value == value).findFirst();
         Assert.notNull(first.isPresent(), "状态未找到");
         return first.get();
     }
@@ -32,7 +33,7 @@ public enum State implements BaseEnum<Integer>{
         return this.value;
     }
 
-    public static class MyConverter extends BaseEnumConverter<State, Integer> {
+    public static class MyConverter extends BaseEnumConverter<PermissionStatus, Integer> {
 
     }
 }

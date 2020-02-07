@@ -5,6 +5,7 @@ import com.dongz.hrm.common.entity.Result;
 import com.dongz.hrm.company.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,10 +26,10 @@ public class DepartmentController extends BaseController {
     @Autowired
     private DepartmentService service;
 
-    @RequestMapping("getList")
-    public Result getList() {
+    @GetMapping("list")
+    public Result list() {
         Map<String, Object> params = new HashMap<>();
-        String sql = "";
+        String sql = "select t.* from co_department t where t.is_deleted = false";
         List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql, params);
         return Result.SUCCESS(maps);
     }
