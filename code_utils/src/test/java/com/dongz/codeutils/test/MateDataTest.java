@@ -107,4 +107,41 @@ public class MateDataTest {
         user.close();
     }
 
+    /**
+     * 获取参数元数据
+     */
+    @Test
+    public void test05() throws SQLException {
+        String sql = "select t.* from bs_user t where t.id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, "1063705482939731968");
+
+        //获取参数元数据
+        ParameterMetaData parameterMetaData = statement.getParameterMetaData();
+        System.out.println(parameterMetaData.getParameterCount());
+    }
+
+    /**
+     * 获取结果元数据
+     */
+    @Test
+    public void test06() throws SQLException {
+        String sql = "select t.* from bs_user t where t.id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, "1063705482939731968");
+
+        //执行sql
+        ResultSet resultSet = statement.executeQuery();
+
+        //获取结果元数据
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        System.out.println(metaData.getColumnCount());
+
+        while (resultSet.next()) {
+            for (int i = 0; i < metaData.getColumnCount(); i++) {
+                System.out.println(metaData.getColumnName(i + 1) + "--" + resultSet.getString(i + 1) + "--" + metaData.getColumnTypeName(i + 1) + "--" + metaData.getColumnClassName(i + 1));
+            }
+        }
+        resultSet.close();
+    }
 }
