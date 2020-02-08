@@ -18,7 +18,7 @@ import java.util.*;
  * @date 2020/2/7 19:15
  * @desc
  */
-public class Freemarker01 {
+public class FreemarkerTest {
 
     /**
      * 文件模板
