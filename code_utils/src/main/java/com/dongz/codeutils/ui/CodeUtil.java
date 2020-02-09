@@ -8,11 +8,13 @@
 package com.dongz.codeutils.ui;
 
 
+import com.dongz.codeutils.core.GeneratorFacade;
 import com.dongz.codeutils.entitys.Settings;
 import com.dongz.codeutils.entitys.db.DataBase;
 
 import javax.swing.*;
 import java.io.File;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -491,9 +493,9 @@ public class CodeUtil extends JFrame {
 
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(() -> {
-			DataBase db = new DataBase("mysql","ihrm");
+			DataBase db = new DataBase("mysql","hrm");
 			db.setUserName("root");
-			db.setPassWord("111111");
+			db.setPassWord("123456");
 			new CodeUtil(db,null).setVisible(true);
 		});
 	}
@@ -538,13 +540,13 @@ public class CodeUtil extends JFrame {
 	 * @param settings			工程配置对象
 	 * @param db				数据库信息
 	 */
-	private void generator(String templetPath, String outpath, Settings settings, DataBase db) {
+	private void generator(String templetPath, String outpath, Settings settings, DataBase db) throws SQLException, ClassNotFoundException {
 		System.out.println(templetPath);
 		System.out.println(outpath);
 		System.out.println(settings);
 		System.out.println(db);
-//		GeneratorFacade gf = new GeneratorFacade(templetPath,outpath,settings);
-//		gf.generatorByTable(db);
+		GeneratorFacade gf = new GeneratorFacade(templetPath,outpath,settings,db);
+		gf.generatorByDataBase();
 	}
 
 }

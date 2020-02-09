@@ -10,7 +10,7 @@ public class PropertiesUtils {
     public static Map<String,String> customMap = new HashMap<>();
 
     static {
-        File dir = new File("properties");
+        File dir = new File("code_utils/properties");
         try {
             List<File> files = FileUtils.searchAllFile(new File(dir.getAbsolutePath()));
             for (File file : files) {
@@ -23,5 +23,11 @@ public class PropertiesUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        PropertiesUtils.customMap.forEach((k, v)->{
+            System.out.println(k+"--"+v);
+        });
     }
 }
