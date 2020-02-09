@@ -5,9 +5,8 @@ import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.entitys.db.Table;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import com.dongz.codeutils.utils.PropertiesUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,13 +26,20 @@ import java.util.Map;
  *          - setting
  *       3, 调用核心处理类，完成代码生成工作
  */
-@Data
-@AllArgsConstructor
 public class GeneratorFacade {
     private String templatePath;
     private String outPath;
     private Settings settings;
     private DataBase db;
+    private Generator generator;
+
+    public GeneratorFacade(String templatePath, String outPath, Settings settings, DataBase db) throws IOException {
+        this.templatePath = templatePath;
+        this.outPath = outPath;
+        this.settings = settings;
+        this.db = db;
+        this.generator = new Generator(templatePath, outPath);
+    }
 
     /**
      * 准备数据模型
@@ -43,10 +49,11 @@ public class GeneratorFacade {
         List<Table> tables = DataBaseUtils.getDbInfo(db);
         tables.forEach(table -> {
             // 对每一个Table对象进行代码生成
-            Map<String, Object> dataModel = getDataModel(table);
-            dataModel.entrySet().forEach(entry -> {
-                System.out.println(entry.getKey() + "-->" + entry.getValue());
-            });
+            try {
+                generator.scanAndGenerator(getDataModel(table));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 

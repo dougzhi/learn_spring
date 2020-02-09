@@ -14,6 +14,7 @@ import com.dongz.codeutils.entitys.db.DataBase;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -397,7 +398,7 @@ public class CodeUtil extends JFrame {
 	private void formWindowOpened(java.awt.event.WindowEvent evt) {
 		setLocationRelativeTo(null);
 		//获取当前文件夹下的模板目录下的所有文件夹
-		File directory = new File(new File("").getAbsolutePath() + "\\模板");//设定为当前文件夹
+		File directory = new File(new File("").getAbsolutePath() + "/code_utils/模板/");//设定为当前文件夹
 		File[] listFiles = directory.listFiles();
 		if (listFiles != null) {
 			for (File f : listFiles) {
@@ -406,7 +407,7 @@ public class CodeUtil extends JFrame {
 				}
 			}
 		}
-		//this.jTextField4.setText(new File("").getAbsolutePath() + "\\db");
+		//this.jTextField4.setText(new File("").getAbsolutePath() + "/db");
 	}
 
 	private void formWindowActivated(java.awt.event.WindowEvent evt) {
@@ -433,7 +434,7 @@ public class CodeUtil extends JFrame {
 			  //路径map封装
 				  Map<String, String> pathMap = new HashMap<>();
 				  //获取当前文件夹下的模板目录下的所有文件夹
-				  String basePath = new File("").getAbsolutePath() + "\\模板\\"
+				  String basePath = new File("").getAbsolutePath() + "/code_utils/模板/"
 						  + jComboBox1.getSelectedItem();//设定为当前文件夹
 
 				  String templetPath = basePath;
@@ -540,11 +541,7 @@ public class CodeUtil extends JFrame {
 	 * @param settings			工程配置对象
 	 * @param db				数据库信息
 	 */
-	private void generator(String templetPath, String outpath, Settings settings, DataBase db) throws SQLException, ClassNotFoundException {
-		System.out.println(templetPath);
-		System.out.println(outpath);
-		System.out.println(settings);
-		System.out.println(db);
+	private void generator(String templetPath, String outpath, Settings settings, DataBase db) throws SQLException, ClassNotFoundException, IOException {
 		GeneratorFacade gf = new GeneratorFacade(templetPath,outpath,settings,db);
 		gf.generatorByDataBase();
 	}
