@@ -16,7 +16,7 @@ public class Column {
 	 */
 	private String columnName2;
 	/**
-	 * 列类型
+	 * java列类型
 	 */
 	private String columnType;
 	/**

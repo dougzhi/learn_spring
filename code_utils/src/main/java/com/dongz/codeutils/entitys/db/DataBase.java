@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class DataBase {
 
-    private static String mysqlUrl = "jdbc:mysql://[ip]:[port]/[db]?useUnicode=true&amp;characterEncoding=UTF8";
+    private static String mysqlUrl = "jdbc:mysql://[ip]:[port]/[db]?useUnicode=true&characterEncoding=utf8";
     private static String oracleUrl = "jdbc:oracle:thin:@[ip]:[port]:[db]";
 
     /**
