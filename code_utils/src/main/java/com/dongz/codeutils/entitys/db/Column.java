@@ -1,11 +1,15 @@
 package com.dongz.codeutils.entitys.db;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 列对象
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Column {
 	/**
 	 * 列名称
