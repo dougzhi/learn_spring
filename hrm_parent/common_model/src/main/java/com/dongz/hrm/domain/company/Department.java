@@ -1,6 +1,6 @@
 package com.dongz.hrm.domain.company;
 
-import com.dongz.hrm.common.entity.BaseEntity;
+import com.dongz.hrm.common.entities.BaseEntity;
 import com.dongz.hrm.common.enums.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;

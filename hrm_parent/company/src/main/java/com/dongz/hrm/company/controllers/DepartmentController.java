@@ -1,7 +1,7 @@
 package com.dongz.hrm.company.controllers;
 
 import com.dongz.hrm.common.controllers.BaseController;
-import com.dongz.hrm.common.entity.Result;
+import com.dongz.hrm.common.entities.Result;
 import com.dongz.hrm.company.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

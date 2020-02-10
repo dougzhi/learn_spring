@@ -1,6 +1,6 @@
 package com.dongz.hrm.common.services;
 
-import com.dongz.hrm.common.entity.BaseEntity;
+import com.dongz.hrm.common.entities.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 

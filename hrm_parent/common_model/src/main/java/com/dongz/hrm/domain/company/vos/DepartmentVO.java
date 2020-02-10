@@ -1,16 +1,9 @@
 package com.dongz.hrm.domain.company.vos;
 
-import com.dongz.hrm.common.entity.BaseEntity;
 import com.dongz.hrm.common.enums.Category;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * @author dong

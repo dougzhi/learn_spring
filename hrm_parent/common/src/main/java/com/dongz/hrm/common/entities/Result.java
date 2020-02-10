@@ -1,4 +1,4 @@
-package com.dongz.hrm.common.entity;
+package com.dongz.hrm.common.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

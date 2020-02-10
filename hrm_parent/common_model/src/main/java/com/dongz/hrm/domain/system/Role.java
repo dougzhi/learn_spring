@@ -1,6 +1,6 @@
 package com.dongz.hrm.domain.system;
 
-import com.dongz.hrm.common.entity.BaseEntity;
+import com.dongz.hrm.common.entities.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
