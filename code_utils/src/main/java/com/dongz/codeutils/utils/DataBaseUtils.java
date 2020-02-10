@@ -99,7 +99,7 @@ public class DataBaseUtils {
                         // 1, 列名称
                         String columnName = columns.getString("COLUMN_NAME");
                         // 2, 属性名
-                        String attName = StringUtils.toJavaClassName(columnName);
+                        String attName = StringUtils.toJavaVariableName(columnName);
                         // 3, java类型 ,数据库类型
                         String dbType = columns.getString("TYPE_NAME");
                         String javaType = PropertiesUtils.customMap.get(dbType);

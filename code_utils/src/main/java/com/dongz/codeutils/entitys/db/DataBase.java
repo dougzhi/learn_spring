@@ -1,16 +1,69 @@
 package com.dongz.codeutils.entitys.db;
 
 
-import lombok.Data;
-
 /**
  * 数据库实体类
  */
-@Data
 public class DataBase {
 
     private static String mysqlUrl = "jdbc:mysql://[ip]:[port]/[db]?useUnicode=true&characterEncoding=utf8";
     private static String oracleUrl = "jdbc:oracle:thin:@[ip]:[port]:[db]";
+
+    public static String getMysqlUrl() {
+        return mysqlUrl;
+    }
+
+    public static void setMysqlUrl(String mysqlUrl) {
+        DataBase.mysqlUrl = mysqlUrl;
+    }
+
+    public static String getOracleUrl() {
+        return oracleUrl;
+    }
+
+    public static void setOracleUrl(String oracleUrl) {
+        DataBase.oracleUrl = oracleUrl;
+    }
+
+    public String getDbType() {
+        return dbType;
+    }
+
+    public void setDbType(String dbType) {
+        this.dbType = dbType;
+    }
+
+    public String getDriver() {
+        return driver;
+    }
+
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     /**
      * 数据库类型
