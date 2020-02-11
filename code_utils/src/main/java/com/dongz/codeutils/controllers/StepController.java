@@ -19,7 +19,7 @@ import java.util.List;
  * @desc
  */
 public class StepController {
-    private static final String STEP1 = "/ui/step1.fxml";
+    private static final String STEP1 = "/ui/stepFirst.fxml";
     private static final String STEP2 = "/ui/step2.fxml";
 
     public Button forwardBtn;
