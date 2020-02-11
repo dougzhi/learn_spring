@@ -65,6 +65,30 @@ public class DataBase {
         this.url = url;
     }
 
+    public String getDb() {
+        return db;
+    }
+
+    public void setDb(String db) {
+        this.db = db;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
     /**
      * 数据库类型
      */
@@ -73,6 +97,9 @@ public class DataBase {
     private String userName;
     private String passWord;
     private String url;
+    private String db;
+    private String port;
+    private String ip;
 
     public DataBase() {}
 
@@ -86,6 +113,10 @@ public class DataBase {
 
     public DataBase(String dbType,String ip,String port,String db) {
         this.dbType = dbType;
+        this.db = db;
+        this.port = port;
+        this.ip = ip;
+
         if("MYSQL".endsWith(dbType.toUpperCase())) {
             this.driver="com.mysql.jdbc.Driver";
             this.url=mysqlUrl.replace("[ip]",ip).replace("[port]",port).replace("[db]",db);

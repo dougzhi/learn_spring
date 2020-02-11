@@ -3,9 +3,6 @@ package com.dongz.codeutils.controllers;
 import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import com.dongz.codeutils.utils.StringUtils;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
@@ -18,11 +15,8 @@ import java.util.List;
  * @date 2020/2/10 21:52
  * @desc
  */
-public class StepController {
-    private static final String STEP1 = "/ui/stepFirst.fxml";
-    private static final String STEP2 = "/ui/step2.fxml";
+public class StepFirstController extends BaseController{
 
-    public Button forwardBtn;
     public Button nextBtn;
     public ComboBox dbType;
     public Button close;
@@ -32,19 +26,27 @@ public class StepController {
     public ComboBox database;
     public TextField port;
 
+    /**
+     * database to entity
+     * @throws IOException
+     */
     public void next() throws IOException {
+        if (!isConnection) {
+            alert(Alert.AlertType.WARNING, "请连接服务器");
+            return;
+        }
+        String databaseValue = (String) database.getValue();
+        if (StringUtils.isBlank(databaseValue)) {
+            alert(Alert.AlertType.WARNING, "请选择数据库");
+            return;
+        }
+        db.setDb(databaseValue);
         changeStep(nextBtn, STEP2);
     }
 
-    public void forward() throws IOException {
-        changeStep(forwardBtn, STEP1);
-    }
-
-    private void changeStep(Button btn,String step) throws IOException {
-        Stage secondStage = (Stage) btn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource(step));
-        Scene scene = new Scene(root);
-        secondStage.setScene(scene);
+    @Override
+    public void reload() {
+        host.setText(db.getIp());
     }
 
     public void close() {
@@ -79,21 +81,14 @@ public class StepController {
             return;
         }
 
-        DataBase db = new DataBase(type,ip,portText,"");
+        db = new DataBase(type,ip,portText,"");
         db.setUserName(username);
         db.setPassWord(passwordText);
 
         List<String> catalogs = DataBaseUtils.getSchemas(db);
         database.getItems().removeAll();
         database.getItems().addAll(catalogs);
+        isConnection = true;
         alert(Alert.AlertType.INFORMATION, "连接成功");
-    }
-
-    private void alert(Alert.AlertType type,String message) {
-        Alert alert = new Alert(type);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-
-        alert.showAndWait();
     }
 }
