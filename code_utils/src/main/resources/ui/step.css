@@ -1,0 +1,11 @@
+.button{
+    -fx-background-color: #525574;
+    -fx-border-color: #838383;
+    -fx-border-radius: 3px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #eeeeee;
+    -fx-padding: 3px 13px 2px 13px;
+}
+.back{
+    -fx-background-color: #424453;
+}

@@ -21,9 +21,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ui/step1.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("代码生成器");
         primaryStage.show();
     }
 }
