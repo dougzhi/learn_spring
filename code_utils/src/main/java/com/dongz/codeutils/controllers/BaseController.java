@@ -13,11 +13,11 @@ import java.io.IOException;
 /**
  * @author dong
  * @date 2020/2/12 00:52
- * @desc
+ * @desc 第二
  */
 public abstract class BaseController {
     protected static final String STEP1 = "/ui/stepFirst.fxml";
-    protected static final String STEP2 = "/ui/step2.fxml";
+    protected static final String STEP2 = "/ui/stepSecond.fxml";
 
     protected static boolean isConnection = false;
     protected static DataBase db;

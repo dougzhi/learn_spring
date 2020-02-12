@@ -9,7 +9,7 @@ import java.io.IOException;
  * @date 2020/2/10 21:52
  * @desc
  */
-public class StepScendController extends BaseController{
+public class StepSecondController extends BaseController{
 
     public Button forwardBtn;
 

@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="706.0" styleClass="back" stylesheets="@step.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dongz.codeutils.controllers.StepFirstController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="706.0" styleClass="back" stylesheets="@step.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dongz.codeutils.controllers.StepSecondController">
    <children>
       <GridPane layoutX="2.0" layoutY="41.0" prefHeight="167.0" prefWidth="152.0">
         <columnConstraints>
@@ -29,12 +29,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" prefHeight="34.0" prefWidth="158.0" style="-fx-background-color: #3D5183;" text="database" textAlignment="CENTER" textFill="#f2eeee">
+            <Label alignment="CENTER" prefHeight="34.0" prefWidth="158.0" text="database" textAlignment="CENTER" textFill="#f2eeee">
                <font>
                   <Font size="17.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="34.0" prefWidth="158.0" text="entity" textAlignment="CENTER" textFill="#f2eeee" GridPane.rowIndex="1">
+            <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="34.0" prefWidth="158.0" style="-fx-background-color: #3D5183;" text="entity" textAlignment="CENTER" textFill="#f2eeee" GridPane.rowIndex="1">
                <font>
                   <Font size="15.0" />
                </font>
@@ -143,6 +143,7 @@
       </GridPane>
       <Button fx:id="test" layoutX="203.0" layoutY="347.0" mnemonicParsing="false" onAction="#testConnect" text="测试连接" />
       <Button fx:id="nextBtn" layoutX="588.0" layoutY="347.0" mnemonicParsing="false" onAction="#next" style="-fx-background-color: #3D5183;" text="下一步" textFill="#171616" />
-      <Button fx:id="close" layoutX="510.0" layoutY="347.0" mnemonicParsing="false" onAction="#close" text="关闭" textFill="#252323" />
+      <Button fx:id="close" layoutX="437.0" layoutY="347.0" mnemonicParsing="false" onAction="#close" text="关闭" textFill="#252323" />
+      <Button fx:id="forwardBtn" layoutX="505.0" layoutY="347.0" mnemonicParsing="false" onAction="#forward" text="上一步" textFill="#171616" />
    </children>
 </AnchorPane>
