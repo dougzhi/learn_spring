@@ -3,11 +3,13 @@ package com.dongz.codeutils.controllers;
 import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import com.dongz.codeutils.utils.StringUtils;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -47,6 +49,11 @@ public class StepFirstController extends BaseController{
         if (StringUtils.isBlank(databaseValue)) {
             alert(Alert.AlertType.WARNING, "请选择数据库");
             return;
+        }
+        if (!databaseValue.equals(db.getDb())) {
+            tables = null;
+            selectedTables = new HashMap<>();
+            selectedTable = null;
         }
         db.setUrl(databaseValue);
         changeStep(nextBtn, STEP2);

@@ -28,29 +28,9 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" prefHeight="34.0" prefWidth="158.0" text="database" textAlignment="CENTER" textFill="#f2eeee">
+            <Label alignment="CENTER" prefHeight="34.0" prefWidth="158.0" style="-fx-background-color: #3D5183;" text="selectForeign" textAlignment="CENTER" textFill="#f2eeee">
                <font>
                   <Font size="17.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="34.0" prefWidth="158.0" style="-fx-background-color: #3D5183;" text="entity" textAlignment="CENTER" textFill="#f2eeee" GridPane.rowIndex="1">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="44.0" prefHeight="34.0" prefWidth="158.0" text="vo" textAlignment="CENTER" textFill="#f2eeee" GridPane.rowIndex="2">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="78.0" prefHeight="34.0" prefWidth="158.0" text="service" textAlignment="CENTER" textFill="#f2eeee" GridPane.rowIndex="3">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="111.0" prefHeight="34.0" prefWidth="158.0" text="controller" textAlignment="CENTER" textFill="#f2eeee" GridPane.rowIndex="4">
-               <font>
-                  <Font size="15.0" />
                </font>
             </Label>
          </children>

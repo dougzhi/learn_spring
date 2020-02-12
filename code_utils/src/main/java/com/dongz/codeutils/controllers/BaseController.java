@@ -23,12 +23,14 @@ import java.util.Map;
 public abstract class BaseController implements Initializable {
     protected static final String STEP1 = "/ui/stepFirst.fxml";
     protected static final String STEP2 = "/ui/stepSecond.fxml";
+    protected static final String SELECTFOREIGN = "/ui/selectForeign.fxml";
 
     protected static boolean isConnection = false;
     protected static DataBase db;
     protected static List<Table> tables;
     protected static Map<String, Table> tableMap;
     protected static Map<String, Table> selectedTables = new HashMap<>();
+    protected static Table selectedTable;
 
     public Button close;
 
@@ -57,5 +59,13 @@ public abstract class BaseController implements Initializable {
         alert.setContentText(message);
 
         alert.showAndWait();
+    }
+
+    protected void openMadel(String step, String title) throws IOException {
+        Parent anotherRoot = FXMLLoader.load(getClass().getResource(step));
+        Stage anotherStage = new Stage();
+        anotherStage.setTitle(title);
+        anotherStage.setScene(new Scene(anotherRoot));
+        anotherStage.show();
     }
 }

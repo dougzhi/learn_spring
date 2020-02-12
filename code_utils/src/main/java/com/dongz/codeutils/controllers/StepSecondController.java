@@ -4,8 +4,6 @@ import com.dongz.codeutils.entitys.db.Column;
 import com.dongz.codeutils.entitys.db.Table;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -31,9 +29,13 @@ public class StepSecondController extends BaseController{
     public Button nextBtn;
     public ListView entities;
     public ListView cloumns;
+    public CheckBox isExtend;
+    public Button addForeign;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        isExtend.setVisible(false);
+        addForeign.setVisible(false);
         if (tables == null) {
             try {
                 tables = DataBaseUtils.getDbInfo(db);
@@ -63,9 +65,16 @@ public class StepSecondController extends BaseController{
         if (selectedTables.containsKey(table.getName())) {
             selectedTables.remove(table.getName());
             cloumns.setItems(null);
+            selectedTable = null;
+            isExtend.setVisible(false);
+            addForeign.setVisible(false);
         } else {
+            selectedTable = table;
             selectedTables.put(table.getName(), table);
             showColumns(table);
+            isExtend.setVisible(true);
+            isExtend.setSelected(table.isExtendsBase());
+            addForeign.setVisible(true);
         }
     }
 
@@ -75,7 +84,6 @@ public class StepSecondController extends BaseController{
             checkBox.setText(item.getColumnName());
             checkBox.setId(table.getName());
             checkBox.setDisable(item.getColumnKey() != null);
-            checkBox.setAccessibleHelp("主键");
             checkBox.setSelected(item.isSelected());
             checkBox.setOnMouseClicked(event -> clickColumn(event));
             return checkBox;
@@ -99,6 +107,14 @@ public class StepSecondController extends BaseController{
     }
 
     public void next(ActionEvent actionEvent) {
+    }
+
+    public void isExcend() {
+        selectedTable.setExtendsBase(!selectedTable.isExtendsBase());
+    }
+
+    public void addForeign() throws IOException {
+        openMadel(SELECTFOREIGN,"selectForeign");
     }
 }
 
