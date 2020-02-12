@@ -2,6 +2,7 @@ package com.dongz.codeutils.controllers;
 
 import com.dongz.codeutils.entitys.db.DataBase;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,15 +16,21 @@ import java.io.IOException;
  * @date 2020/2/12 00:52
  * @desc 第二
  */
-public abstract class BaseController {
+public abstract class BaseController implements Initializable {
     protected static final String STEP1 = "/ui/stepFirst.fxml";
     protected static final String STEP2 = "/ui/stepSecond.fxml";
 
     protected static boolean isConnection = false;
     protected static DataBase db;
+    public Button close;
 
     protected void reload() {
 
+    }
+
+    public void close() {
+        Stage window = (Stage) close.getScene().getWindow();
+        window.close();
     }
 
     protected void changeStep(Button btn,String step) throws IOException {

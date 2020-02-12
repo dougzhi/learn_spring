@@ -4,11 +4,12 @@ import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import com.dongz.codeutils.utils.StringUtils;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * @author dong
@@ -19,12 +20,16 @@ public class StepFirstController extends BaseController{
 
     public Button nextBtn;
     public ComboBox dbType;
-    public Button close;
     public TextField host;
     public PasswordField password;
     public TextField user;
     public ComboBox database;
     public TextField port;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 
     /**
      * database to entity
@@ -54,11 +59,6 @@ public class StepFirstController extends BaseController{
         database.setValue(db.getDb());
         database.getItems().removeAll();
         database.getItems().addAll(db.getDbList());
-    }
-
-    public void close() {
-        Stage window = (Stage) close.getScene().getWindow();
-        window.close();
     }
 
     public void testConnect() {
