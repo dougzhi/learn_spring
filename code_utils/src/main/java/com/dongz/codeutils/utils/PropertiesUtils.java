@@ -1,25 +1,21 @@
 package com.dongz.codeutils.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 public class PropertiesUtils {
 
     public static Map<String,String> customMap = new HashMap<>();
 
     static {
-        File dir = new File("code_utils/properties");
+        InputStream file = Object.class.getResourceAsStream("/properties/typeConverter.properties");
         try {
-            List<File> files = FileUtils.searchAllFile(new File(dir.getAbsolutePath()));
-            for (File file : files) {
-                if(file.getName().endsWith(".properties")) {
-                    Properties prop = new Properties();
-                    prop.load(new FileInputStream(file));
-                    customMap.putAll((Map) prop);
-                }
-            }
+            Properties prop = new Properties();
+            prop.load(file);
+            customMap.putAll((Map) prop);
         } catch (IOException e) {
             e.printStackTrace();
         }
