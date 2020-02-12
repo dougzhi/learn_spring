@@ -1,5 +1,8 @@
 package com.dongz.codeutils.entitys.db;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.List;
 
 /**
@@ -7,6 +10,8 @@ import java.util.List;
  * @author Administrator
  *
  */
+@Data
+@AllArgsConstructor
 public class Table {
 
 	/**
@@ -29,54 +34,4 @@ public class Table {
 	 * 列集合
 	 */
 	private List<Column> columns;
-
-
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName2() {
-		return name2;
-	}
-
-	public void setName2(String name2) {
-		this.name2 = name2;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public List<Column> getColumns() {
-		return columns;
-	}
-
-	public void setColumns(List<Column> columns) {
-		this.columns = columns;
-	}
-
-	public Table(String name, String name2, String comment, String key, List<Column> columns) {
-		this.name = name;
-		this.name2 = name2;
-		this.comment = comment;
-		this.key = key;
-		this.columns = columns;
-	}
 }
