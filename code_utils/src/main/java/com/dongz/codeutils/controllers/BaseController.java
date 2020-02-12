@@ -27,10 +27,11 @@ public abstract class BaseController implements Initializable {
 
     protected static boolean isConnection = false;
     protected static DataBase db;
-    public Button close;
     protected static List<Table> tables;
     protected static Map<String, Table> tableMap;
     protected static Map<String, Table> selectedTables = new HashMap<>();
+
+    public Button close;
 
     protected void reload() {
 
