@@ -7,6 +7,7 @@ import com.dongz.codeutils.entitys.db.Table;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -107,7 +108,7 @@ public class DataBaseUtils {
                         String comment = columns.getString("REMARKS");
                         // 5, 是否主键
                         String pri = null;
-                        if (StringUtils.contains(columnName, keys.split(","))) {
+                        if (Arrays.asList(keys.split(",")).contains(columnName)) {
                             pri = "PRI";
                         }
                         Column column = new Column(columnName, attName, javaType, dbType, comment, pri, true);

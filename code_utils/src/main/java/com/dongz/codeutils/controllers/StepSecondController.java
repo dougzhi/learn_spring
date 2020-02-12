@@ -48,7 +48,7 @@ public class StepSecondController extends BaseController{
         List<CheckBox> collect = tables.stream().map(item -> {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getName());
-            if (selectedTables.containsKey(tableMap.get(item.getName()))) {
+            if (selectedTables.containsKey(item.getName())) {
                 checkBox.setSelected(true);
             }
             checkBox.setOnMouseClicked(this::clickTable);
@@ -74,6 +74,8 @@ public class StepSecondController extends BaseController{
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getColumnName());
             checkBox.setId(table.getName());
+            checkBox.setDisable(item.getColumnKey() != null);
+            checkBox.setAccessibleHelp("主键");
             checkBox.setSelected(item.isSelected());
             checkBox.setOnMouseClicked(event -> clickColumn(event));
             return checkBox;

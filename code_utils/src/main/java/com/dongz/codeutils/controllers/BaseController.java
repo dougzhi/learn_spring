@@ -28,9 +28,9 @@ public abstract class BaseController implements Initializable {
     protected static boolean isConnection = false;
     protected static DataBase db;
     public Button close;
-    protected List<Table> tables;
-    protected Map<String, Table> tableMap;
-    protected Map<String, Table> selectedTables = new HashMap<>();
+    protected static List<Table> tables;
+    protected static Map<String, Table> tableMap;
+    protected static Map<String, Table> selectedTables = new HashMap<>();
 
     protected void reload() {
 

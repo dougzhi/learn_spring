@@ -61,7 +61,7 @@
         <content>
           <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;">
                <children>
-                   <ListView fx:id="entities" layoutX="-3.0" layoutY="-4.0" maxHeight="1.7976931348623157E308" prefHeight="396.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                   <ListView fx:id="entities" layoutX="-3.0" maxHeight="1.7976931348623157E308" prefHeight="396.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets top="3.0" />
                      </padding></ListView>
