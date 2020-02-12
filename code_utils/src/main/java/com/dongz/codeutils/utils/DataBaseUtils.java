@@ -111,10 +111,10 @@ public class DataBaseUtils {
                         if (Arrays.asList(keys.split(",")).contains(columnName)) {
                             pri = "PRI";
                         }
-                        Column column = new Column(columnName, attName, javaType, dbType, comment, pri, true);
+                        Column column = new Column(columnName, attName, javaType, dbType, comment, pri, true, null);
                         columnList.add(column);
                     }
-                    Table table = new Table(tableName, className, remarks, keys, columnList, true, null);
+                    Table table = new Table(tableName, className, remarks, keys, columnList, true);
                     list.add(table);
                 } finally {
                     columns.close();

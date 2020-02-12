@@ -5,11 +5,13 @@ import com.dongz.codeutils.entitys.db.Table;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -79,14 +81,24 @@ public class StepSecondController extends BaseController{
     }
 
     private void showColumns(Table table) {
-        List<CheckBox> collect = table.getColumns().stream().map(item -> {
+        List<HBox> collect = table.getColumns().stream().map(item -> {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getColumnName());
             checkBox.setId(table.getName());
             checkBox.setDisable(item.getColumnKey() != null);
             checkBox.setSelected(item.isSelected());
             checkBox.setOnMouseClicked(event -> clickColumn(event));
-            return checkBox;
+            Button button = new Button("外键关联");
+            button.setOnMouseClicked(event -> {
+                try {
+                    addForeign(event);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            HBox box = new HBox();
+            box.getChildren().addAll(checkBox, button);
+            return box;
         }).collect(Collectors.toList());
         cloumns.setItems(null);
         cloumns.setItems(FXCollections.observableArrayList(collect));
@@ -113,7 +125,7 @@ public class StepSecondController extends BaseController{
         selectedTable.setExtendsBase(!selectedTable.isExtendsBase());
     }
 
-    public void addForeign() throws IOException {
+    public void addForeign(Event event) throws IOException {
         openMadel(SELECTFOREIGN,"selectForeign");
     }
 }

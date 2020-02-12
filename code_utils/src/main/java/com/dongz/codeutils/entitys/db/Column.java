@@ -3,6 +3,8 @@ package com.dongz.codeutils.entitys.db;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 列对象
  */
@@ -35,4 +37,14 @@ public class Column {
 	private String columnKey;
 
 	private boolean isSelected;
+	/**
+	 * 外键关联表关系
+	 */
+	private List<Column.ForeignColumn> foreignColumn;
+
+	@Data
+	public static class ForeignColumn{
+		private Table table;
+		private Column foreignColumn;
+	}
 }

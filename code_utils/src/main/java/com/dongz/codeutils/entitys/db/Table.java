@@ -38,14 +38,4 @@ public class Table {
 	 * 是否继承BaseEntity
 	 */
 	private boolean isExtendsBase;
-	/**
-	 * 外键关联表关系
-	 */
-	private List<Table.ForeignColumn> foreignColumns;
-
-	@Data
-	public static class ForeignColumn{
-		private Table table;
-		private List<Column> foreignColumns;
-	}
 }
