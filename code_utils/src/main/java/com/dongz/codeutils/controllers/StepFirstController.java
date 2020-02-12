@@ -28,7 +28,10 @@ public class StepFirstController extends BaseController{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        host.setText("localhost");
+        user.setText("root");
+        password.setText("123456");
+        dbType.setValue("mysql");
     }
 
     /**
@@ -45,7 +48,7 @@ public class StepFirstController extends BaseController{
             alert(Alert.AlertType.WARNING, "请选择数据库");
             return;
         }
-        db.setDb(databaseValue);
+        db.setUrl(databaseValue);
         changeStep(nextBtn, STEP2);
     }
 

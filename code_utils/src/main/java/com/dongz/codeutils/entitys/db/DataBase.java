@@ -51,4 +51,14 @@ public class DataBase {
             this.url=oracleUrl.replace("[ip]",ip).replace("[port]",port).replace("[db]",db);
         }
     }
+
+    public void setUrl(String db) {
+        if("MYSQL".endsWith(dbType.toUpperCase())) {
+            this.driver="com.mysql.jdbc.Driver";
+            this.url=mysqlUrl.replace("[ip]",ip).replace("[port]",port).replace("[db]",db);
+        }else{
+            this.driver="oracle.jdbc.driver.OracleDriver";
+            this.url=oracleUrl.replace("[ip]",ip).replace("[port]",port).replace("[db]",db);
+        }
+    }
 }
