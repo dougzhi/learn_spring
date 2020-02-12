@@ -33,4 +33,6 @@ public class Column {
 	 * 是否是主键
 	 */
 	private String columnKey;
+
+	private boolean isSelected;
 }

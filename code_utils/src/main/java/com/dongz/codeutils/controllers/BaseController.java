@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public abstract class BaseController implements Initializable {
     public Button close;
     protected List<Table> tables;
     protected Map<String, Table> tableMap;
-    protected List<Table> selectedTables = new ArrayList<>();
+    protected Map<String, Table> selectedTables = new HashMap<>();
 
     protected void reload() {
 

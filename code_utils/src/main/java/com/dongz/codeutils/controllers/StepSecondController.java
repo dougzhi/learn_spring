@@ -1,7 +1,11 @@
 package com.dongz.codeutils.controllers;
 
+import com.dongz.codeutils.entitys.db.Column;
 import com.dongz.codeutils.entitys.db.Table;
 import com.dongz.codeutils.utils.DataBaseUtils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -44,7 +48,7 @@ public class StepSecondController extends BaseController{
         List<CheckBox> collect = tables.stream().map(item -> {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getName());
-            if (selectedTables.contains(tableMap.get(item.getName()))) {
+            if (selectedTables.containsKey(tableMap.get(item.getName()))) {
                 checkBox.setSelected(true);
             }
             checkBox.setOnMouseClicked(this::clickTable);
@@ -56,11 +60,11 @@ public class StepSecondController extends BaseController{
     private void clickTable(MouseEvent event) {
         CheckBox source = (CheckBox) event.getSource();
         Table table = tableMap.get(source.getText());
-        if (selectedTables.contains(table)) {
-            selectedTables.remove(table);
-            cloumns.getItems().removeAll();
+        if (selectedTables.containsKey(table.getName())) {
+            selectedTables.remove(table.getName());
+            cloumns.setItems(null);
         } else {
-            selectedTables.add(table);
+            selectedTables.put(table.getName(), table);
             showColumns(table);
         }
     }
@@ -69,12 +73,22 @@ public class StepSecondController extends BaseController{
         List<CheckBox> collect = table.getColumns().stream().map(item -> {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getColumnName());
-            checkBox.setSelected(true);
-//            checkBox.setOnMouseClicked(event -> clickTable(event));
+            checkBox.setId(table.getName());
+            checkBox.setSelected(item.isSelected());
+            checkBox.setOnMouseClicked(event -> clickColumn(event));
             return checkBox;
         }).collect(Collectors.toList());
-        cloumns.getItems().removeAll();
-        cloumns.getItems().addAll(collect);
+        cloumns.setItems(null);
+        cloumns.setItems(FXCollections.observableArrayList(collect));
+    }
+
+    private void clickColumn(MouseEvent event) {
+        CheckBox source = (CheckBox) event.getSource();
+        String talbeName = source.getId();
+        String columnName = source.getText();
+        Table table = selectedTables.get(talbeName);
+        List<Column> columns = table.getColumns();
+        columns.stream().filter(item -> item.getColumnName().equals(columnName)).forEach(item -> item.setSelected(!item.isSelected()));
     }
 
 
