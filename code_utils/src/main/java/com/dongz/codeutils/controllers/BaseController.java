@@ -10,10 +10,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author dong
@@ -67,5 +70,19 @@ public abstract class BaseController implements Initializable {
         anotherStage.setTitle(title);
         anotherStage.setScene(new Scene(anotherRoot));
         anotherStage.show();
+    }
+
+    /**
+     * 获取模板
+     */
+    protected List<String> getTemplateFileList() {
+        //设定为当前文件夹
+        File directory = new File(new File("").getAbsolutePath() + "/code_utils/模板/");
+        File[] listFiles = directory.listFiles();
+        List<String> fileList = null;
+        if (listFiles != null) {
+            fileList = Arrays.stream(listFiles).filter(File::isDirectory).map(File::getName).collect(Collectors.toList());
+        }
+        return fileList;
     }
 }
