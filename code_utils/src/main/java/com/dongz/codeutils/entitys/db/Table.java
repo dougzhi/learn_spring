@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 表实体
  * @author Administrator
- *
+ * 外键
  */
 @Data
 @AllArgsConstructor
@@ -34,4 +34,18 @@ public class Table {
 	 * 列集合
 	 */
 	private List<Column> columns;
+	/**
+	 * 是否继承BaseEntity
+	 */
+	private boolean isExtendsBase;
+	/**
+	 * 外键关联表关系
+	 */
+	private List<Table.ForeignColumn> foreignColumns;
+
+	@Data
+	public static class ForeignColumn{
+		private Table table;
+		private List<Column> foreignColumns;
+	}
 }

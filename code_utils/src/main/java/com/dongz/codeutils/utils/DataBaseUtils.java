@@ -114,7 +114,7 @@ public class DataBaseUtils {
                         Column column = new Column(columnName, attName, javaType, dbType, comment, pri, true);
                         columnList.add(column);
                     }
-                    Table table = new Table(tableName, className, remarks, keys, columnList);
+                    Table table = new Table(tableName, className, remarks, keys, columnList, true, null);
                     list.add(table);
                 } finally {
                     columns.close();
