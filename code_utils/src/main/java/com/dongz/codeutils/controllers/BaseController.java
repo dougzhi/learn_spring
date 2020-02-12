@@ -1,5 +1,6 @@
 package com.dongz.codeutils.controllers;
 
+import com.dongz.codeutils.entitys.db.Column;
 import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.entitys.db.Table;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +36,7 @@ public abstract class BaseController implements Initializable {
     protected static Map<String, Table> tableMap;
     protected static Map<String, Table> selectedTables = new HashMap<>();
     protected static Table selectedTable;
+    protected static Column selectedColumn;
 
     public Button close;
 
@@ -71,6 +73,7 @@ public abstract class BaseController implements Initializable {
         anotherStage.setTitle(title);
         anotherStage.setScene(new Scene(anotherRoot));
         anotherStage.centerOnScreen();
+        anotherStage.setAlwaysOnTop(true);
         anotherStage.show();
     }
 

@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -33,14 +34,33 @@
             </Label>
          </children>
       </GridPane>
+      <HBox layoutX="166.0" layoutY="28.0" prefHeight="20.0" prefWidth="570.0">
+         <children>
+            <Label fx:id="table" text="table" textFill="#d7d2d2">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label text=" &gt; " textFill="#f2eaea">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="column" text="column" textFill="#ddd8d8">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
       <Line endX="154.0" startX="154.0" startY="449.0" strokeWidth="0.4" />
       <Button fx:id="submit" layoutX="680.0" layoutY="389.0" mnemonicParsing="false" onAction="#submit" style="-fx-background-color: #3D5183;" text="确定" textFill="#171616" />
       <Button fx:id="close" layoutX="609.0" layoutY="389.0" mnemonicParsing="false" onAction="#close" text="关闭" textFill="#252323" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="166.0" layoutY="41.0" prefHeight="321.0" prefWidth="275.0" vbarPolicy="NEVER">
+      <ScrollPane hbarPolicy="NEVER" layoutX="166.0" layoutY="59.0" prefHeight="303.0" prefWidth="275.0" vbarPolicy="NEVER">
         <content>
-          <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="320.0" prefWidth="273.0" style="-fx-background-color: #4b4b53;">
+          <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="302.0" prefWidth="273.0" style="-fx-background-color: #4b4b53;">
                <children>
-                   <ListView fx:id="entities" layoutX="-3.0" layoutY="1.0" maxHeight="1.7976931348623157E308" prefHeight="321.0" prefWidth="275.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                   <ListView fx:id="entities" layoutX="-3.0" maxHeight="1.7976931348623157E308" prefHeight="293.0" prefWidth="275.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets top="3.0" />
                      </padding></ListView>
@@ -48,11 +68,11 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="448.0" layoutY="41.0" prefHeight="321.0" prefWidth="286.0" vbarPolicy="NEVER">
+      <ScrollPane hbarPolicy="NEVER" layoutX="448.0" layoutY="59.0" prefHeight="303.0" prefWidth="286.0" vbarPolicy="NEVER">
          <content>
-            <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="318.0" prefWidth="285.0" style="-fx-background-color: #4b4b53;">
+            <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="302.0" prefWidth="285.0" style="-fx-background-color: #4b4b53;">
                <children>
-                  <ListView fx:id="cloumns" layoutX="-1.0" maxHeight="1.7976931348623157E308" prefHeight="321.0" prefWidth="286.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="-1.0" />
+                  <ListView fx:id="cloumns" layoutX="-1.0" layoutY="-1.0" maxHeight="1.7976931348623157E308" prefHeight="303.0" prefWidth="286.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="-1.0" />
                </children>
                <padding>
                   <Insets top="10.0" />

@@ -5,7 +5,6 @@ import com.dongz.codeutils.entitys.db.Table;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -84,17 +83,20 @@ public class StepSecondController extends BaseController{
             checkBox.setDisable(item.getColumnKey() != null);
             checkBox.setSelected(item.isSelected());
             checkBox.setOnMouseClicked(this::clickColumn);
-            Button button = new Button("外键关联");
-            button.setOnMouseClicked(event -> {
-                try {
-                    addForeign(event);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
             BorderPane bp = new BorderPane();
             bp.setLeft(checkBox);
-            bp.setRight(button);
+            if (item.getColumnKey() == null) {
+                Button button = new Button("外键关联");
+                button.setId(item.getColumnName());
+                button.setOnMouseClicked(event -> {
+                    try {
+                        addForeign(event);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                bp.setRight(button);
+            }
             return bp;
         }).collect(Collectors.toList());
         cloumns.setItems(null);
@@ -118,11 +120,13 @@ public class StepSecondController extends BaseController{
     public void next(ActionEvent actionEvent) {
     }
 
-    public void isExcend() {
+    public void isExtend() {
         selectedTable.setExtendsBase(!selectedTable.isExtendsBase());
     }
 
-    public void addForeign(Event event) throws IOException {
+    public void addForeign(MouseEvent event) throws IOException {
+        String source = ((Button) event.getSource()).getId();
+        selectedColumn = selectedTable.getColumns().stream().filter(item -> item.getColumnName().equals(source)).findFirst().get();
         openMadel(SELECTFOREIGN,"selectForeign");
     }
 }
