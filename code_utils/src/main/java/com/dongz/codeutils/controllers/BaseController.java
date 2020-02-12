@@ -1,6 +1,7 @@
 package com.dongz.codeutils.controllers;
 
 import com.dongz.codeutils.entitys.db.DataBase;
+import com.dongz.codeutils.entitys.db.Table;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -10,6 +11,9 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author dong
@@ -23,6 +27,9 @@ public abstract class BaseController implements Initializable {
     protected static boolean isConnection = false;
     protected static DataBase db;
     public Button close;
+    protected List<Table> tables;
+    protected Map<String, Table> tableMap;
+    protected List<Table> selectedTables = new ArrayList<>();
 
     protected void reload() {
 

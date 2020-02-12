@@ -53,6 +53,7 @@ public class DataBase {
     }
 
     public void setUrl(String db) {
+        this.db = db;
         if("MYSQL".endsWith(dbType.toUpperCase())) {
             this.driver="com.mysql.jdbc.Driver";
             this.url=mysqlUrl.replace("[ip]",ip).replace("[port]",port).replace("[db]",db);

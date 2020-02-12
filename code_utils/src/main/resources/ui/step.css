@@ -1,5 +1,4 @@
 .button{
-    -fx-background-color: #525574;
     -fx-border-color: #838383;
     -fx-border-radius: 3px;
     -fx-border-width: 1px;
@@ -8,4 +7,18 @@
 }
 .back{
     -fx-background-color: #4d4c53;
+}
+.check-box{
+    -fx-text-fill: #eeeeee;
+    -fx-text-alignment: left;
+    -fx-min-width: 100%;
+    -fx-font-size: 16px;
+    -fx-indent: 10px;
+}
+#entities.list-view .list-cell,#cloumns.list-view .list-cell,.button{
+    -fx-background-color: #37394e;
+}
+
+.button:hover {
+    -fx-background-color: #adadad;
 }

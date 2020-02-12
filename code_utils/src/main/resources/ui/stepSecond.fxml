@@ -56,14 +56,23 @@
       <Button fx:id="nextBtn" layoutX="727.0" layoutY="468.0" mnemonicParsing="false" onAction="#next" style="-fx-background-color: #3D5183;" text="下一步" textFill="#171616" />
       <Button fx:id="close" layoutX="578.0" layoutY="468.0" mnemonicParsing="false" onAction="#close" text="关闭" textFill="#252323" />
       <Button fx:id="forwardBtn" layoutX="646.0" layoutY="468.0" mnemonicParsing="false" onAction="#forward" text="上一步" textFill="#171616" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="166.0" layoutY="41.0" prefHeight="396.0" prefWidth="290.0" vbarPolicy="ALWAYS">
+      <ScrollPane hbarPolicy="NEVER" layoutX="166.0" layoutY="41.0" prefHeight="396.0" prefWidth="310.0" vbarPolicy="NEVER">
         <content>
-          <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="271.0" style="-fx-background-color: #4b4b53;">
+          <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;">
                <children>
-                   <ListView fx:id="entities" layoutX="-3.0" layoutY="-4.0" maxHeight="1.7976931348623157E308" prefHeight="396.0" prefWidth="290.0" />
+                   <ListView fx:id="entities" layoutX="-3.0" layoutY="-4.0" maxHeight="1.7976931348623157E308" prefHeight="396.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" />
                </children>
             </AnchorPane>
         </content>
+      </ScrollPane>
+      <ScrollPane hbarPolicy="NEVER" layoutX="484.0" layoutY="41.0" prefHeight="396.0" prefWidth="310.0" vbarPolicy="NEVER">
+         <content>
+            <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;">
+               <children>
+                  <ListView fx:id="cloumns" layoutX="-3.0" layoutY="-4.0" maxHeight="1.7976931348623157E308" prefHeight="396.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" />
+               </children>
+            </AnchorPane>
+         </content>
       </ScrollPane>
    </children>
 </AnchorPane>
