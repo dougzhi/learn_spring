@@ -47,6 +47,13 @@ public class StepFirstController extends BaseController{
     @Override
     public void reload() {
         host.setText(db.getIp());
+        port.setText(db.getPort());
+        user.setText(db.getUserName());
+        password.setText(db.getPassWord());
+        dbType.setValue(db.getDbType());
+        database.setValue(db.getDb());
+        database.getItems().removeAll();
+        database.getItems().addAll(db.getDbList());
     }
 
     public void close() {
@@ -54,7 +61,8 @@ public class StepFirstController extends BaseController{
         window.close();
     }
 
-    public void testConnect() throws SQLException, ClassNotFoundException {
+    public void testConnect() {
+
         String type = (String) dbType.getValue();
         if (StringUtils.isBlank(type)) {
             alert(Alert.AlertType.WARNING, "请选择数据库类型");
@@ -85,7 +93,17 @@ public class StepFirstController extends BaseController{
         db.setUserName(username);
         db.setPassWord(passwordText);
 
-        List<String> catalogs = DataBaseUtils.getSchemas(db);
+        List<String> catalogs = null;
+        try {
+            catalogs = DataBaseUtils.getSchemas(db);
+        } catch (SQLException e) {
+            alert(Alert.AlertType.ERROR, "无法连接数据库，请核对连接信息是否正确");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            alert(Alert.AlertType.ERROR, "无法加载驱动类");
+            e.printStackTrace();
+        }
+        db.setDbList(catalogs);
         database.getItems().removeAll();
         database.getItems().addAll(catalogs);
         isConnection = true;

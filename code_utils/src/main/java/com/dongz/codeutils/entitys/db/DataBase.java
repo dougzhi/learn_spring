@@ -1,6 +1,8 @@
 package com.dongz.codeutils.entitys.db;
 
 
+import java.util.List;
+
 /**
  * 数据库实体类
  */
@@ -89,6 +91,14 @@ public class DataBase {
         this.ip = ip;
     }
 
+    public List<String> getDbList() {
+        return dbList;
+    }
+
+    public void setDbList(List<String> dbList) {
+        this.dbList = dbList;
+    }
+
     /**
      * 数据库类型
      */
@@ -100,6 +110,7 @@ public class DataBase {
     private String db;
     private String port;
     private String ip;
+    private List<String> dbList;
 
     public DataBase() {}
 
