@@ -32,12 +32,10 @@ public class StepSecondController extends BaseController{
     public ListView entities;
     public ListView cloumns;
     public CheckBox isExtend;
-    public Button addForeign;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         isExtend.setVisible(false);
-        addForeign.setVisible(false);
         if (tables == null) {
             try {
                 tables = DataBaseUtils.getDbInfo(db);
@@ -69,14 +67,12 @@ public class StepSecondController extends BaseController{
             cloumns.setItems(null);
             selectedTable = null;
             isExtend.setVisible(false);
-            addForeign.setVisible(false);
         } else {
             selectedTable = table;
             selectedTables.put(table.getName(), table);
             showColumns(table);
             isExtend.setVisible(true);
             isExtend.setSelected(table.isExtendsBase());
-            addForeign.setVisible(true);
         }
     }
 

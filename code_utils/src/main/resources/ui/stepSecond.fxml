@@ -78,7 +78,6 @@
                   <AnchorPane prefHeight="37.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;">
                      <children>
                         <CheckBox fx:id="isExtend" layoutX="9.0" layoutY="8.0" mnemonicParsing="false" onAction="#isExcend" text="继承BaseEntity" />
-                        <Button fx:id="addForeign" layoutX="206.0" layoutY="7.0" mnemonicParsing="false" onAction="#addForeign" text="外键关联+" />
                      </children>
                   </AnchorPane>
                   <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="356.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;">

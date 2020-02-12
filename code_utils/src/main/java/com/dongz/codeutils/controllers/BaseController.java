@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -54,13 +55,13 @@ public abstract class BaseController implements Initializable {
         controller.reload();
         Scene scene = new Scene(load);
         secondStage.setScene(scene);
+        secondStage.centerOnScreen();
     }
 
     protected void alert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);
         alert.setHeaderText(null);
         alert.setContentText(message);
-
         alert.showAndWait();
     }
 
@@ -69,6 +70,7 @@ public abstract class BaseController implements Initializable {
         Stage anotherStage = new Stage();
         anotherStage.setTitle(title);
         anotherStage.setScene(new Scene(anotherRoot));
+        anotherStage.centerOnScreen();
         anotherStage.show();
     }
 
