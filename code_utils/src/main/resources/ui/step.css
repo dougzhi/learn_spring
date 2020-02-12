@@ -8,7 +8,7 @@
 .back{
     -fx-background-color: #4d4c53;
 }
-.check-box,.radio-button, #columns .label{
+.check-box,.radio-button{
     -fx-text-fill: #eeeeee;
     -fx-text-alignment: left;
     -fx-min-width: 100%;
@@ -21,4 +21,11 @@
 
 .button:hover {
     -fx-background-color: #858585;
+}
+
+*.check-box:selected>*.box>*.mark{
+    -fx-background-color: #4d4c53;
+}
+*.check-box>*.box{
+    -fx-background-color: #eeeeee;
 }

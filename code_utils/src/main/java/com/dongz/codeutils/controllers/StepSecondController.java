@@ -144,6 +144,7 @@ public class StepSecondController extends BaseController{
     private void removeForeign(MouseEvent event) {
         String source = ((Button) event.getSource()).getId();
         selectedTable.getColumns().stream().filter(item -> item.getColumnName().equals(source)).findFirst().get().setForeignColumn(null);
+        showColumns(selectedTable);
     }
 }
 

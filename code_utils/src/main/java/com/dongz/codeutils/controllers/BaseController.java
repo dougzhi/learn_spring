@@ -56,7 +56,7 @@ public abstract class BaseController implements Initializable {
         Parent load = fxmlLoader.load();
         BaseController controller = fxmlLoader.getController();
         controller.reload();
-        controllerMap.putIfAbsent(step, controller);
+        controllerMap.put(step, controller);
         Scene scene = new Scene(load);
         secondStage.setScene(scene);
         secondStage.centerOnScreen();
