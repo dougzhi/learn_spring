@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -81,13 +81,13 @@ public class StepSecondController extends BaseController{
     }
 
     private void showColumns(Table table) {
-        List<HBox> collect = table.getColumns().stream().map(item -> {
+        List<BorderPane> collect = table.getColumns().stream().map(item -> {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getColumnName());
             checkBox.setId(table.getName());
             checkBox.setDisable(item.getColumnKey() != null);
             checkBox.setSelected(item.isSelected());
-            checkBox.setOnMouseClicked(event -> clickColumn(event));
+            checkBox.setOnMouseClicked(this::clickColumn);
             Button button = new Button("外键关联");
             button.setOnMouseClicked(event -> {
                 try {
@@ -96,9 +96,10 @@ public class StepSecondController extends BaseController{
                     e.printStackTrace();
                 }
             });
-            HBox box = new HBox();
-            box.getChildren().addAll(checkBox, button);
-            return box;
+            BorderPane bp = new BorderPane();
+            bp.setLeft(checkBox);
+            bp.setRight(button);
+            return bp;
         }).collect(Collectors.toList());
         cloumns.setItems(null);
         cloumns.setItems(FXCollections.observableArrayList(collect));
