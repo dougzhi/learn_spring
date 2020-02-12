@@ -62,7 +62,6 @@ public class StepFirstController extends BaseController{
     }
 
     public void testConnect() {
-
         String type = (String) dbType.getValue();
         if (StringUtils.isBlank(type)) {
             alert(Alert.AlertType.WARNING, "请选择数据库类型");
