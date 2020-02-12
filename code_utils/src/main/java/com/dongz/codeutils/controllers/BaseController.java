@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -30,6 +29,8 @@ public abstract class BaseController implements Initializable {
     protected static final String STEP2 = "/ui/stepSecond.fxml";
     protected static final String SELECTFOREIGN = "/ui/selectForeign.fxml";
 
+    protected static Map<String, BaseController> controllerMap = new HashMap<>();
+
     protected static boolean isConnection = false;
     protected static DataBase db;
     protected static List<Table> tables;
@@ -49,12 +50,13 @@ public abstract class BaseController implements Initializable {
         window.close();
     }
 
-    protected void changeStep(Button btn,String step) throws IOException {
+    protected void changeStep(Button btn, String step) throws IOException {
         Stage secondStage = (Stage) btn.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(step));
         Parent load = fxmlLoader.load();
         BaseController controller = fxmlLoader.getController();
         controller.reload();
+        controllerMap.putIfAbsent(step, controller);
         Scene scene = new Scene(load);
         secondStage.setScene(scene);
         secondStage.centerOnScreen();

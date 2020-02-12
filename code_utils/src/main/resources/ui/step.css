@@ -8,14 +8,14 @@
 .back{
     -fx-background-color: #4d4c53;
 }
-.check-box,.radio-button{
+.check-box,.radio-button, #columns .label{
     -fx-text-fill: #eeeeee;
     -fx-text-alignment: left;
     -fx-min-width: 100%;
     -fx-font-size: 15px;
     -fx-indent: 10px;
 }
-#entities.list-view .list-cell,#cloumns.list-view .list-cell,.button{
+#entities.list-view .list-cell,#columns.list-view .list-cell,.button{
     -fx-background-color: #4d4c53;
 }
 

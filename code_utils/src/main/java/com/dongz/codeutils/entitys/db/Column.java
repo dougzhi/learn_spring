@@ -3,7 +3,9 @@ package com.dongz.codeutils.entitys.db;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * 列对象
@@ -40,11 +42,11 @@ public class Column {
 	/**
 	 * 外键关联表关系
 	 */
-	private List<Column.ForeignColumn> foreignColumn;
+	private ForeignColumn foreignColumn;;
 
 	@Data
 	public static class ForeignColumn{
 		private Table table;
-		private Column foreignColumn;
+		private Column column;
 	}
 }

@@ -5,10 +5,7 @@ import com.dongz.codeutils.entitys.db.Table;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
@@ -29,7 +26,7 @@ public class StepSecondController extends BaseController{
     public Button forwardBtn;
     public Button nextBtn;
     public ListView entities;
-    public ListView cloumns;
+    public ListView columns;
     public CheckBox isExtend;
 
     @Override
@@ -63,7 +60,7 @@ public class StepSecondController extends BaseController{
         Table table = tableMap.get(source.getText());
         if (selectedTables.containsKey(table.getName())) {
             selectedTables.remove(table.getName());
-            cloumns.setItems(null);
+            columns.setItems(null);
             selectedTable = null;
             isExtend.setVisible(false);
         } else {
@@ -75,7 +72,7 @@ public class StepSecondController extends BaseController{
         }
     }
 
-    private void showColumns(Table table) {
+    public void showColumns(Table table) {
         List<BorderPane> collect = table.getColumns().stream().map(item -> {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getColumnName());
@@ -85,7 +82,16 @@ public class StepSecondController extends BaseController{
             checkBox.setOnMouseClicked(this::clickColumn);
             BorderPane bp = new BorderPane();
             bp.setLeft(checkBox);
-            if (item.getColumnKey() == null) {
+            addColumnBtn(item, bp);
+            return bp;
+        }).collect(Collectors.toList());
+        columns.setItems(null);
+        columns.setItems(FXCollections.observableArrayList(collect));
+    }
+
+    private void addColumnBtn(Column item,final BorderPane bp) {
+        if (item.getColumnKey() == null) {
+            if (item.getForeignColumn() == null) {
                 Button button = new Button("外键关联");
                 button.setId(item.getColumnName());
                 button.setOnMouseClicked(event -> {
@@ -97,10 +103,14 @@ public class StepSecondController extends BaseController{
                 });
                 bp.setRight(button);
             }
-            return bp;
-        }).collect(Collectors.toList());
-        cloumns.setItems(null);
-        cloumns.setItems(FXCollections.observableArrayList(collect));
+            else{
+                bp.setCenter(new Label(item.getForeignColumn().getTable().getName()+"."+item.getForeignColumn().getColumn().getColumnName()));
+                Button button = new Button("删除");
+                button.setId(item.getColumnName());
+                button.setOnMouseClicked(this::removeForeign);
+                bp.setRight(button);
+            }
+        }
     }
 
     private void clickColumn(MouseEvent event) {
@@ -118,6 +128,7 @@ public class StepSecondController extends BaseController{
     }
 
     public void next(ActionEvent actionEvent) {
+        System.out.println("");
     }
 
     public void isExtend() {
@@ -127,7 +138,12 @@ public class StepSecondController extends BaseController{
     public void addForeign(MouseEvent event) throws IOException {
         String source = ((Button) event.getSource()).getId();
         selectedColumn = selectedTable.getColumns().stream().filter(item -> item.getColumnName().equals(source)).findFirst().get();
-        openMadel(SELECTFOREIGN,"selectForeign");
+        openMadel(SELECTFOREIGN, "selectForeign");
+    }
+
+    private void removeForeign(MouseEvent event) {
+        String source = ((Button) event.getSource()).getId();
+        selectedTable.getColumns().stream().filter(item -> item.getColumnName().equals(source)).findFirst().get().setForeignColumn(null);
     }
 }
 
