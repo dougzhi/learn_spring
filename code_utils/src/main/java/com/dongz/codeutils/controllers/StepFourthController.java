@@ -2,22 +2,17 @@ package com.dongz.codeutils.controllers;
 
 import com.dongz.codeutils.entitys.db.Column;
 import com.dongz.codeutils.entitys.db.Table;
-import com.dongz.codeutils.utils.DataBaseUtils;
 import com.dongz.codeutils.utils.PropertiesUtils;
-import com.dongz.codeutils.utils.StringUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +24,7 @@ import java.util.stream.Collectors;
  * @date 2020/2/10 21:52
  * @desc
  */
-public class StepThirdController extends BaseController{
+public class StepFourthController extends BaseController{
 
     public Button forwardBtn;
     public Button nextBtn;
@@ -109,7 +104,8 @@ public class StepThirdController extends BaseController{
         changeStep(forwardBtn, STEP2);
     }
 
-    public void next() throws IOException {
-        changeStep(forwardBtn, STEP4);
+    public void next(ActionEvent actionEvent) {
+        System.out.println("");
     }
 }
+
