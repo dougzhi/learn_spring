@@ -67,8 +67,8 @@ public class StepThirdController extends BaseController{
                 showColumns(table, false);
             }
         } else {
-            table = selectedTables.get(source.getText());
-            selectedVos.put(table.getClassName(), table.clone());
+            table = selectedTables.get(source.getText()).clone();
+            selectedVos.put(table.getClassName(), table);
             showColumns(table, true);
         }
     }
