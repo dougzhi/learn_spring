@@ -90,12 +90,14 @@ public class SelectForeignController extends BaseController{
         column.setColumn(foreignColumn);
 
         selectedColumn.setForeignColumn(column);
+        selectedTables.putIfAbsent(foreignTable.getClassName(), foreignTable);
 
         foreignTable = null;
         foreignColumn = null;
 
-        ((StepSecondController)controllerMap.get(STEP2)).showColumns(selectedTable);
-
+        StepSecondController stepSecondController = (StepSecondController) controllerMap.get(STEP2);
+        stepSecondController.init();
+        stepSecondController.showColumns(selectedTable);
         close();
     }
 }

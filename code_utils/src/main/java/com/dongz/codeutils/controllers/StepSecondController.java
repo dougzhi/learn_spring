@@ -17,6 +17,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -46,6 +47,10 @@ public class StepSecondController extends BaseController{
                 e.printStackTrace();
             }
         }
+        init();
+    }
+
+    public void init() {
         List<CheckBox> collect = tables.stream().map(item -> {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getClassName());
@@ -55,33 +60,50 @@ public class StepSecondController extends BaseController{
             checkBox.setOnMouseClicked(this::clickTable);
             return checkBox;
         }).collect(Collectors.toList());
-        entities.getItems().addAll(collect);
+        entities.setItems(FXCollections.observableArrayList(collect));
     }
 
     private void clickTable(MouseEvent event) {
         CheckBox source = (CheckBox) event.getSource();
         Table table = tableMap.get(source.getText());
         ObservableList items = columns.getItems();
-        if (selectedTables.containsKey(table.getClassName())) {
-            if (items != null && items.size() != 0 && table.getClassName().equals(columns.getId())){
-                selectedTables.remove(table.getClassName());
-                columns.setItems(null);
-                columns.setId(null);
-                selectedTable = null;
-                isExtend.setVisible(false);
-            } else {
+        if (selectedTables.containsKey(table.getClassName())
+                && items != null && items.size() != 0
+                && table.getClassName().equals(columns.getId())) {
+            if (checkForeign(table)) {
                 source.setSelected(true);
-                showColumns(table);
-                isExtend.setVisible(true);
-                isExtend.setSelected(table.isExtendsBase());
+                alert(Alert.AlertType.WARNING, "存在外键关联，禁止删除！");
+                return;
             }
+            selectedTables.remove(table.getClassName());
+            columns.setItems(null);
+            columns.setId(null);
+            selectedTable = null;
+            isExtend.setVisible(false);
         } else {
             selectedTable = table;
-            selectedTables.put(table.getClassName(), table);
+            selectedTables.putIfAbsent(table.getClassName(), table);
+            getForeignList(table).forEach(item -> selectedTables.putIfAbsent(item.getClassName(), item));
             showColumns(table);
             isExtend.setVisible(true);
             isExtend.setSelected(table.isExtendsBase());
+            init();
         }
+    }
+
+    private boolean checkForeign(final Table table) {
+        AtomicBoolean flag = new AtomicBoolean(false);
+        selectedTables.entrySet().parallelStream().forEach(item -> item.getValue().getColumns().parallelStream().forEach(it -> {
+            Column.ForeignColumn foreignColumn = it.getForeignColumn();
+            if (foreignColumn != null && foreignColumn.getTable() != null && foreignColumn.getTable().getClassName().equals(table.getClassName())) {
+                flag.set(true);
+            }
+        }));
+        return flag.get();
+    }
+
+    private List<Table> getForeignList(final Table table) {
+        return table.getColumns().stream().filter(item -> item.getForeignColumn() != null && item.getForeignColumn().getTable() != null).map(item -> item.getForeignColumn().getTable()).collect(Collectors.toList());
     }
 
     public void showColumns(Table table) {
@@ -154,7 +176,12 @@ public class StepSecondController extends BaseController{
 
     public void addForeign(MouseEvent event) throws IOException {
         String source = ((Button) event.getSource()).getId();
-        selectedColumn = selectedTable.getColumns().stream().filter(item -> item.getFieldName().equals(source)).findFirst().get();
+        Column column = selectedTable.getColumns().stream().filter(item -> item.getFieldName().equals(source)).findFirst().get();
+        if (!column.isSelected()) {
+            alert(Alert.AlertType.WARNING, "请选择字段");
+            return;
+        }
+        selectedColumn = column;
         openMadel(SELECTFOREIGN, "selectForeign");
     }
 
