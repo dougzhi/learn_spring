@@ -63,9 +63,10 @@ public class StepSecondController extends BaseController{
         Table table = tableMap.get(source.getText());
         ObservableList items = columns.getItems();
         if (selectedTables.containsKey(table.getClassName())) {
-            if (items != null && items.size() != 0 ){
+            if (items != null && items.size() != 0 && table.getClassName().equals(columns.getId())){
                 selectedTables.remove(table.getClassName());
                 columns.setItems(null);
+                columns.setId(null);
                 selectedTable = null;
                 isExtend.setVisible(false);
             } else {
@@ -97,6 +98,7 @@ public class StepSecondController extends BaseController{
             return bp;
         }).collect(Collectors.toList());
         columns.setItems(null);
+        columns.setId(table.getClassName());
         columns.setItems(FXCollections.observableArrayList(collect));
     }
 

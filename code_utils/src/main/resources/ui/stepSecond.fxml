@@ -82,7 +82,7 @@
                   </AnchorPane>
                   <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="356.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;">
                      <children>
-                        <ListView fx:id="columns" layoutX="-3.0" layoutY="10.0" maxHeight="1.7976931348623157E308" prefHeight="349.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" />
+                        <ListView fx:id="columns" styleClass="columnsStyle" layoutX="-3.0" layoutY="10.0" maxHeight="1.7976931348623157E308" prefHeight="349.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" />
                      </children>
                      <padding>
                         <Insets top="10.0" />

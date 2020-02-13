@@ -46,7 +46,7 @@ public class StepThirdController extends BaseController{
         CheckBox checkBox = new CheckBox();
         checkBox.setText(item.getValue().getClassName());
         if (selectedVos.containsKey(item.getValue().getClassName())) {
-            checkBox.setSelected(false);
+            checkBox.setSelected(true);
         }
         checkBox.setOnMouseClicked(this::clickTable);
         return checkBox;
@@ -54,25 +54,29 @@ public class StepThirdController extends BaseController{
 
     private void clickTable(MouseEvent event) {
         CheckBox source = (CheckBox) event.getSource();
-        Table table = selectedTables.get(source.getText()).clone();
-        if (selectedVos.containsKey(table.getClassName())) {
+        Table table;
+        if (selectedVos.containsKey(source.getText())) {
+            table = selectedVos.get(source.getText());
             ObservableList items = columns.getItems();
-            if (items != null && items.size() != 0 ) {
+            if (items != null && items.size() != 0 && table.getClassName().equals(columns.getId())) {
                 selectedVos.remove(table.getClassName());
                 columns.setItems(null);
+                columns.setId(null);
             } else {
                 source.setSelected(true);
-                showColumns(table);
+                showColumns(table, false);
             }
         } else {
-            selectedVos.put(table.getClassName(), table);
-            showColumns(table);
+            table = selectedTables.get(source.getText());
+            selectedVos.put(table.getClassName(), table.clone());
+            showColumns(table, true);
         }
     }
 
-    public void showColumns(Table table) {
+    public void showColumns(Table table, boolean isReset) {
         List<CheckBox> collect = table.getColumns().stream().map(item -> {
-            resetIsSelected(item);
+            if (isReset) resetIsSelected(item);
+
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getFieldName());
             checkBox.setId(table.getClassName());
@@ -81,6 +85,7 @@ public class StepThirdController extends BaseController{
             return checkBox;
         }).collect(Collectors.toList());
         columns.setItems(null);
+        columns.setId(table.getClassName());
         columns.setItems(FXCollections.observableArrayList(collect));
     }
 
