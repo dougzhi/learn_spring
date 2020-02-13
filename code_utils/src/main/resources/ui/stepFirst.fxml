@@ -142,7 +142,7 @@
          </children>
       </GridPane>
       <Button fx:id="test" layoutX="203.0" layoutY="347.0" mnemonicParsing="false" onAction="#testConnect" text="测试连接" />
-      <Button fx:id="nextBtn" layoutX="588.0" layoutY="347.0" mnemonicParsing="false" onAction="#next" style="-fx-background-color: #3D5183;" text="下一步" textFill="#171616" />
+      <Button fx:id="nextBtn" layoutX="579.0" layoutY="347.0" mnemonicParsing="false" onAction="#next" style="-fx-background-color: #3D5183;" text="下一步" textFill="#171616" />
       <Button fx:id="close" layoutX="510.0" layoutY="347.0" mnemonicParsing="false" onAction="#close" text="关闭" textFill="#252323" />
    </children>
 </AnchorPane>
