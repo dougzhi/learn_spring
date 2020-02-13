@@ -6,6 +6,7 @@ import com.dongz.codeutils.utils.DataBaseUtils;
 import com.dongz.codeutils.utils.PropertiesUtils;
 import com.dongz.codeutils.utils.StringUtils;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -44,7 +45,7 @@ public class StepThirdController extends BaseController{
     private CheckBox apply(Map.Entry<String, Table> item) {
         CheckBox checkBox = new CheckBox();
         checkBox.setText(item.getValue().getName());
-        if (selectedTables.containsKey(item.getValue().getName())) {
+        if (selectedVos.containsKey(item.getValue().getName())) {
             checkBox.setSelected(false);
         }
         checkBox.setOnMouseClicked(this::clickTable);
@@ -55,8 +56,14 @@ public class StepThirdController extends BaseController{
         CheckBox source = (CheckBox) event.getSource();
         Table table = selectedTables.get(source.getText()).clone();
         if (selectedVos.containsKey(table.getName())) {
-            selectedVos.remove(table.getName());
-            columns.setItems(null);
+            ObservableList items = columns.getItems();
+            if (items != null && items.size() != 0 ) {
+                selectedVos.remove(table.getName());
+                columns.setItems(null);
+            } else {
+                source.setSelected(true);
+                showColumns(table);
+            }
         } else {
             selectedVos.put(table.getName(), table);
             showColumns(table);

@@ -4,8 +4,11 @@ import com.dongz.codeutils.entitys.db.Column;
 import com.dongz.codeutils.entitys.db.Table;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.scene.control.*;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
@@ -58,11 +61,19 @@ public class StepSecondController extends BaseController{
     private void clickTable(MouseEvent event) {
         CheckBox source = (CheckBox) event.getSource();
         Table table = tableMap.get(source.getText());
+        ObservableList items = columns.getItems();
         if (selectedTables.containsKey(table.getName())) {
-            selectedTables.remove(table.getName());
-            columns.setItems(null);
-            selectedTable = null;
-            isExtend.setVisible(false);
+            if (items != null && items.size() != 0 ){
+                selectedTables.remove(table.getName());
+                columns.setItems(null);
+                selectedTable = null;
+                isExtend.setVisible(false);
+            } else {
+                source.setSelected(true);
+                showColumns(table);
+                isExtend.setVisible(true);
+                isExtend.setSelected(table.isExtendsBase());
+            }
         } else {
             selectedTable = table;
             selectedTables.put(table.getName(), table);
@@ -128,6 +139,10 @@ public class StepSecondController extends BaseController{
     }
 
     public void next() throws IOException {
+        if (selectedTables.isEmpty()) {
+            alert(Alert.AlertType.WARNING, "请选择要生成的实体类");
+            return;
+        }
         changeStep(nextBtn, STEP3);
     }
 
