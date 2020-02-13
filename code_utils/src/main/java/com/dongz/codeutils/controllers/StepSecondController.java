@@ -104,7 +104,7 @@ public class StepSecondController extends BaseController{
                 bp.setRight(button);
             }
             else{
-                bp.setCenter(new Label(item.getForeignColumn().getTable().getName()+"."+item.getForeignColumn().getColumn().getColumnName()));
+                bp.setCenter(new Button(item.getForeignColumn().getTable().getName()+"."+item.getForeignColumn().getColumn().getColumnName()));
                 Button button = new Button("删除");
                 button.setId(item.getColumnName());
                 button.setOnMouseClicked(this::removeForeign);
