@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 表实体
@@ -12,7 +13,7 @@ import java.util.List;
  */
 @Data
 @AllArgsConstructor
-public class Table {
+public class Table implements Cloneable{
 
 	/**
 	 * 表名称
@@ -38,4 +39,21 @@ public class Table {
 	 * 是否继承BaseEntity
 	 */
 	private boolean isExtendsBase;
+
+	@Override
+	public Table clone() {
+		Table table = null;
+		try {
+			table = (Table) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		if (columns != null) {
+			columns = columns.stream().map(item -> {
+				Column clone = item.clone();
+				return clone;
+			}).collect(Collectors.toList());
+		}
+		return table;
+	}
 }

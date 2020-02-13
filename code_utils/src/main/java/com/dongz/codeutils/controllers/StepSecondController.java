@@ -127,8 +127,8 @@ public class StepSecondController extends BaseController{
         changeStep(forwardBtn, STEP1);
     }
 
-    public void next(ActionEvent actionEvent) {
-        System.out.println("");
+    public void next() throws IOException {
+        changeStep(nextBtn, STEP3);
     }
 
     public void isExtend() {

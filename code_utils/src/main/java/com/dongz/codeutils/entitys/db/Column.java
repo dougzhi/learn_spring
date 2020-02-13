@@ -3,16 +3,12 @@ package com.dongz.codeutils.entitys.db;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-
 /**
  * 列对象
  */
 @Data
 @AllArgsConstructor
-public class Column {
+public class Column implements Cloneable{
 	/**
 	 * 列名称
 	 */
@@ -42,11 +38,22 @@ public class Column {
 	/**
 	 * 外键关联表关系
 	 */
-	private ForeignColumn foreignColumn;;
+	private ForeignColumn foreignColumn;
 
 	@Data
 	public static class ForeignColumn{
 		private Table table;
 		private Column column;
+	}
+
+	@Override
+	protected Column clone() {
+		Column column = null;
+		try {
+			 column = (Column) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return column;
 	}
 }

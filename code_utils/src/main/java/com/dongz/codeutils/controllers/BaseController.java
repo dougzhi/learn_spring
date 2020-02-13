@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 public abstract class BaseController implements Initializable {
     protected static final String STEP1 = "/ui/stepFirst.fxml";
     protected static final String STEP2 = "/ui/stepSecond.fxml";
+    protected static final String STEP3 = "/ui/stepThird.fxml";
     protected static final String SELECTFOREIGN = "/ui/selectForeign.fxml";
 
     protected static Map<String, BaseController> controllerMap = new HashMap<>();
@@ -38,6 +39,7 @@ public abstract class BaseController implements Initializable {
     protected static Map<String, Table> selectedTables = new HashMap<>();
     protected static Table selectedTable;
     protected static Column selectedColumn;
+    protected static Map<String, Table> selectedVos = new HashMap<>();
 
     public Button close;
 
