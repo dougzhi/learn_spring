@@ -41,6 +41,7 @@ public abstract class BaseController implements Initializable {
     protected static Table selectedTable;
     protected static Column selectedColumn;
     protected static Map<String, Table> selectedVos = new HashMap<>();
+    protected static Map<String, Table> selectedServices = new HashMap<>();
 
     public Button close;
 
