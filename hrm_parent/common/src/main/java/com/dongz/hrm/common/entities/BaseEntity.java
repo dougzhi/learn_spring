@@ -17,11 +17,11 @@ public abstract class BaseEntity {
     private long creatorId;
     private String creatorName;
     private Date createTime;
-    private long lastUpdateId;
-    private String lastUpdateName;
+    private long lastUpdaterId;
+    private String lastUpdaterName;
     private Date lastUpdateTime;
-    private long deleteId;
-    private String deleteName;
+    private long deleterId;
+    private String deleterName;
     private Date deleteTime;
     private boolean isDeleted;
 }

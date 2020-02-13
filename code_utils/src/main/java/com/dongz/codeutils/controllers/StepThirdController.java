@@ -44,8 +44,8 @@ public class StepThirdController extends BaseController{
 
     private CheckBox apply(Map.Entry<String, Table> item) {
         CheckBox checkBox = new CheckBox();
-        checkBox.setText(item.getValue().getName());
-        if (selectedVos.containsKey(item.getValue().getName())) {
+        checkBox.setText(item.getValue().getClassName());
+        if (selectedVos.containsKey(item.getValue().getClassName())) {
             checkBox.setSelected(false);
         }
         checkBox.setOnMouseClicked(this::clickTable);
@@ -55,17 +55,17 @@ public class StepThirdController extends BaseController{
     private void clickTable(MouseEvent event) {
         CheckBox source = (CheckBox) event.getSource();
         Table table = selectedTables.get(source.getText()).clone();
-        if (selectedVos.containsKey(table.getName())) {
+        if (selectedVos.containsKey(table.getClassName())) {
             ObservableList items = columns.getItems();
             if (items != null && items.size() != 0 ) {
-                selectedVos.remove(table.getName());
+                selectedVos.remove(table.getClassName());
                 columns.setItems(null);
             } else {
                 source.setSelected(true);
                 showColumns(table);
             }
         } else {
-            selectedVos.put(table.getName(), table);
+            selectedVos.put(table.getClassName(), table);
             showColumns(table);
         }
     }
@@ -74,8 +74,8 @@ public class StepThirdController extends BaseController{
         List<CheckBox> collect = table.getColumns().stream().map(item -> {
             resetIsSelected(item);
             CheckBox checkBox = new CheckBox();
-            checkBox.setText(item.getColumnName());
-            checkBox.setId(table.getName());
+            checkBox.setText(item.getFieldName());
+            checkBox.setId(table.getClassName());
             checkBox.setSelected(item.isSelected());
             checkBox.setOnMouseClicked(this::clickColumn);
             return checkBox;
@@ -86,7 +86,7 @@ public class StepThirdController extends BaseController{
 
     private void resetIsSelected(final Column column) {
         String prefixes = PropertiesUtils.customMap.get("baseEntity");
-        column.setSelected(!Arrays.asList(prefixes.toLowerCase().split(",")).contains(column.getColumnName2().toLowerCase()));
+        column.setSelected(!Arrays.asList(prefixes.toLowerCase().split(",")).contains(column.getFieldName().toLowerCase()));
         column.setForeignColumn(null);
     }
 
@@ -96,7 +96,7 @@ public class StepThirdController extends BaseController{
         String columnName = source.getText();
         Table table = selectedVos.get(talbeName);
         List<Column> columns = table.getColumns();
-        columns.stream().filter(item -> item.getColumnName().equals(columnName)).forEach(item -> item.setSelected(!item.isSelected()));
+        columns.stream().filter(item -> item.getFieldName().equals(columnName)).forEach(item -> item.setSelected(!item.isSelected()));
     }
 
 

@@ -16,7 +16,7 @@ public class Column implements Cloneable{
 	/**
 	 * 列名称(处理后的列名称)
 	 */
-	private String columnName2;
+	private String fieldName;
 	/**
 	 * java列类型
 	 */

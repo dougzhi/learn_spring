@@ -66,7 +66,7 @@ public class GeneratorFacade {
         // 3, setting
         dataModel.putAll(this.settings.getSettingMap());
         // 4, 类型
-        dataModel.put("ClassName", table.getName2());
+        dataModel.put("ClassName", table.getClassName());
         return dataModel;
     }
 }

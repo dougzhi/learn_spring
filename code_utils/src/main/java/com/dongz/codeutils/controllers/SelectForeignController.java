@@ -34,16 +34,16 @@ public class SelectForeignController extends BaseController{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        table.setText(selectedTable.getName());
-        column.setText(selectedColumn.getColumnName());
+        table.setText(selectedTable.getClassName());
+        column.setText(selectedColumn.getFieldName());
         ToggleGroup tableGroup = new ToggleGroup();
         List<RadioButton> collect = tables.stream().map(item -> {
-            RadioButton radioButton = new RadioButton(item.getName());
-            if (item.getName().equals(selectedTable.getName())) {
+            RadioButton radioButton = new RadioButton(item.getClassName());
+            if (item.getClassName().equals(selectedTable.getClassName())) {
                 radioButton.setDisable(true);
             }
             radioButton.setToggleGroup(tableGroup);
-            radioButton.setId(item.getName());
+            radioButton.setId(item.getClassName());
             radioButton.setOnMouseClicked(this::clickTable);
             return radioButton;
         }).collect(Collectors.toList());
@@ -59,9 +59,9 @@ public class SelectForeignController extends BaseController{
     private void showColumns(Table table) {
         ToggleGroup columnGroup = new ToggleGroup();
         List<RadioButton> collect = table.getColumns().stream().map(item -> {
-            RadioButton radioButton = new RadioButton(item.getColumnName());
+            RadioButton radioButton = new RadioButton(item.getFieldName());
             radioButton.setToggleGroup(columnGroup);
-            radioButton.setId(item.getColumnName());
+            radioButton.setId(item.getFieldName());
             radioButton.setOnMouseClicked(this::clickColumn);
             return radioButton;
         }).collect(Collectors.toList());
@@ -72,7 +72,7 @@ public class SelectForeignController extends BaseController{
     private void clickColumn(MouseEvent event) {
         RadioButton source = (RadioButton) event.getSource();
         String columnName = source.getId();
-        foreignColumn = foreignTable.getColumns().stream().filter(item -> item.getColumnName().equals(columnName)).findFirst().get();
+        foreignColumn = foreignTable.getColumns().stream().filter(item -> item.getFieldName().equals(columnName)).findFirst().get();
     }
 
     public void submit() {

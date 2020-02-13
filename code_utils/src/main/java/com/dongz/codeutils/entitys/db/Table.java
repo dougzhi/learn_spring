@@ -22,7 +22,7 @@ public class Table implements Cloneable{
 	/**
 	 * 处理后的表名称
 	 */
-	private String name2;
+	private String className;
 	/**
 	 * 介绍
 	 */

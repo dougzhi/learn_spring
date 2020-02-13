@@ -38,7 +38,7 @@ public class StepSecondController extends BaseController{
         if (tables == null) {
             try {
                 tables = DataBaseUtils.getDbInfo(db);
-                tableMap = tables.stream().collect(Collectors.toMap(Table::getName, item -> item));
+                tableMap = tables.stream().collect(Collectors.toMap(Table::getClassName, item -> item));
             } catch (SQLException e) {
                 alert(Alert.AlertType.ERROR, "列表查询失败");
                 e.printStackTrace();
@@ -48,8 +48,8 @@ public class StepSecondController extends BaseController{
         }
         List<CheckBox> collect = tables.stream().map(item -> {
             CheckBox checkBox = new CheckBox();
-            checkBox.setText(item.getName());
-            if (selectedTables.containsKey(item.getName())) {
+            checkBox.setText(item.getClassName());
+            if (selectedTables.containsKey(item.getClassName())) {
                 checkBox.setSelected(true);
             }
             checkBox.setOnMouseClicked(this::clickTable);
@@ -62,9 +62,9 @@ public class StepSecondController extends BaseController{
         CheckBox source = (CheckBox) event.getSource();
         Table table = tableMap.get(source.getText());
         ObservableList items = columns.getItems();
-        if (selectedTables.containsKey(table.getName())) {
+        if (selectedTables.containsKey(table.getClassName())) {
             if (items != null && items.size() != 0 ){
-                selectedTables.remove(table.getName());
+                selectedTables.remove(table.getClassName());
                 columns.setItems(null);
                 selectedTable = null;
                 isExtend.setVisible(false);
@@ -76,7 +76,7 @@ public class StepSecondController extends BaseController{
             }
         } else {
             selectedTable = table;
-            selectedTables.put(table.getName(), table);
+            selectedTables.put(table.getClassName(), table);
             showColumns(table);
             isExtend.setVisible(true);
             isExtend.setSelected(table.isExtendsBase());
@@ -86,8 +86,8 @@ public class StepSecondController extends BaseController{
     public void showColumns(Table table) {
         List<BorderPane> collect = table.getColumns().stream().map(item -> {
             CheckBox checkBox = new CheckBox();
-            checkBox.setText(item.getColumnName());
-            checkBox.setId(table.getName());
+            checkBox.setText(item.getFieldName());
+            checkBox.setId(table.getClassName());
             checkBox.setDisable(item.getColumnKey() != null);
             checkBox.setSelected(item.isSelected());
             checkBox.setOnMouseClicked(this::clickColumn);
@@ -104,7 +104,7 @@ public class StepSecondController extends BaseController{
         if (item.getColumnKey() == null) {
             if (item.getForeignColumn() == null) {
                 Button button = new Button("外键关联");
-                button.setId(item.getColumnName());
+                button.setId(item.getFieldName());
                 button.setOnMouseClicked(event -> {
                     try {
                         addForeign(event);
@@ -115,9 +115,9 @@ public class StepSecondController extends BaseController{
                 bp.setRight(button);
             }
             else{
-                bp.setCenter(new Button(item.getForeignColumn().getTable().getName()+"."+item.getForeignColumn().getColumn().getColumnName()));
+                bp.setCenter(new Button(item.getForeignColumn().getTable().getClassName()+"."+item.getForeignColumn().getColumn().getFieldName()));
                 Button button = new Button("删除");
-                button.setId(item.getColumnName());
+                button.setId(item.getFieldName());
                 button.setOnMouseClicked(this::removeForeign);
                 bp.setRight(button);
             }
@@ -130,7 +130,7 @@ public class StepSecondController extends BaseController{
         String columnName = source.getText();
         Table table = selectedTables.get(talbeName);
         List<Column> columns = table.getColumns();
-        columns.stream().filter(item -> item.getColumnName().equals(columnName)).forEach(item -> item.setSelected(!item.isSelected()));
+        columns.stream().filter(item -> item.getFieldName().equals(columnName)).forEach(item -> item.setSelected(!item.isSelected()));
     }
 
 
@@ -152,13 +152,13 @@ public class StepSecondController extends BaseController{
 
     public void addForeign(MouseEvent event) throws IOException {
         String source = ((Button) event.getSource()).getId();
-        selectedColumn = selectedTable.getColumns().stream().filter(item -> item.getColumnName().equals(source)).findFirst().get();
+        selectedColumn = selectedTable.getColumns().stream().filter(item -> item.getFieldName().equals(source)).findFirst().get();
         openMadel(SELECTFOREIGN, "selectForeign");
     }
 
     private void removeForeign(MouseEvent event) {
         String source = ((Button) event.getSource()).getId();
-        selectedTable.getColumns().stream().filter(item -> item.getColumnName().equals(source)).findFirst().get().setForeignColumn(null);
+        selectedTable.getColumns().stream().filter(item -> item.getFieldName().equals(source)).findFirst().get().setForeignColumn(null);
         showColumns(selectedTable);
     }
 }
