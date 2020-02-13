@@ -3,7 +3,6 @@ package com.dongz.codeutils.controllers;
 import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import com.dongz.codeutils.utils.StringUtils;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
 import java.io.IOException;
@@ -54,6 +53,8 @@ public class StepFirstController extends BaseController{
             tables = null;
             selectedTables = new HashMap<>();
             selectedTable = null;
+            selectedColumn = null;
+            selectedVos = new HashMap<>();
         }
         db.setUrl(databaseValue);
         changeStep(nextBtn, STEP2);

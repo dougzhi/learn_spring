@@ -56,7 +56,7 @@
             </children>
         </GridPane>
         <Line endX="154.0" startX="154.0" startY="400.0" strokeWidth="0.4" />
-        <GridPane layoutX="153.0" layoutY="26.0" prefHeight="299.0" prefWidth="493.0" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="60.0">
+        <GridPane fx:id="gridPane" layoutX="153.0" layoutY="26.0" prefHeight="299.0" prefWidth="493.0" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="60.0">
             <columnConstraints>
                 <ColumnConstraints />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="155.0" prefWidth="187.0" />
@@ -83,14 +83,7 @@
                         <Font size="15.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="templates" prefHeight="27.0" prefWidth="352.0" promptText="--请选择--" GridPane.columnIndex="2" GridPane.columnSpan="5">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="mysql" />
-                            <String fx:value="oracle" />
-                        </FXCollections>
-                    </items>
-                </ComboBox>
+                <ComboBox fx:id="templates" prefHeight="27.0" prefWidth="352.0" promptText="--请选择--" GridPane.columnIndex="2" GridPane.columnSpan="5"/>
             <Label contentDisplay="CENTER" prefHeight="20.0" prefWidth="164.0" text="代码生成路径" textAlignment="CENTER" textFill="#ebe7e7" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font size="15.0" />
@@ -127,11 +120,6 @@
                </font>
             </Label>
             <TextField fx:id="path2" alignment="CENTER" prefHeight="27.0" prefWidth="112.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="65.0" text="." textFill="#fff7f7" GridPane.columnIndex="5" GridPane.rowIndex="3">
-               <font>
-                  <Font size="25.0" />
-               </font>
-            </Label>
                 <TextField fx:id="path3" alignment="CENTER" layoutX="186.0" layoutY="90.0" prefHeight="27.0" prefWidth="112.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
                     <GridPane.margin>
                         <Insets />
@@ -154,7 +142,18 @@
                         <Insets left="50.0" />
                     </padding>
                 </Label>
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="65.0" text="." textFill="#fff7f7" GridPane.columnIndex="5" GridPane.rowIndex="3">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
             <TextField fx:id="author" GridPane.columnIndex="2" GridPane.columnSpan="5" GridPane.rowIndex="5" />
+            <TextField fx:id="dirUrl" editable="false" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="1" />
+            <Button fx:id="dirPicker" mnemonicParsing="false" onAction="#dirPicker" prefHeight="28.0" prefWidth="96.0" text="选择" GridPane.columnIndex="6" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Button>
             </children>
         </GridPane>
         <Button fx:id="close" layoutX="422.0" layoutY="347.0" mnemonicParsing="false" onAction="#close" text="关闭" textFill="#252323" />

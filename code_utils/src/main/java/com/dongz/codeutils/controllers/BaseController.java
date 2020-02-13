@@ -41,7 +41,6 @@ public abstract class BaseController implements Initializable {
     protected static Table selectedTable;
     protected static Column selectedColumn;
     protected static Map<String, Table> selectedVos = new HashMap<>();
-    protected static Map<String, Table> selectedServices = new HashMap<>();
 
     public Button close;
 
@@ -88,8 +87,7 @@ public abstract class BaseController implements Initializable {
      */
     protected List<String> getTemplateFileList() {
         //设定为当前文件夹
-        File directory = new File(new File("").getAbsolutePath() + "/code_utils/模板/");
-        File[] listFiles = directory.listFiles();
+        File[] listFiles = new File(Object.class.getResource("/templates/").getPath()).listFiles();
         List<String> fileList = null;
         if (listFiles != null) {
             fileList = Arrays.stream(listFiles).filter(File::isDirectory).map(File::getName).collect(Collectors.toList());
