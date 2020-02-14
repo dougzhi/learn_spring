@@ -126,6 +126,7 @@ public class StepFourthController extends BaseController{
     private void createTableVO() throws IOException {
         Template template = getTemplate(TemplateEnum.TableVO);
         String outPath = TemplateEnum.TableVO.getOutPath(settings);
+        System.out.println(outPath);
         selectedVos.forEach((k,v) ->
                 {
                     try {

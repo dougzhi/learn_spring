@@ -37,7 +37,7 @@ public class Settings {
         path1 = paths[0];
         path2 = paths.length>1?paths[1]:path2;
         path3 = paths.length>2?paths[2]:path3;
-        pathAll = pPackage.replaceAll(".","/");
+        pathAll = pPackage.replaceAll("\\.","/");
         this.outPath = outPath;
     }
 
