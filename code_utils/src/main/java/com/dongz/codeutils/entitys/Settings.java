@@ -1,6 +1,7 @@
 package com.dongz.codeutils.entitys;
 
 import com.dongz.codeutils.utils.StringUtils;
+import lombok.Getter;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Map;
  * @date 2020/2/8 20:51
  * @desc
  */
+@Getter
 public class Settings {
     private String project="example";
     private String pPackage="com.example.demo";

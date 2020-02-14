@@ -26,6 +26,7 @@ public abstract class BaseController implements Initializable {
     protected static final String STEP2 = "/ui/stepSecond.fxml";
     protected static final String STEP3 = "/ui/stepThird.fxml";
     protected static final String STEP4 = "/ui/stepFourth.fxml";
+    protected static final String STEP5 = "/ui/stepFifth.xml";
     protected static final String SELECTFOREIGN = "/ui/selectForeign.fxml";
 
     protected static Map<String, BaseController> controllerMap = new HashMap<>();

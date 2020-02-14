@@ -2,6 +2,7 @@ package com.dongz.codeutils.controllers;
 
 import com.dongz.codeutils.entitys.Settings;
 import com.dongz.codeutils.entitys.db.Table;
+import com.dongz.codeutils.entitys.enums.TemplateEnum;
 import com.dongz.codeutils.utils.FileUtils;
 import com.dongz.codeutils.utils.PropertiesUtils;
 import com.dongz.codeutils.utils.StringUtils;
@@ -11,7 +12,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -38,9 +38,10 @@ public class StepFourthController extends BaseController{
     public TextField path2;
     public TextField path3;
     public TextField project;
-    public ComboBox templates;
     public TextField dirUrl;
     public Button dirPicker;
+
+    private Settings settings;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -94,35 +95,62 @@ public class StepFourthController extends BaseController{
         }
 
         String packageName = path1Text + "." + path2Text + "." + path3Text;
-        Settings settings = new Settings(outPath, projectName, packageName, introduction.getText(), author.getText());
+        settings = new Settings(outPath, projectName, packageName, introduction.getText(), author.getText());
 
-        selectedTables.forEach((key, table) -> {
-            try {
-                createTable(key, table, settings);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TemplateException e) {
-                e.printStackTrace();
-            }
-        });
-
-        selectedVos.forEach((key, table) -> {
-            try {
-                createTableVO(key, table, settings);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TemplateException e) {
-                e.printStackTrace();
-            }
-        });
+        try {
+            createTable();
+            createTableVO();
+            createOthers(TemplateEnum.Pom);
+            createOthers(TemplateEnum.MainApplication);
+            createOthers(TemplateEnum.Application);
+        } catch (Exception e) {
+            alert(Alert.AlertType.ERROR, "代码生成错误：" + e.getMessage());
+        }
+        changeStep(finish, STEP5);
     }
 
-    private void createTable(String key, Table table, Settings settings) throws IOException, TemplateException {
-        saveFile(key, "DemoTable.java", settings.getTablePath(), getDataModel(table, settings));
+    private void createTable() throws IOException {
+        Template template = getTemplate(TemplateEnum.Table);
+        String outPath = TemplateEnum.Table.getOutPath(settings);
+        selectedTables.forEach((k,v) ->
+                {
+                    try {
+                        template.process(getDataModel(v, settings), new FileWriter(FileUtils.mkdir(outPath, k + ".java")));
+                    } catch (TemplateException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                );
     }
 
-    private void createTableVO(String key, Table table, Settings settings) throws IOException, TemplateException {
-        saveFile(key, "DemoTableVO.java", settings.getTableVOPath(), getDataModel(table, settings));
+    private void createTableVO() throws IOException {
+        Template template = getTemplate(TemplateEnum.TableVO);
+        String outPath = TemplateEnum.TableVO.getOutPath(settings);
+        selectedVos.forEach((k,v) ->
+                {
+                    try {
+                        template.process(getDataModel(v, settings), new FileWriter(FileUtils.mkdir(outPath, k + ".java")));
+                    } catch (TemplateException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+
+    private void createOthers(TemplateEnum templateEnum) throws IOException, TemplateException {
+        getTemplate(templateEnum).process(settings.getSettingMap(), new FileWriter(FileUtils.mkdir(templateEnum.getOutPath(settings), templateEnum.getName())));
+    }
+
+
+    private Template getTemplate(TemplateEnum templateEnum) throws IOException {
+        Configuration cfg = new Configuration();
+
+        cfg.setTemplateLoader(new StringTemplateLoader());
+
+        InputStream inputStream = Object.class.getResourceAsStream(templateEnum.getDemoPath());
+        String stringTemplate = new BufferedReader(new InputStreamReader(inputStream))
+                .lines().collect(Collectors.joining(System.lineSeparator()));
+        return new Template(templateEnum.getName(), stringTemplate, cfg);
     }
 
     private Map<String, Object> getDataModel(Table table,Settings settings) {
@@ -136,19 +164,6 @@ public class StepFourthController extends BaseController{
         // 4, 类型
         dataModel.put("ClassName", table.getClassName());
         return dataModel;
-    }
-
-    private void saveFile(String className, String fileName, String path, Map<String, Object> dateModel) throws IOException, TemplateException {
-        Configuration cfg = new Configuration();
-
-        cfg.setTemplateLoader(new StringTemplateLoader());
-
-        InputStream inputStream = Object.class.getResourceAsStream("/templates/" + fileName);
-        String stringTemplate = new BufferedReader(new InputStreamReader(inputStream))
-                .lines().collect(Collectors.joining(System.lineSeparator()));
-        Template template = new Template("template01", stringTemplate, cfg);
-
-        template.process(dateModel, new FileWriter(FileUtils.mkdir(path, className + ".java")));
     }
 }
 
