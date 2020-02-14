@@ -1,6 +1,5 @@
 package com.dongz.codeutils.controllers;
 
-import com.dongz.codeutils.entitys.Settings;
 import com.dongz.codeutils.entitys.db.Column;
 import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.entitys.db.Table;
@@ -12,13 +11,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author dong
@@ -42,9 +38,6 @@ public abstract class BaseController implements Initializable {
     protected static Table selectedTable;
     protected static Column selectedColumn;
     protected static Map<String, Table> selectedVos = new HashMap<>();
-    protected static String basePath = getTemplatePath();
-    protected static List<String> templateList = getTemplateFileList();
-    protected static String template;
     protected static String outPath;
 
     public Button close;
@@ -85,23 +78,5 @@ public abstract class BaseController implements Initializable {
         anotherStage.centerOnScreen();
         anotherStage.setAlwaysOnTop(true);
         anotherStage.show();
-    }
-
-
-    protected static String getTemplatePath(){
-        return Object.class.getResource("/templates").getPath();
-    }
-
-    /**
-     * 获取模板
-     */
-    protected static List<String> getTemplateFileList() {
-        //设定为当前文件夹
-        File[] listFiles = new File(basePath).listFiles();
-        List<String> fileList = null;
-        if (listFiles != null) {
-            fileList = Arrays.stream(listFiles).filter(File::isDirectory).map(File::getName).collect(Collectors.toList());
-        }
-        return fileList;
     }
 }

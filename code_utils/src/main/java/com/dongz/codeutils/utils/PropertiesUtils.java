@@ -16,6 +16,7 @@ public class PropertiesUtils {
             Properties prop = new Properties();
             prop.load(file);
             customMap.putAll((Map) prop);
+            file.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -28,8 +28,8 @@ public class Generator {
     private String outPath;
     private Configuration cfg;
 
-    public Generator(String templatePath, String outPath) throws IOException {
-        this.templatePath = templatePath;
+    public Generator(String outPath) throws IOException {
+        this.templatePath = Object.class.getResource("/templates/SpringBoot/").getPath();
         this.outPath = outPath;
         //实例化对象
         cfg = new Configuration();

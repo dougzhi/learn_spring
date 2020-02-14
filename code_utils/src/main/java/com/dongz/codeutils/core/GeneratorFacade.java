@@ -27,18 +27,16 @@ import java.util.Map;
  *       3, 调用核心处理类，完成代码生成工作
  */
 public class GeneratorFacade {
-    private String templatePath;
     private String outPath;
     private Settings settings;
     private DataBase db;
     private Generator generator;
 
-    public GeneratorFacade(String templatePath, String outPath, Settings settings, DataBase db) throws IOException {
-        this.templatePath = templatePath;
+    public GeneratorFacade(String outPath, Settings settings, DataBase db) throws IOException {
         this.outPath = outPath;
         this.settings = settings;
         this.db = db;
-        this.generator = new Generator(templatePath, outPath);
+        this.generator = new Generator(outPath);
     }
 
     /**

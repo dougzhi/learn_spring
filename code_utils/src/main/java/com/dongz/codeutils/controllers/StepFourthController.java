@@ -39,15 +39,11 @@ public class StepFourthController extends BaseController{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        templates.setItems(FXCollections.observableArrayList(templateList));
         reload();
     }
 
     @Override
     protected void reload() {
-        if (StringUtils.isNotBlank(basePath) && StringUtils.isNotBlank(template)) {
-            templates.setValue(template);
-        }
         if (StringUtils.isNotBlank(outPath)) {
             dirUrl.setText(outPath);
         }
@@ -71,19 +67,10 @@ public class StepFourthController extends BaseController{
         dirUrl.setText(outPath);
     }
 
-    public void selectTemplate(ActionEvent actionEvent) {
-        ComboBox source = (ComboBox) actionEvent.getSource();
-        template = (String) source.getValue();
-    }
-
     /**
      * 生成代码
      */
     public void finish() {
-        if (StringUtils.isBlank(template)) {
-            alert(Alert.AlertType.WARNING, "请选择模板");
-            return;
-        }
         if (StringUtils.isBlank(outPath)) {
             alert(Alert.AlertType.WARNING, "请选择代码生成路径");
             return;
@@ -101,11 +88,10 @@ public class StepFourthController extends BaseController{
             return;
         }
 
-        String templatePath = basePath + "/" +template;
         String packageName = path1Text + "." + path2Text + "." + path3Text;
         Settings settings = new Settings(projectName, packageName, introduction.getText(), author.getText());
         try {
-            GeneratorFacade gf = new GeneratorFacade(templatePath,outPath,settings,db);
+            GeneratorFacade gf = new GeneratorFacade(outPath,settings,db);
             gf.generatorByDataBase();
         } catch (IOException e) {
             e.printStackTrace();
