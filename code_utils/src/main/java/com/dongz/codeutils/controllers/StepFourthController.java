@@ -1,10 +1,14 @@
 package com.dongz.codeutils.controllers;
 
-import com.dongz.codeutils.core.GeneratorFacade;
 import com.dongz.codeutils.entitys.Settings;
+import com.dongz.codeutils.entitys.db.Table;
+import com.dongz.codeutils.utils.FileUtils;
+import com.dongz.codeutils.utils.PropertiesUtils;
 import com.dongz.codeutils.utils.StringUtils;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -12,11 +16,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * @author dong
@@ -70,7 +75,7 @@ public class StepFourthController extends BaseController{
     /**
      * 生成代码
      */
-    public void finish() {
+    public void finish() throws IOException {
         if (StringUtils.isBlank(outPath)) {
             alert(Alert.AlertType.WARNING, "请选择代码生成路径");
             return;
@@ -89,17 +94,61 @@ public class StepFourthController extends BaseController{
         }
 
         String packageName = path1Text + "." + path2Text + "." + path3Text;
-        Settings settings = new Settings(projectName, packageName, introduction.getText(), author.getText());
-        try {
-            GeneratorFacade gf = new GeneratorFacade(outPath,settings,db);
-            gf.generatorByDataBase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        Settings settings = new Settings(outPath, projectName, packageName, introduction.getText(), author.getText());
+
+        selectedTables.forEach((key, table) -> {
+            try {
+                createTable(key, table, settings);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TemplateException e) {
+                e.printStackTrace();
+            }
+        });
+
+        selectedVos.forEach((key, table) -> {
+            try {
+                createTableVO(key, table, settings);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TemplateException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void createTable(String key, Table table, Settings settings) throws IOException, TemplateException {
+        saveFile(key, "DemoTable.java", settings.getTablePath(), getDataModel(table, settings));
+    }
+
+    private void createTableVO(String key, Table table, Settings settings) throws IOException, TemplateException {
+        saveFile(key, "DemoTableVO.java", settings.getTableVOPath(), getDataModel(table, settings));
+    }
+
+    private Map<String, Object> getDataModel(Table table,Settings settings) {
+        Map<String, Object> dataModel = new HashMap<>();
+        // 1, 自定义配置
+        dataModel.putAll(PropertiesUtils.customMap);
+        // 2, 元数据
+        dataModel.put("table", table);
+        // 3, setting
+        dataModel.putAll(settings.getSettingMap());
+        // 4, 类型
+        dataModel.put("ClassName", table.getClassName());
+        return dataModel;
+    }
+
+    private void saveFile(String className, String fileName, String path, Map<String, Object> dateModel) throws IOException, TemplateException {
+        Configuration cfg = new Configuration();
+
+        cfg.setTemplateLoader(new StringTemplateLoader());
+
+        InputStream inputStream = Object.class.getResourceAsStream("/templates/" + fileName);
+        String stringTemplate = new BufferedReader(new InputStreamReader(inputStream))
+                .lines().collect(Collectors.joining(System.lineSeparator()));
+        Template template = new Template("template01", stringTemplate, cfg);
+
+        template.process(dateModel, new FileWriter(FileUtils.mkdir(path, className + ".java")));
     }
 }
 

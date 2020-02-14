@@ -20,8 +20,9 @@ public class Settings {
     private String path2="example";
     private String path3="demo";
     private String pathAll;
+    private String outPath;
 
-    public Settings(String project, String pPackage, String projectComment, String author) {
+    public Settings(String outPath, String project, String pPackage, String projectComment, String author) {
         if(StringUtils.isNotBlank(project)) {
             this.project = project;
         }
@@ -35,6 +36,7 @@ public class Settings {
         path2 = paths.length>1?paths[1]:path2;
         path3 = paths.length>2?paths[2]:path3;
         pathAll = pPackage.replaceAll(".","/");
+        this.outPath = outPath;
     }
 
     public Map<String, Object> getSettingMap(){
@@ -47,5 +49,33 @@ public class Settings {
             }catch (Exception e){}
         }
         return map;
+    }
+
+    public String getBasePath() {
+        return outPath + "/" + project + "/src/";
+    }
+
+    public String getResourcePath() {
+        return outPath + "/" + project + "/src/main/resources/";
+    }
+
+    public String getJavaBasePath() {
+        return outPath + "/" + project + "/src/main/java/" + pPackage.replace(".", "/");
+    }
+
+    public String getTablePath() {
+        return  getJavaBasePath() + "/entities/";
+    }
+
+    public String getTableVOPath() {
+        return getTablePath() + "/vos/";
+    }
+
+    public String getControllerPath() {
+        return  getJavaBasePath() + "/controllers/";
+    }
+
+    public String getServicePath() {
+        return  getJavaBasePath() + "/services/";
     }
 }
