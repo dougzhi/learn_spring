@@ -1,7 +1,6 @@
 package com.dongz.codeutils.utils;
 
 
-import com.dongz.codeutils.controllers.BaseController;
 import com.dongz.codeutils.entitys.db.Column;
 import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.entitys.db.Table;
@@ -16,7 +15,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.dongz.codeutils.controllers.BaseController.settings;
+import static com.dongz.codeutils.controllers.BaseController.*;
 
 /**
  * @author dong
@@ -155,7 +154,7 @@ public class DataBaseUtils {
     private static void createTable() throws IOException {
         Template template = getTemplate(TemplateEnum.Table);
         String outPath = TemplateEnum.Table.getOutPath();
-        BaseController.selectedTables.forEach((k, v) ->
+        selectedTables.forEach((k, v) ->
                 {
                     try {
                         template.process(getDataModel(v), new FileWriter(FileUtils.mkdir(outPath, k + ".java")));
@@ -169,7 +168,7 @@ public class DataBaseUtils {
     private static void createTableVO() throws IOException {
         Template template = getTemplate(TemplateEnum.TableVO);
         String outPath = TemplateEnum.TableVO.getOutPath();
-        BaseController.selectedVos.forEach((k,v) ->
+        selectedVos.forEach((k,v) ->
                 {
                     try {
                         template.process(getDataModel(v), new FileWriter(FileUtils.mkdir(outPath, k + ".java")));
@@ -198,9 +197,8 @@ public class DataBaseUtils {
     }
 
     private static Map<String, Object> getDataModel(Table table) {
-        Map<String, Object> dataModel = new HashMap<>();
         // 1, 自定义配置
-        dataModel.putAll(PropertiesUtils.customMap);
+        Map<String, Object> dataModel = new HashMap<>(PropertiesUtils.customMap);
         // 2, 元数据
         dataModel.put("table", table);
         // 3, setting
