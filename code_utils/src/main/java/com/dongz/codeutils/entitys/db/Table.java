@@ -49,10 +49,7 @@ public class Table implements Cloneable{
 			e.printStackTrace();
 		}
 		if (columns != null) {
-			columns = columns.stream().map(item -> {
-				Column clone = item.clone();
-				return clone;
-			}).collect(Collectors.toList());
+			columns = columns.stream().map(Column::clone).collect(Collectors.toList());
 		}
 		return table;
 	}

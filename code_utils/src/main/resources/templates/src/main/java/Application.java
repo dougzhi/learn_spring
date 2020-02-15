@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
  * @date ${currTime?datetime}
  * @desc
  */
-@SpringBootApplication(scanBasePackages = "${path1}.${path2}")
+@SpringBootApplication(scanBasePackages = "${path1}.${path2}.${path3}")
 public class Application {
 
     public static void main(String[] args) {

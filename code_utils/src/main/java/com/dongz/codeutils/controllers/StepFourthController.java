@@ -84,8 +84,7 @@ public class StepFourthController extends BaseController{
             return;
         }
 
-        String packageName = path1Text + "." + path2Text + "." + path3Text;
-        settings = new Settings(outPath, projectName, packageName, introduction.getText(), author.getText());
+        settings = new Settings(outPath, path1Text, path2Text, path3Text, projectName, introduction.getText(), author.getText());
 
         DataBaseUtils.makeTemplate();
         changeStep(finish, STEP5);
