@@ -1,6 +1,8 @@
 package ${pPackage}.entities;
 
-import ${path1}.${path2}.entities.BaseEntity;
+<#if table.extendsBase>
+import ${pPackage}.entities.BaseEntity;
+</#if>
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,16 +22,17 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "${table.name}")
-public class ${ClassName} extends BaseEntity implements Serializable {
+public class ${ClassName} <#if table.extendsBase> extends BaseEntity </#if>implements Serializable {
 
-<#list table.columns as column>
-/**
- * ${column.columnComment}
- */
-<#if column.columnKey??>
-@Id
-</#if>
-private ${column.columnType} ${column.fieldName};
-
-</#list>
+    <#list table.columns as column>
+    <#if column.selected>
+    /**
+     * ${column.columnComment}
+     */
+    <#if column.columnKey??>
+    @Id
+    </#if>
+    private ${column.columnType} ${column.fieldName};
+    </#if>
+    </#list>
 }

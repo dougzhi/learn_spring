@@ -38,7 +38,7 @@ public class Table implements Cloneable{
 	/**
 	 * 是否继承BaseEntity
 	 */
-	private boolean isExtendsBase;
+	private boolean extendsBase;
 
 	@Override
 	public Table clone() {

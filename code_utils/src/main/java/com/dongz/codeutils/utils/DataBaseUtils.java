@@ -196,7 +196,7 @@ public class DataBaseUtils {
         }
     }
 
-    private static Map<String, Object> getDataModel(Table table) {
+    private static Map<String, Object> getDataModel(final Table table) {
         // 1, 自定义配置
         Map<String, Object> dataModel = new HashMap<>(PropertiesUtils.customMap);
         // 2, 元数据

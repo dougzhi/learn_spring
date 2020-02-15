@@ -34,7 +34,7 @@ public class Column implements Cloneable{
 	 */
 	private String columnKey;
 
-	private boolean isSelected;
+	private boolean selected;
 	/**
 	 * 外键关联表关系
 	 */
