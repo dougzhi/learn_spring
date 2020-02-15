@@ -20,6 +20,7 @@ public enum TemplateEnum {
     BaseService("BaseService.java","/%s/src/main/java/%s/services/",true),
     Controller("DemoController.java","/%s/src/main/java/%s/controllers/",false),
     BaseController("BaseController.java","/%s/src/main/java/%s/controllers/",true),
+    IdWorker("IdWorker.java","/%s/src/main/java/%s/utils/",true),
     MainApplication("Application.java","/%s/src/main/java/%s/",true),
     Pom("pom.xml","/%s/",true),
     Application("application.yml","/%s/src/main/resources/",true);

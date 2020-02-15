@@ -1,4 +1,4 @@
-package com.dongz.codeutils.entitys;
+package ${pPackage}.entitys;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * @author ${author}
- * @date ${currTime}
+ * @date ${currTime?datetime}
  * @desc
  */
 @Data

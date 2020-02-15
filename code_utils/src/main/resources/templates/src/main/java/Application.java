@@ -1,14 +1,15 @@
-package com.dongz.hrm.company;
+package ${pPackage};
 
-import com.dongz.hrm.common.utils.IdWorker;
+import ${pPackage}.utils.IdWorker;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 
 /**
- * @author dong
- * @date 2019/12/26 13:45
+ * @author ${author}
+ * @date ${currTime?datetime}
+ * @desc
  */
 @SpringBootApplication(scanBasePackages = "${path1}.${path2}")
 public class Application {

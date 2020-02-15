@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 /**
  * @author ${author}
- * @date ${currTime}
+ * @date ${currTime?datetime}
  * @desc ${table.comment}
  */
 @EqualsAndHashCode(callSuper = true)

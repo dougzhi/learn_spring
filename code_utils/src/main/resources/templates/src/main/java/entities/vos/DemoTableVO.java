@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * @author ${author}
- * @date ${currTime}
+ * @date ${currTime?datetime}
  * @desc
  */
 @Data

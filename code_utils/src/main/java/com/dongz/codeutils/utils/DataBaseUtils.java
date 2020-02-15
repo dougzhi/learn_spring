@@ -36,7 +36,7 @@ public class DataBaseUtils {
         //获取备注信息
         properties.put("remarksReporting", "true");
         properties.put("user", db.getUserName());
-        properties.put("password", db.getPassWord());
+        properties.put("password", db.getPassword());
 
         // 注册驱动
         Class.forName(db.getDriver());
