@@ -1,8 +1,9 @@
 package com.dongz.codeutils.entitys.enums;
 
-import com.dongz.codeutils.entitys.Settings;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import static com.dongz.codeutils.controllers.BaseController.settings;
 
 /**
  * @author dong
@@ -12,22 +13,26 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TemplateEnum {
-    Table("DemoTable.java","/%s/src/main/java/%s/entities/"),
-    TableVO("DemoTableVO.java","/%s/src/main/java/%s/entities/vos/"),
-    Service("DemoService.java","/%s/src/main/java/%s/services/"),
-    Controller("DemoController.java","/%s/src/main/java/%s/controllers/"),
-    MainApplication("Application.java","/%s/src/main/java/%s/"),
-    Pom("pom.xml","/%s/"),
-    Application("application.yml","/%s/src/main/resources/");
+    Table("DemoTable.java","/%s/src/main/java/%s/entities/",false),
+    BaseTable("BaseDemoTable.java","/%s/src/main/java/%s/entities/",true),
+    TableVO("DemoTableVO.java","/%s/src/main/java/%s/entities/vos/",false),
+    Service("DemoService.java","/%s/src/main/java/%s/services/",false),
+    BaseService("BaseService.java","/%s/src/main/java/%s/services/",true),
+    Controller("DemoController.java","/%s/src/main/java/%s/controllers/",false),
+    BaseController("BaseController.java","/%s/src/main/java/%s/controllers/",true),
+    MainApplication("Application.java","/%s/src/main/java/%s/",true),
+    Pom("pom.xml","/%s/",true),
+    Application("application.yml","/%s/src/main/resources/",true);
 
     private String name;
     private String path;
+    private boolean isBase;
 
     public String getDemoPath() {
         return "/templates" + this.path.replaceAll("%s", "").replaceAll("//", "/") + name;
     }
 
-    public String getOutPath(Settings settings) {
+    public String getOutPath() {
         String path;
         if (this == TemplateEnum.Pom || this == TemplateEnum.Application) {
             path = String.format(this.path, settings.getProject());

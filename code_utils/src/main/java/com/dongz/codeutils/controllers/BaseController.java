@@ -1,5 +1,6 @@
 package com.dongz.codeutils.controllers;
 
+import com.dongz.codeutils.entitys.Settings;
 import com.dongz.codeutils.entitys.db.Column;
 import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.entitys.db.Table;
@@ -35,10 +36,11 @@ public abstract class BaseController implements Initializable {
     protected static DataBase db;
     protected static List<Table> tables;
     protected static Map<String, Table> tableMap;
-    protected static Map<String, Table> selectedTables = new HashMap<>();
+    public static Map<String, Table> selectedTables = new HashMap<>();
     protected static Table selectedTable;
     protected static Column selectedColumn;
-    protected static Map<String, Table> selectedVos = new HashMap<>();
+    public static Map<String, Table> selectedVos = new HashMap<>();
+    public static Settings settings;
     protected static String outPath;
 
     public Button close;

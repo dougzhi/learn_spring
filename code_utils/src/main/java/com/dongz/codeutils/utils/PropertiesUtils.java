@@ -11,12 +11,10 @@ public class PropertiesUtils {
     public static Map<String,String> customMap = new HashMap<>();
 
     static {
-        InputStream file = Object.class.getResourceAsStream("/properties/typeConverter.properties");
-        try {
+        try (InputStream file = Object.class.getResourceAsStream("/properties/typeConverter.properties")){
             Properties prop = new Properties();
             prop.load(file);
             customMap.putAll((Map) prop);
-            file.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

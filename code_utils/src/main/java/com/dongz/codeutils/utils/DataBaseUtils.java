@@ -1,15 +1,22 @@
 package com.dongz.codeutils.utils;
 
 
+import com.dongz.codeutils.controllers.BaseController;
 import com.dongz.codeutils.entitys.db.Column;
 import com.dongz.codeutils.entitys.db.DataBase;
 import com.dongz.codeutils.entitys.db.Table;
+import com.dongz.codeutils.entitys.enums.TemplateEnum;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
+import java.io.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.dongz.codeutils.controllers.BaseController.settings;
 
 /**
  * @author dong
@@ -82,18 +89,16 @@ public class DataBaseUtils {
                 // 1， 表名
                 String tableName = tables.getString("TABLE_NAME");
                 // 4， 主键
-                ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableName);
                 // 字段
-                ResultSet columns = metaData.getColumns(null, null, tableName, null);
-                try {
+                try (ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableName); ResultSet columns = metaData.getColumns(null, null, tableName, null)) {
                     // 2， 类名
                     String className = removePrefix(tableName);
                     // 3， 描述
                     String remarks = tables.getString("REMARKS");
-                    String keys = "";
+                    StringBuilder keys = new StringBuilder();
                     while (primaryKeys.next()) {
                         String columnName = primaryKeys.getString("COLUMN_NAME");
-                        keys += columnName + ",";
+                        keys.append(columnName).append(",");
                     }
                     List<Column> columnList = new ArrayList<>();
                     while (columns.next()) {
@@ -108,17 +113,14 @@ public class DataBaseUtils {
                         String comment = columns.getString("REMARKS");
                         // 5, 是否主键
                         String pri = null;
-                        if (Arrays.asList(keys.split(",")).contains(columnName)) {
+                        if (Arrays.asList(keys.toString().split(",")).contains(columnName)) {
                             pri = "PRI";
                         }
                         Column column = new Column(columnName, attName, javaType, dbType, comment, pri, true, null);
                         columnList.add(column);
                     }
-                    Table table = new Table(tableName, className, remarks, keys, columnList, true);
+                    Table table = new Table(tableName, className, remarks, keys.toString(), columnList, true);
                     list.add(table);
-                } finally {
-                    columns.close();
-                    primaryKeys.close();
                 }
             }
         } finally {
@@ -128,7 +130,6 @@ public class DataBaseUtils {
         return list;
     }
 
-
     public static String removePrefix(String tableName) {
         String prefixes = PropertiesUtils.customMap.get("tableRemovePrefixes");
         // "tb_,co_,t_"
@@ -137,5 +138,75 @@ public class DataBaseUtils {
             temp = StringUtils.removePrefix(temp, prefix, true);
         }
         return StringUtils.makeAllWordFirstLetterUpperCase(temp);
+    }
+
+    public static void makeTemplate() throws IOException {
+        createTable();
+        createTableVO();
+        Arrays.asList(TemplateEnum.values()).parallelStream().filter(TemplateEnum::isBase).forEach(item -> {
+            try {
+                createOthers(item);
+            } catch (IOException | TemplateException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private static void createTable() throws IOException {
+        Template template = getTemplate(TemplateEnum.Table);
+        String outPath = TemplateEnum.Table.getOutPath();
+        BaseController.selectedTables.forEach((k, v) ->
+                {
+                    try {
+                        template.process(getDataModel(v), new FileWriter(FileUtils.mkdir(outPath, k + ".java")));
+                    } catch (TemplateException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+
+    private static void createTableVO() throws IOException {
+        Template template = getTemplate(TemplateEnum.TableVO);
+        String outPath = TemplateEnum.TableVO.getOutPath();
+        BaseController.selectedVos.forEach((k,v) ->
+                {
+                    try {
+                        template.process(getDataModel(v), new FileWriter(FileUtils.mkdir(outPath, k + ".java")));
+                    } catch (TemplateException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+
+    private static void createOthers(TemplateEnum templateEnum) throws IOException, TemplateException {
+        getTemplate(templateEnum).process(settings.getSettingMap(), new FileWriter(FileUtils.mkdir(templateEnum.getOutPath(), templateEnum.getName())));
+    }
+
+
+    private static Template getTemplate(TemplateEnum templateEnum) throws IOException {
+        Configuration cfg = new Configuration();
+
+        cfg.setTemplateLoader(new StringTemplateLoader());
+
+        try (InputStream inputStream = Object.class.getResourceAsStream(templateEnum.getDemoPath());){
+            String stringTemplate = new BufferedReader(new InputStreamReader(inputStream))
+                    .lines().collect(Collectors.joining(System.lineSeparator()));
+            return new Template(templateEnum.getName(), stringTemplate, cfg);
+        }
+    }
+
+    private static Map<String, Object> getDataModel(Table table) {
+        Map<String, Object> dataModel = new HashMap<>();
+        // 1, 自定义配置
+        dataModel.putAll(PropertiesUtils.customMap);
+        // 2, 元数据
+        dataModel.put("table", table);
+        // 3, setting
+        dataModel.putAll(settings.getSettingMap());
+        // 4, 类型
+        dataModel.put("ClassName", table.getClassName());
+        return dataModel;
     }
 }

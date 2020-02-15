@@ -48,36 +48,8 @@ public class Settings {
             field.setAccessible(true);
             try{
                 map.put(field.getName(), field.get(this));
-            }catch (Exception e){}
+            }catch (Exception ignored){}
         }
         return map;
-    }
-
-    public String getBasePath() {
-        return outPath + "/" + project + "/src/";
-    }
-
-    public String getResourcePath() {
-        return outPath + "/" + project + "/src/main/resources/";
-    }
-
-    public String getJavaBasePath() {
-        return outPath + "/" + project + "/src/main/java/" + pPackage.replace(".", "/");
-    }
-
-    public String getTablePath() {
-        return  getJavaBasePath() + "/entities/";
-    }
-
-    public String getTableVOPath() {
-        return getTablePath() + "/vos/";
-    }
-
-    public String getControllerPath() {
-        return  getJavaBasePath() + "/controllers/";
-    }
-
-    public String getServicePath() {
-        return  getJavaBasePath() + "/services/";
     }
 }
