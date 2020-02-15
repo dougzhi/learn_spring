@@ -1,30 +1,18 @@
 package com.dongz.codeutils.controllers;
 
 import com.dongz.codeutils.entitys.Settings;
-import com.dongz.codeutils.entitys.db.DataBase;
-import com.dongz.codeutils.entitys.db.Table;
-import com.dongz.codeutils.entitys.enums.TemplateEnum;
 import com.dongz.codeutils.utils.DataBaseUtils;
-import com.dongz.codeutils.utils.FileUtils;
-import com.dongz.codeutils.utils.PropertiesUtils;
 import com.dongz.codeutils.utils.StringUtils;
-import freemarker.cache.StringTemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 /**
  * @author dong
@@ -69,9 +57,10 @@ public class StepFourthController extends BaseController{
         }
         dc.setInitialDirectory(new File(initPath + File.separator));
         File file = dc.showDialog(new Stage());
-        if (file == null) return;
-        outPath = file.getPath();
-        dirUrl.setText(outPath);
+        if (file != null) {
+            outPath = file.getPath();
+            dirUrl.setText(outPath);
+        }
     }
 
     /**
@@ -98,11 +87,7 @@ public class StepFourthController extends BaseController{
         String packageName = path1Text + "." + path2Text + "." + path3Text;
         settings = new Settings(outPath, projectName, packageName, introduction.getText(), author.getText());
 
-        try {
-            DataBaseUtils.makeTemplate();
-        } catch (Exception e) {
-            alert(Alert.AlertType.ERROR, "代码生成错误：" + e.getMessage());
-        }
+        DataBaseUtils.makeTemplate();
         changeStep(finish, STEP5);
     }
 }
