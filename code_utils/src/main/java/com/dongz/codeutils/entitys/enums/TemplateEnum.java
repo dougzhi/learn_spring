@@ -14,7 +14,7 @@ import static com.dongz.codeutils.controllers.BaseController.settings;
 @AllArgsConstructor
 public enum TemplateEnum {
     Table("DemoTable.java","/%s/src/main/java/%s/entities/",false),
-    BaseTable("BaseDemoTable.java","/%s/src/main/java/%s/entities/",true),
+    BaseTable("BaseEntity.java","/%s/src/main/java/%s/entities/",true),
     TableVO("DemoTableVO.java","/%s/src/main/java/%s/entities/vos/",false),
     Service("DemoService.java","/%s/src/main/java/%s/services/",false),
     BaseService("BaseService.java","/%s/src/main/java/%s/services/",true),

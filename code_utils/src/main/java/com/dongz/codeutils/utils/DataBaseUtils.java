@@ -190,7 +190,7 @@ public class DataBaseUtils {
 
         cfg.setTemplateLoader(new StringTemplateLoader());
 
-        try (InputStream inputStream = Object.class.getResourceAsStream(templateEnum.getDemoPath());){
+        try (InputStream inputStream = Object.class.getResourceAsStream(templateEnum.getDemoPath())){
             String stringTemplate = new BufferedReader(new InputStreamReader(inputStream))
                     .lines().collect(Collectors.joining(System.lineSeparator()));
             return new Template(templateEnum.getName(), stringTemplate, cfg);
