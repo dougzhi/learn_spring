@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
- * @author dong
- * @date 2020/1/3 01:00
+ * @author ${author}
+ * @date ${currTime}
  * @desc
  */
 public abstract class BaseController {

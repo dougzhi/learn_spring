@@ -33,7 +33,7 @@ public abstract class BaseController implements Initializable {
     protected static Map<String, BaseController> controllerMap = new HashMap<>();
 
     protected static boolean isConnection = false;
-    protected static DataBase db;
+    public static DataBase db;
     protected static List<Table> tables;
     protected static Map<String, Table> tableMap;
     public static Map<String, Table> selectedTables = new HashMap<>();

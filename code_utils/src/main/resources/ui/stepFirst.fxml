@@ -85,7 +85,7 @@
                <items>
                   <FXCollections fx:factory="observableArrayList">
                      <String fx:value="mysql" />
-                     <String fx:value="oracle" />
+<!--                     <String fx:value="oracle" />-->
                   </FXCollections>
                </items>
             </ComboBox>

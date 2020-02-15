@@ -12,8 +12,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * @author dong
- * @date
+ * @author ${author}
+ * @date ${currTime}
  * @desc ${table.comment}
  */
 @EqualsAndHashCode(callSuper = true)
@@ -22,7 +22,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "${table.name}")
-public class ${ClassName} <#if table.extendsBase> extends BaseEntity </#if>implements Serializable {
+public class ${ClassName} <#if table.extendsBase>extends BaseEntity</#if> implements Serializable {
 
     <#list table.columns as column>
     <#if column.selected>

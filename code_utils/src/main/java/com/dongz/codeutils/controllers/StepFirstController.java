@@ -65,7 +65,7 @@ public class StepFirstController extends BaseController{
         host.setText(db.getIp());
         port.setText(db.getPort());
         user.setText(db.getUserName());
-        password.setText(db.getPassWord());
+        password.setText(db.getPassword());
         dbType.setValue(db.getDbType());
         database.setValue(db.getDb());
         database.getItems().removeAll();
@@ -101,7 +101,7 @@ public class StepFirstController extends BaseController{
 
         db = new DataBase(type,ip,portText,"");
         db.setUserName(username);
-        db.setPassWord(passwordText);
+        db.setPassword(passwordText);
 
         List<String> catalogs = null;
         try {

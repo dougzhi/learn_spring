@@ -4,9 +4,11 @@ import com.dongz.codeutils.utils.StringUtils;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.dongz.codeutils.controllers.BaseController.db;
 /**
  * @author dong
  * @date 2020/2/8 20:51
@@ -50,6 +52,8 @@ public class Settings {
                 map.put(field.getName(), field.get(this));
             }catch (Exception ignored){}
         }
+        map.put("currTime", new Date(System.currentTimeMillis()));
+        map.putAll(db.getDataBaseMap());
         return map;
     }
 }

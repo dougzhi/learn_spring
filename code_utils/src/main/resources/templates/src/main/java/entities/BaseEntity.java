@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @author dong
- * @date 2020/1/6 16:30
- * @desc 实体基类
+ * @author ${author}
+ * @date ${currTime}
+ * @desc
  */
 @Data
 public abstract class BaseEntity {

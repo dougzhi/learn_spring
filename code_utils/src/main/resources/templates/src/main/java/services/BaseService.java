@@ -8,8 +8,8 @@ import javax.persistence.EntityManager;
 import java.util.Date;
 
 /**
- * @author dong
- * @date 2020/1/3 00:01
+ * @author ${author}
+ * @date ${currTime}
  * @desc
  */
 public abstract class BaseService {

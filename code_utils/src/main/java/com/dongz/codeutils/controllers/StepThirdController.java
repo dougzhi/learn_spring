@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static com.dongz.codeutils.utils.DataBaseUtils.resetIsSelected;
+
 /**
  * @author dong
  * @date 2020/2/10 21:52
@@ -68,14 +70,17 @@ public class StepThirdController extends BaseController{
             }
         } else {
             table = selectedTables.get(source.getText()).clone();
+            table.setExtendsBase(false);
             selectedVos.put(table.getClassName(), table);
             showColumns(table, true);
         }
     }
 
-    public void showColumns(Table table, boolean isReset) {
+    public void showColumns(final Table table, boolean isReset) {
         List<CheckBox> collect = table.getColumns().stream().map(item -> {
-            if (isReset) resetIsSelected(item);
+            if (isReset) {
+                resetIsSelected(item);
+            }
 
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getFieldName());
@@ -87,12 +92,6 @@ public class StepThirdController extends BaseController{
         columns.setItems(null);
         columns.setId(table.getClassName());
         columns.setItems(FXCollections.observableArrayList(collect));
-    }
-
-    private void resetIsSelected(final Column column) {
-        String prefixes = PropertiesUtils.customMap.get("baseEntity");
-        column.setSelected(!Arrays.asList(prefixes.toLowerCase().split(",")).contains(column.getFieldName().toLowerCase()));
-        column.setForeignColumn(null);
     }
 
     private void clickColumn(MouseEvent event) {

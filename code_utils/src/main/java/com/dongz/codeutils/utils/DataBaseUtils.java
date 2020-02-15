@@ -15,7 +15,8 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.dongz.codeutils.controllers.BaseController.*;
+import static com.dongz.codeutils.controllers.BaseController.selectedTables;
+import static com.dongz.codeutils.controllers.BaseController.settings;
 
 /**
  * @author dong
@@ -140,8 +141,8 @@ public class DataBaseUtils {
     }
 
     public static void makeTemplate() throws IOException {
-        createTable();
-        createTableVO();
+        createTable(TemplateEnum.Table, ".java");
+        createTable(TemplateEnum.TableVO, "VO.java");
         Arrays.asList(TemplateEnum.values()).parallelStream().filter(TemplateEnum::isBase).forEach(item -> {
             try {
                 createOthers(item);
@@ -151,27 +152,13 @@ public class DataBaseUtils {
         });
     }
 
-    private static void createTable() throws IOException {
-        Template template = getTemplate(TemplateEnum.Table);
-        String outPath = TemplateEnum.Table.getOutPath();
+    private static void createTable(TemplateEnum templateEnum, String suffix) throws IOException {
+        Template template = getTemplate(templateEnum);
+        String outPath = templateEnum.getOutPath();
         selectedTables.forEach((k, v) ->
                 {
                     try {
-                        template.process(getDataModel(v), new FileWriter(FileUtils.mkdir(outPath, k + ".java")));
-                    } catch (TemplateException | IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
-    }
-
-    private static void createTableVO() throws IOException {
-        Template template = getTemplate(TemplateEnum.TableVO);
-        String outPath = TemplateEnum.TableVO.getOutPath();
-        selectedVos.forEach((k,v) ->
-                {
-                    try {
-                        template.process(getDataModel(v), new FileWriter(FileUtils.mkdir(outPath, k + ".java")));
+                        template.process(getDataModel(v), new FileWriter(FileUtils.mkdir(outPath, k + suffix)));
                     } catch (TemplateException | IOException e) {
                         e.printStackTrace();
                     }
@@ -199,12 +186,29 @@ public class DataBaseUtils {
     private static Map<String, Object> getDataModel(final Table table) {
         // 1, 自定义配置
         Map<String, Object> dataModel = new HashMap<>(PropertiesUtils.customMap);
-        // 2, 元数据
-        dataModel.put("table", table);
         // 3, setting
         dataModel.putAll(settings.getSettingMap());
+        // 2, 元数据
+        resetIsExtends(table);
+        dataModel.put("table", table);
         // 4, 类型
         dataModel.put("ClassName", table.getClassName());
         return dataModel;
+    }
+
+    public static void resetIsExtends(final Table table) {
+        if (table.isExtendsBase()) {
+            table.getColumns().parallelStream().filter(item -> getBaseEntityColumns().contains(item.getFieldName().toLowerCase())).forEach(item -> item.setSelected(false));
+        }
+    }
+
+    public static void resetIsSelected(final Column column) {
+        column.setSelected(!getBaseEntityColumns().contains(column.getFieldName().toLowerCase()));
+        column.setForeignColumn(null);
+    }
+
+    private static List<String> getBaseEntityColumns() {
+        String prefixes = PropertiesUtils.customMap.get("baseEntity");
+        return Arrays.asList(prefixes.toLowerCase().split(","));
     }
 }

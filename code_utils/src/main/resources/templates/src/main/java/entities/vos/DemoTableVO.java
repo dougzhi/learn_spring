@@ -3,8 +3,8 @@ package ${pPackage}.entities.vos;
 import lombok.Data;
 
 /**
- * @author dong
- * @date 2020/1/6 15:52
+ * @author ${author}
+ * @date ${currTime}
  * @desc
  */
 @Data
