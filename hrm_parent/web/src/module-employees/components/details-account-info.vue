@@ -51,7 +51,7 @@
 <script>
 import constantApi from '@/api/constant/employees'
 import {detail,update} from "@/api/base/users"
-import  * as deptApi  from '@/api/base/dept'
+import  * as deptApi  from '@/api/base/department'
 import commonApi from '@/utils/common'
 export default {
   name: 'accountInfo',

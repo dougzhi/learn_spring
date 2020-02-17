@@ -48,7 +48,7 @@
 
 <script>
 import { add, jobnumber } from '@/api/base/users'
-import  * as deptApi  from '@/api/base/dept'
+import  * as deptApi  from '@/api/base/department'
 import employeesData from '@/api/constant/employees'
 import commonApi from '@/utils/common'
 var _this = null
@@ -99,7 +99,7 @@ export default {
   border: 1px solid #dddee1;
   padding: 4px 7px;
   border-radius: 5px;
-  
+
 }
 </style>
 
