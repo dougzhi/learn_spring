@@ -12,6 +12,7 @@
         <module>common_model</module>
         <module>company</module>
         <module>system</module>
+        <module>zxing</module>
     </modules>
 
     <packaging>pom</packaging>
