@@ -13,6 +13,7 @@
         <module>company</module>
         <module>system</module>
         <module>zxing</module>
+        <module>shiro</module>
     </modules>
 
     <packaging>pom</packaging>
