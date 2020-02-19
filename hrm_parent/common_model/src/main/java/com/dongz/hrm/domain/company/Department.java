@@ -23,7 +23,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "co_department")
+@Table(name = "department")
 public class Department extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -2992493284600889150L;
     /**

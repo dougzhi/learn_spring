@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "pe_role")
+@Table(name = "role")
 public class Role extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -2157584532535018836L;
     @Id

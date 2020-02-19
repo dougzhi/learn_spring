@@ -22,7 +22,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "co_company")
+@Table(name = "company")
 public class Company extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 594829320797158219L;
     /**

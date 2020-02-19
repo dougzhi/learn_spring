@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "pe_user_role")
+@Table(name = "user_role")
 public class UserRole implements Serializable {
     @Id
     private Long roleId;

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "pe_permission")
+@Table(name = "permission")
 @Getter
 @Setter
 @NoArgsConstructor

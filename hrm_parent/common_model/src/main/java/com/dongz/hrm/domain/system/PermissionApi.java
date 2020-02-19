@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  */
 @Entity
-@Table(name = "pe_permission_api")
+@Table(name = "permission_api")
 @Getter
 @Setter
 public class PermissionApi implements Serializable {

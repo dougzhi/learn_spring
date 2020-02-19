@@ -15,7 +15,7 @@ import java.io.Serializable;
  * Description: 菜单权限实体类
  */
 @Entity
-@Table(name = "pe_permission_menu")
+@Table(name = "permission_menu")
 @Getter
 @Setter
 public class PermissionMenu implements Serializable {

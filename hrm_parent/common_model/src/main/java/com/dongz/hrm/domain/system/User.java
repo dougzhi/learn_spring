@@ -24,7 +24,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "bs_user")
+@Table(name = "user")
 public class User extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -8912714873258130287L;
     /**

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * Description: 菜单权限实体类
  */
 @Entity
-@Table(name = "pe_permission_point")
+@Table(name = "permission_point")
 @Getter
 @Setter
 public class PermissionPoint implements Serializable {
