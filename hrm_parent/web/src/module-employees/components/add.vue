@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import { add } from '@/api/base/users'
-import  * as deptApi  from '@/api/base/department'
+import { add, jobnumber } from '@/api/base/users'
+import  * as deptApi  from '@/api/base/dept'
 import employeesData from '@/api/constant/employees'
 import commonApi from '@/utils/common'
 var _this = null
@@ -82,7 +82,7 @@ export default {
   // 创建完毕状态
   created: function() {
     deptApi.list().then(ret => {
-      this.depts = commonApi.transformTozTreeFormat(ret.data.data.depts)
+      this.depts = commonApi.transformTozTreeFormat(ret.data.data.list)
     })
   }
 }

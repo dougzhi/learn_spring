@@ -19,7 +19,7 @@
                 </el-table-column>
           </el-table>
           <div class="pagination">
-            <PageTool :paginationPage="requestParameters.page" :paginationPagesize="requestParameters.pageSize" :total="counts" @pageChange="handleCurrentChange" @pageSizeChange="handleSizeChange">
+            <PageTool :paginationPage="requestParameters.page" :paginationPagesize="requestParameters.size" :total="counts" @pageChange="handleCurrentChange" @pageSizeChange="handleSizeChange">
             </PageTool>
           </div>
         </div>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import {list,add,update,remove,detail} from "@/api/base/role"
+import {list,add,update,remove,detail,assignPrem} from "@/api/base/role"
 import * as permApi from "@/api/base/permissions"
 import commonApi from "@/utils/common"
 import PageTool from './../../components/page/page-tool'
@@ -77,29 +77,23 @@ export default {
       dataList:[],
       counts:0,
       requestParameters:{
-        currPage: 1,
-        pageSize: 10
+        page: 1,
+        size: 10
       }
     }
   },
   methods: {
     assignPrem() {
-      console.log(this.$refs.tree.getCheckedKeys())
-      assignPrem({roleId:this.formData.id,ids:this.$refs.tree.getCheckedKeys()}).then(res => {
+      assignPrem({id:this.formData.id,permIds:this.$refs.tree.getCheckedKeys()}).then(res => {
          this.$message({message:res.data.message,type:res.data.success?"success":"error"});
-          this.permFormVisible=false
+         this.permFormVisible=false
       })
     },
     handlerPerm(obj) {
        detail({id:obj.id}).then(res=>{
          this.formData = res.data.data;
-         if(this.formData.menusIds != null) {
-            this.checkNodes = this.formData.menusIds.split(",")
-         }
-         if(this.formData.pointIds != null) {
-          this.checkNodes.push(this.formData.pointIds.split(","))
-         }
-          permApi.list({type:0,pid:null}).then(res => {
+         this.checkNodes = res.data.data.permIds
+          permApi.list({type:0,pid:null,enVisible:1}).then(res => {
             this.treeData = commonApi.transformTozTreeFormat(res.data.data)
             this.permFormVisible=true
           })
@@ -113,9 +107,7 @@ export default {
       this.$confirm(
         `本次操作将删除${obj.name},删除后角色将不可恢复，您确认删除吗？`
       ).then(() => {
-          var fd = new FormData()
-          fd.set("id", obj.id);
-          remove(fd).then(res => {
+          remove({id: obj.id}).then(res => {
               this.$message({message:res.data.message,type:res.data.success?"success":"error"});
               this.doQuery()
           })
@@ -164,14 +156,14 @@ export default {
     },
     // 每页显示信息条数
     handleSizeChange(pageSize) {
-      this.requestParameters.pageSize = pageSize
-      if (this.requestParameters.currPage === 1) {
+      this.requestParameters.size = pageSize
+      if (this.requestParameters.page === 1) {
         _this.doQuery(this.requestParameters)
       }
     },
     // 进入某一页
     handleCurrentChange(val) {
-      this.requestParameters.currPage = val
+      this.requestParameters.page = val
       _this.doQuery()
     },
   },

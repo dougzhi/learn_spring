@@ -26,45 +26,45 @@ public abstract class BaseController {
         return this.jdbcTemplate.queryForList(sql, params);
     }
 
-    public <T> PageResult<T> queryForPagination(StringBuilder sql, Map<String, Object> params, long currPage, long pageSize,Class<T> t) {
-        if (pageSize <= 0) {
-            pageSize = 10;
+    public <T> PageResult<T> queryForPagination(StringBuilder sql, Map<String, Object> params, long page, long size,Class<T> t) {
+        if (size <= 0) {
+            size = 10;
         }
 
         long totalRow = this.jdbcTemplate.queryForObject("select count(*) from (" + sql + ") as T", params, Long.class);
-        long pageCount = totalRow / pageSize;
-        if (totalRow % pageSize > 0) {
+        long pageCount = totalRow / size;
+        if (totalRow % size > 0) {
             pageCount++;
         }
-        if (currPage <= 0 || currPage > pageCount) {
-            currPage = 1;
+        if (page <= 0 || page > pageCount) {
+            page = 1;
         }
 
-        long offset = (currPage - 1) * pageSize;
+        long offset = (page - 1) * size;
 
         List<T> data = this.jdbcTemplate
-                .query("select * from (" + sql.toString() + ") as T limit " + offset + "," + pageSize, params, new BeanPropertyRowMapper<>(t));
-        return new PageResult<>(totalRow, pageCount, currPage, pageSize, data);
+                .query("select * from (" + sql.toString() + ") as T limit " + offset + "," + size, params, new BeanPropertyRowMapper<>(t));
+        return new PageResult<>(totalRow, pageCount, page, size, data);
     }
 
-    public PageResult<Map<String, Object>> queryForPagination(StringBuilder sql, Map<String, Object> params, long currPage, long pageSize) {
-        if (pageSize <= 0) {
-            pageSize = 10;
+    public PageResult<Map<String, Object>> queryForPagination(StringBuilder sql, Map<String, Object> params, long page, long size) {
+        if (size <= 0) {
+            size = 10;
         }
 
         long totalRow = this.jdbcTemplate.queryForObject("select count(*) from (" + sql + ") as T", params, Long.class);
-        long pageCount = totalRow / pageSize;
-        if (totalRow % pageSize > 0) {
+        long pageCount = totalRow / size;
+        if (totalRow % size > 0) {
             pageCount++;
         }
-        if (currPage <= 0 || currPage > pageCount) {
-            currPage = 1;
+        if (page <= 0 || page > pageCount) {
+            page = 1;
         }
 
-        long offset = (currPage - 1) * pageSize;
+        long offset = (page - 1) * size;
 
         List<Map<String, Object>> data = this.jdbcTemplate
-                .queryForList("select * from (" + sql.toString() + ") as T limit " + offset + "," + pageSize, params);
-        return new PageResult<>(totalRow, pageCount, currPage, pageSize, data);
+                .queryForList("select * from (" + sql.toString() + ") as T limit " + offset + "," + size, params);
+        return new PageResult<>(totalRow, pageCount, page, size, data);
     }
 }

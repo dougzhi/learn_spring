@@ -66,7 +66,7 @@
         <!-- 新增员工弹层 -->
         <component v-bind:is="employeesAdd" ref="addUser" @doQuery="doQuery"></component>
         <!--分配角色组件 -->
-
+        <component v-bind:is="addRole" ref="addRole"></component>
       </el-card>
     </div>
   </div>
@@ -77,20 +77,22 @@ import constantApi from '@/api/constant/employees'
 import {list,remove} from "@/api/base/users"
 import PageTool from './../../components/page/page-tool'
 import employeesAdd from './../components/add'
+import addRole from './../components/addRole'
 export default {
   name: 'employeesList',
   components: {
-    PageTool,employeesAdd
+    PageTool,employeesAdd,addRole
   },
   data() {
     return {
       employeesAdd: 'employeesAdd',
+      addRole: 'addRole',
       baseData: constantApi,
       dataList: [],
       counts: '',
       requestParameters:{
-        currPage: 1,
-        pageSize: 10,
+        page: 1,
+        size: 10,
       }
     }
   },
@@ -105,8 +107,8 @@ export default {
     },
     // 每页显示信息条数
     handleSizeChange(size) {
-      this.requestParameters.pageSize = size
-      if (this.requestParameters.currPage === 1) {
+      this.requestParameters.size = size
+      if (this.requestParameters.page === 1) {
         this.doQuery(this.requestParameters)
       }
     },
@@ -132,7 +134,10 @@ export default {
               this.doQuery();
             })
         })
-    }
+    },
+    handleRole(item) {
+      this.$refs.addRole.toAssignPrem(item.id)
+    },
   },
   // 创建完毕状态
   created: function() {

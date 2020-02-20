@@ -28,13 +28,13 @@ public class RoleController extends BaseController {
 
     @GetMapping("/findAll")
     public Result findAll(
-            @RequestParam(required = false, defaultValue = "1") Integer currPage,
-            @RequestParam(required = false, defaultValue = "10") Integer pageSize
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         StringBuilder sb = new StringBuilder();
         sb.append("select t.* from role t where t.is_deleted = 0");
         Map<String, Object> params = new HashMap<>();
-        PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, currPage, pageSize);
+        PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, page, size);
         return Result.SUCCESS(pageResult);
     }
 
@@ -63,6 +63,12 @@ public class RoleController extends BaseController {
     @DeleteMapping("/deleteById")
     public Result deleteById(@RequestParam Long id) {
         service.delete(id);
+        return Result.SUCCESS();
+    }
+
+    @PostMapping("/assignprem")
+    public Result assignprem(@RequestBody RoleVO vo) {
+        service.create(vo);
         return Result.SUCCESS();
     }
 }

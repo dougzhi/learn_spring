@@ -1,6 +1,6 @@
 import {createAPI} from '@/utils/request'
 
-export const list = data => createAPI('/department/list', 'get', data)
+export const list = data => createAPI('/department/findAll', 'get', data)
 
 export const detail = data => createAPI('/department/info', 'get', data)
 

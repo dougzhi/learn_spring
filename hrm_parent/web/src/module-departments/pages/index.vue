@@ -63,7 +63,7 @@
 
 <!-- 引入组件 -->
 <script>
-import {list} from '@/api/base/department'
+import {list} from '@/api/base/dept'
 import commonApi from '@/utils/common'
 export default {
   data() {

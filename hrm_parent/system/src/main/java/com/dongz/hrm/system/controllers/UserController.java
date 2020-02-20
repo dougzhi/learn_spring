@@ -52,13 +52,13 @@ public class UserController extends BaseController {
 
     @GetMapping("/findAll")
     public Result findAll(
-            @RequestParam(required = false, defaultValue = "1") Integer currPage,
-            @RequestParam(required = false, defaultValue = "10") Integer pageSize
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         StringBuilder sb = new StringBuilder();
         sb.append("select t.* from user t where t.is_deleted = 0");
         Map<String, Object> params = new HashMap<>();
-        PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, currPage, pageSize);
+        PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, page, size);
         return Result.SUCCESS(pageResult);
     }
 
@@ -86,6 +86,12 @@ public class UserController extends BaseController {
 
     @DeleteMapping("/deleteById")
     public Result deleteById(@RequestParam Long id) {
+        service.delete(id);
+        return Result.SUCCESS();
+    }
+
+    @PostMapping("/assignRoles")
+    public Result assignRoles(@RequestParam Long id) {
         service.delete(id);
         return Result.SUCCESS();
     }
