@@ -44,7 +44,11 @@ public class Result {
         return new Result(ResultCode.SERVER_ERROR);
     }
 
-    public static Result FAIL(){
-        return new Result(ResultCode.FAIL);
+    public static Result FAILE(){
+        return new Result(ResultCode.FAILE);
+    }
+
+    public static Result LOGINFAILE(){
+        return new Result(ResultCode.LOGINFAILE);
     }
 }

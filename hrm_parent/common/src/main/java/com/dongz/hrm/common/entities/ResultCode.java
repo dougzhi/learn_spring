@@ -4,9 +4,10 @@ public enum ResultCode {
 
     SUCCESS(true,10000,"操作成功！"),
     //---系统错误返回码-----
-    FAIL(false,10001,"操作失败"),
+    FAILE(false,10001,"操作失败"),
     UNAUTHENTICATED(false,10002,"您还未登录"),
     UNAUTHORISE(false,10003,"权限不足"),
+    LOGINFAILE(false,10004,"用户名或密码错误，登录失败"),
     SERVER_ERROR(false,99999,"抱歉，系统繁忙，请稍后重试！");
 
     //---用户操作返回码----

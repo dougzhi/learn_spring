@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
+ * @author dong
  */
 @Entity
 @Table(name = "permission_api")

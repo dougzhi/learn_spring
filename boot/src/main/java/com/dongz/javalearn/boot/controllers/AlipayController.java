@@ -59,7 +59,7 @@ public class AlipayController {
         //商品描述
         model.setBody("这个是一个商品支付");
         //超时时间
-        model.setTimeoutExpress("30m");
+        model.setTimeoutExpress("10m");
         //商品Code
         model.setProductCode("000");
         //设置参数

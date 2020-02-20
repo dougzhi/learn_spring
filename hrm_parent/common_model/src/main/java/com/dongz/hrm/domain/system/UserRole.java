@@ -21,6 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Table(name = "user_role")
 public class UserRole implements Serializable {
+    private static final long serialVersionUID = -2044173458462824224L;
     @Id
     private Long roleId;
     @Id
