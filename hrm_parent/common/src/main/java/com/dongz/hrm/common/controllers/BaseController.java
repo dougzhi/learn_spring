@@ -47,7 +47,24 @@ public abstract class BaseController {
         return new PageResult<>(totalRow, pageCount, currPage, pageSize, data);
     }
 
-    public PageResult queryForPagination(StringBuilder sql, Map<String, Object> params, long currPage, long pageSize) {
-        return queryForPagination(sql, params, currPage, pageSize, params.getClass());
+    public PageResult<Map<String, Object>> queryForPagination(StringBuilder sql, Map<String, Object> params, long currPage, long pageSize) {
+        if (pageSize <= 0) {
+            pageSize = 10;
+        }
+
+        long totalRow = this.jdbcTemplate.queryForObject("select count(*) from (" + sql + ") as T", params, Long.class);
+        long pageCount = totalRow / pageSize;
+        if (totalRow % pageSize > 0) {
+            pageCount++;
+        }
+        if (currPage <= 0 || currPage > pageCount) {
+            currPage = 1;
+        }
+
+        long offset = (currPage - 1) * pageSize;
+
+        List<Map<String, Object>> data = this.jdbcTemplate
+                .queryForList("select * from (" + sql.toString() + ") as T limit " + offset + "," + pageSize, params);
+        return new PageResult<>(totalRow, pageCount, currPage, pageSize, data);
     }
 }
