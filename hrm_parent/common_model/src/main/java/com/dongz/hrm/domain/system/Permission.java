@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -34,6 +35,7 @@ public class Permission implements Serializable {
     /**
      * 权限类型 1为菜单 2为功能 3为API
      */
+    @Convert(converter = PermissionStatus.MyConverter.class)
     private PermissionStatus type;
 
     private String code;

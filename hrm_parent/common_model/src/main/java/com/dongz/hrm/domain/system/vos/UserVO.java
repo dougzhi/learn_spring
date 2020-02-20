@@ -1,31 +1,20 @@
-package com.dongz.hrm.domain.system;
+package com.dongz.hrm.domain.system.vos;
 
-import com.dongz.hrm.common.entities.BaseEntity;
 import com.dongz.hrm.common.enums.EnableState;
-import com.dongz.hrm.common.enums.FormOfEmployment;
 import com.dongz.hrm.common.enums.ServiceStatus;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author dong
- * @date 2020/2/6 15:35
+ * @date 2020/2/20 13:51
  * @desc
  */
-@EqualsAndHashCode(callSuper = true)
-@Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "user")
-public class User extends BaseEntity implements Serializable {
-    private static final long serialVersionUID = -8912714873258130287L;
+public class UserVO implements Serializable {
     /**
      * ID
      */
@@ -47,8 +36,7 @@ public class User extends BaseEntity implements Serializable {
     /**
      * 启用状态 0为禁用 1为启用
      */
-    @Convert(converter = EnableState.MyConverter.class)
-    private EnableState enableState;
+    private Integer enableState;
 
     private String companyId;
 
@@ -67,8 +55,7 @@ public class User extends BaseEntity implements Serializable {
     /**
      * 聘用形式
      */
-    @Convert(converter = FormOfEmployment.MyConverter.class)
-    private FormOfEmployment formOfEmployment;
+    private Integer formOfEmployment;
 
     /**
      * 工号
@@ -93,7 +80,6 @@ public class User extends BaseEntity implements Serializable {
     /**
      * 在职状态 1.在职  2.离职
      */
-    @Convert(converter = ServiceStatus.MyConverter.class)
     private ServiceStatus serviceStatus;
 
     /**

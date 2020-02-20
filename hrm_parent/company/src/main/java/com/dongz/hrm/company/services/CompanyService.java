@@ -28,7 +28,7 @@ public class CompanyService extends BaseService {
      * 新增
      * @param vo vo
      */
-    public Long add(CompanyVO vo) {
+    public Long create(CompanyVO vo) {
         Assert.notNull(vo, "企业信息不能为空");
         Assert.hasText(vo.getName(), "企业名称不能为空");
         Assert.hasText(vo.getBusinessLicense(), "企业营业执照不能为空");
