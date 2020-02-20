@@ -6,11 +6,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * @author dong
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageResult<T> {
     private Long total;
-    private List<T> rows;
+    private Long pageCount;
+    private Long pageIndex;
+    private Long pageSize;
+    private List<T> list;
 }
 

@@ -1,17 +1,20 @@
 package com.dongz.hrm.system.controllers;
 
 import com.dongz.hrm.common.controllers.BaseController;
+import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
+import com.dongz.hrm.domain.system.User;
+import com.dongz.hrm.domain.system.vos.UserVO;
+import com.dongz.hrm.system.services.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author dong
@@ -21,6 +24,9 @@ import java.io.Serializable;
 @RestController
 @RequestMapping("/api/user")
 public class UserController extends BaseController {
+
+    @Autowired
+    private UserService service;
 
     @PostMapping("/login")
     public Result login(@RequestParam String mobile,@RequestParam String password) {
@@ -40,5 +46,38 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             return Result.LOGINFAILE();
         }
+    }
+
+    @GetMapping("/findAll")
+    public Result findAll() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select t.* from user t");
+        Map<String, Object> params = new HashMap();
+        PageResult pageResult = this.queryForPagination(sb, params, 1, 20, User.class);
+        return Result.SUCCESS(pageResult);
+    }
+
+    @GetMapping("/findById")
+    public Result findById(@RequestParam Long id) {
+
+        return Result.SUCCESS();
+    }
+
+    @PostMapping("/create")
+    public Result create(@RequestBody UserVO vo) {
+        service.create(vo);
+        return Result.SUCCESS();
+    }
+
+    @PostMapping("/update")
+    public Result update(@RequestBody UserVO vo) {
+        service.update(vo);
+        return Result.SUCCESS();
+    }
+
+    @PostMapping("/deleteById")
+    public Result deleteById(@RequestParam Long id) {
+        service.delete(id);
+        return Result.SUCCESS();
     }
 }
