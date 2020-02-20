@@ -22,6 +22,7 @@ import company from '@/module-company/'
 import departments from '@/module-departments/'
 import employees from '@/module-employees/'
 import settings from '@/module-settings/'
+import permissions from '@/module-permissions/'
 
 import tools from './utils/common.js'
 Vue.prototype.$tools = tools
@@ -33,6 +34,7 @@ Vue.use(company, store)
 Vue.use(departments, store)
 Vue.use(employees, store)
 Vue.use(settings, store)
+Vue.use(permissions, store)
 
 
 /*

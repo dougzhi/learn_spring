@@ -1,6 +1,6 @@
 <template>
   <div class="add-form">
-    <el-dialog title="分配角色" :visible.sync="roleFormVisible" style="height:300px">
+    <el-dialog title="分配角色" :visible.sync="roleFormVisible" style="height:400px">
       <el-form  :model="formBase"  label-position="left" label-width="120px" style='margin-left:120px; width:500px;'>
           <el-checkbox-group
             v-model="checkedRoles">
@@ -14,6 +14,7 @@
     </el-dialog>
   </div>
 </template>
+this.getList()
 <script>
 import {list} from "@/api/base/role"
 import {assignRoles,detail} from "@/api/base/users"
@@ -25,19 +26,21 @@ export default {
             checkedRoles:[],
             data:[],
             roles:[],
-            id:null
+            id:null,
         }
     },
     methods: {
+        getList() {
+          list().then(res => {
+            this.roles = res.data.data.list
+          })
+        },
         toAssignPrem(id) {
-            detail({id:id}).then(res1 => {
-                this.checkedRoles = res1.data.data.roleIds;
-                list().then(res => {
-                    this.id = id;
-                    this.roles = res.data.data
-                    this.roleFormVisible=true
-                })
-            })
+          this.id = id
+          this.roleFormVisible=true
+          /*detail({id:id}).then(res1 => {
+              this.checkedRoles = res1.data.data.roleIds;
+          })*/
         },
         createData() {
             assignRoles({id:this.id,roleIds:this.checkedRoles}).then(res => {
@@ -45,6 +48,9 @@ export default {
                 this.roleFormVisible=false
             })
         }
+    },
+    created: function () {
+      this.getList()
     }
 }
 </script>
