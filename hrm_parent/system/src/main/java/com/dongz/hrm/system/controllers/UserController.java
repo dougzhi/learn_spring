@@ -56,7 +56,6 @@ public class UserController extends BaseController {
         sb.append("select t.* from user t");
         Map<String, Object> params = new HashMap<>();
         PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, 0, 20);
-
         return Result.SUCCESS(pageResult);
     }
 
