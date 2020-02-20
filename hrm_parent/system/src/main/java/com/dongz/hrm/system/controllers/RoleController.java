@@ -3,12 +3,8 @@ package com.dongz.hrm.system.controllers;
 import com.dongz.hrm.common.controllers.BaseController;
 import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
-import com.dongz.hrm.domain.system.vos.UserVO;
-import com.dongz.hrm.system.services.UserService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.subject.Subject;
+import com.dongz.hrm.domain.system.vos.RoleVO;
+import com.dongz.hrm.system.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -24,31 +20,11 @@ import java.util.Map;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/api/sys/user")
-public class UserController extends BaseController {
+@RequestMapping("/api/sys/role")
+public class RoleController extends BaseController {
 
     @Autowired
-    private UserService service;
-
-    @PostMapping("/login")
-    public Result login(@RequestParam String mobile,@RequestParam String password) {
-        try {
-            // 加密密码(密码，盐，加密次数)
-            String hashPassword = new Md5Hash(password, mobile, 3).toString();
-            // 1，构造登录令牌
-            UsernamePasswordToken token = new UsernamePasswordToken(mobile, hashPassword);
-            // 2，获取subject
-            Subject subject = SecurityUtils.getSubject();
-            // 3，login
-            subject.login(token);
-
-            String sessionId = (String) subject.getSession().getId();
-
-            return Result.SUCCESS(sessionId);
-        } catch (Exception e) {
-            return Result.LOGINFAILE();
-        }
-    }
+    private RoleService service;
 
     @GetMapping("/findAll")
     public Result findAll(
@@ -56,7 +32,7 @@ public class UserController extends BaseController {
             @RequestParam(required = false, defaultValue = "10") Integer pageSize
     ) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select t.* from user t where t.is_deleted = 0");
+        sb.append("select t.* from role t where t.is_deleted = 0");
         Map<String, Object> params = new HashMap<>();
         PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, currPage, pageSize);
         return Result.SUCCESS(pageResult);
@@ -64,7 +40,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/findById")
     public Result findById(@RequestParam Long id) {
-        String sql = "select t.* from user t where t.id = :id and t.is_deleted = 0";
+        String sql = "select t.* from role t where t.id = :id and t.is_deleted = 0";
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         List<Map<String, Object>> list = this.queryForList(sql, params);
@@ -73,13 +49,13 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/create")
-    public Result create(@RequestBody UserVO vo) {
+    public Result create(@RequestBody RoleVO vo) {
         service.create(vo);
         return Result.SUCCESS();
     }
 
     @PutMapping("/update")
-    public Result update(@RequestBody UserVO vo) {
+    public Result update(@RequestBody RoleVO vo) {
         service.update(vo);
         return Result.SUCCESS();
     }
