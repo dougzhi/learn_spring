@@ -22,7 +22,7 @@ public class PermissionPoint implements Serializable {
      * 主键
      */
     @Id
-    private String id;
+    private Long id;
 
     /**
      * 权限代码

@@ -25,7 +25,7 @@ import java.io.Serializable;
 public class Role extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -2157584532535018836L;
     @Id
-    private String id;
+    private Long id;
     /**
      * 角色名
      */

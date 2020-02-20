@@ -31,7 +31,7 @@ public class User extends BaseEntity implements Serializable {
      * ID
      */
     @Id
-    private String id;
+    private Long id;
     /**
      * 手机号码
      */

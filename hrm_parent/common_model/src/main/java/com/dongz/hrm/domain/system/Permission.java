@@ -20,15 +20,13 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-@DynamicInsert(true)
-@DynamicUpdate(true)
 public class Permission implements Serializable {
     private static final long serialVersionUID = -4990810027542971546L;
     /**
      * 主键
      */
     @Id
-    private String id;
+    private Long id;
     /**
      * 权限名称
      */

@@ -22,11 +22,15 @@ public class PermissionMenu implements Serializable {
      * 主键
      */
     @Id
-    private String id;
+    private Long id;
 
-    //展示图标
+    /**
+     * 展示图标
+     */
     private String menuIcon;
 
-    //排序号
+    /**
+     * 排序号
+     */
     private String menuOrder;
 }

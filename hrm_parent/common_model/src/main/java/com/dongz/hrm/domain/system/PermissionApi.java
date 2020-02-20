@@ -21,7 +21,7 @@ public class PermissionApi implements Serializable {
      * 主键
      */
     @Id
-    private String id;
+    private Long id;
     /**
      * 链接
      */
