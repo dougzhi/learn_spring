@@ -18,6 +18,7 @@ import java.util.Optional;
  * @desc
  */
 @Service
+@Transactional
 public class UserService extends BaseService {
 
     @Autowired
@@ -27,7 +28,6 @@ public class UserService extends BaseService {
      * 新增
      * @param vo vo
      */
-    @Transactional
     public Long create(UserVO vo) {
         Assert.notNull(vo, "用户信息不能为空");
         Assert.hasText(vo.getUsername(), "用户名称不能为空");
@@ -57,7 +57,7 @@ public class UserService extends BaseService {
 
         User user = em.find(User.class, vo.getId());
         Assert.notNull(user, "用户信息不存在， 修改失败");
-        Assert.isTrue(user.isDeleted(), "用户信息已删除");
+        Assert.isTrue(!user.isDeleted(), "用户信息已删除");
 
         // 用户手机号码
         if (!user.getMobile().equals(vo.getMobile())) {
@@ -81,7 +81,7 @@ public class UserService extends BaseService {
 
         User user = em.find(User.class, id);
         Assert.notNull(user, "用户信息不存在， 修改失败");
-        Assert.isTrue(user.isDeleted(), "用户信息已删除");
+        Assert.isTrue(!user.isDeleted(), "用户信息已删除");
 
         setDelete(user);
         em.merge(user);

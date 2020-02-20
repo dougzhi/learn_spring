@@ -18,6 +18,7 @@ import java.util.Optional;
  * @desc
  */
 @Service
+@Transactional
 public class RoleService extends BaseService {
 
     @Autowired
@@ -27,7 +28,6 @@ public class RoleService extends BaseService {
      * 新增
      * @param vo vo
      */
-    @Transactional
     public Long create(RoleVO vo) {
         Assert.notNull(vo, "角色信息不能为空");
         Assert.hasText(vo.getName(), "角色名称不能为空");
@@ -55,7 +55,7 @@ public class RoleService extends BaseService {
 
         Role role = em.find(Role.class, vo.getId());
         Assert.notNull(role, "角色信息不存在， 修改失败");
-        Assert.isTrue(role.isDeleted(), "角色信息已删除");
+        Assert.isTrue(!role.isDeleted(), "角色信息已删除");
 
         // 角色名称
         if (!role.getName().equals(vo.getName())) {
@@ -77,7 +77,7 @@ public class RoleService extends BaseService {
 
         Role role = em.find(Role.class, id);
         Assert.notNull(role, "角色信息不存在， 修改失败");
-        Assert.isTrue(role.isDeleted(), "角色信息已删除");
+        Assert.isTrue(!role.isDeleted(), "角色信息已删除");
 
         setDelete(role);
         em.merge(role);

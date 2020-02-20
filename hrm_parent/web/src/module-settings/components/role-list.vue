@@ -19,7 +19,7 @@
                 </el-table-column>
           </el-table>
           <div class="pagination">
-            <PageTool :paginationPage="requestParameters.page" :paginationPagesize="requestParameters.pagesize" :total="counts" @pageChange="handleCurrentChange" @pageSizeChange="handleSizeChange">
+            <PageTool :paginationPage="requestParameters.page" :paginationPagesize="requestParameters.pageSize" :total="counts" @pageChange="handleCurrentChange" @pageSizeChange="handleSizeChange">
             </PageTool>
           </div>
         </div>
@@ -32,7 +32,7 @@
         </el-form-item>
         <el-form-item label="角色描述">
           <el-input v-model="formData.description" autocomplete="off" style="width:90%"></el-input>
-        </el-form-item>    
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -42,7 +42,7 @@
     <el-dialog :title="'为【'+formData.name+'】分配权限'" :visible.sync="permFormVisible" style="hight:100px;line-height:1px">
       <el-tree
         :data="treeData"
-        default-expand-all	
+        default-expand-all
         show-checkbox
         node-key="id"
         ref="tree"
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import {list,add,update,remove,detail,assignPrem} from "@/api/base/role"
+import {list,add,update,remove,detail} from "@/api/base/role"
 import * as permApi from "@/api/base/permissions"
 import commonApi from "@/utils/common"
 import PageTool from './../../components/page/page-tool'
@@ -77,9 +77,9 @@ export default {
       dataList:[],
       counts:0,
       requestParameters:{
-        page: 1,
-        pagesize: 10
-      }    
+        currPage: 1,
+        pageSize: 10
+      }
     }
   },
   methods: {
@@ -113,7 +113,9 @@ export default {
       this.$confirm(
         `本次操作将删除${obj.name},删除后角色将不可恢复，您确认删除吗？`
       ).then(() => {
-          remove({id: obj.id}).then(res => {
+          var fd = new FormData()
+          fd.set("id", obj.id);
+          remove(fd).then(res => {
               this.$message({message:res.data.message,type:res.data.success?"success":"error"});
               this.doQuery()
           })
@@ -156,20 +158,20 @@ export default {
     // 获取详情
     doQuery() {
       list(this.requestParameters).then(res => {
-          this.dataList = res.data.data.rows
+          this.dataList = res.data.data.list
           this.counts = res.data.data.total
         })
     },
     // 每页显示信息条数
     handleSizeChange(pageSize) {
-      this.requestParameters.pagesize = pageSize
-      if (this.requestParameters.page === 1) {
+      this.requestParameters.pageSize = pageSize
+      if (this.requestParameters.currPage === 1) {
         _this.doQuery(this.requestParameters)
       }
     },
     // 进入某一页
     handleCurrentChange(val) {
-      this.requestParameters.page = val
+      this.requestParameters.currPage = val
       _this.doQuery()
     },
   },
