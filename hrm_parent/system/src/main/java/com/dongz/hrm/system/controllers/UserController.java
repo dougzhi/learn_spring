@@ -3,7 +3,6 @@ package com.dongz.hrm.system.controllers;
 import com.dongz.hrm.common.controllers.BaseController;
 import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
-import com.dongz.hrm.domain.system.User;
 import com.dongz.hrm.domain.system.vos.UserVO;
 import com.dongz.hrm.system.services.UserService;
 import org.apache.shiro.SecurityUtils;

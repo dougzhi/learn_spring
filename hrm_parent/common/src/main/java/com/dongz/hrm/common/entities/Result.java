@@ -45,7 +45,11 @@ public class Result {
     }
 
     public static Result FAILE(){
+
         return new Result(ResultCode.FAILE);
+    }
+    public static Result FAILE(Object data){
+        return new Result(ResultCode.FAILE, data);
     }
 
     public static Result LOGINFAILE(){
