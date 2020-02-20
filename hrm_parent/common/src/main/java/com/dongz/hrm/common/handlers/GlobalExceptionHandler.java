@@ -1,6 +1,7 @@
 package com.dongz.hrm.common.handlers;
 
 import com.dongz.hrm.common.entities.Result;
+import com.dongz.hrm.common.entities.ResultCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +17,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Result> handlerException(Exception e) {
-        return new ResponseEntity<>(Result.FAILE(e.getMessage()), HttpStatus.OK);
+        return new ResponseEntity<>(Result.FAILE(ResultCode.FAILE.code(), e.getMessage()), HttpStatus.OK);
     }
 }

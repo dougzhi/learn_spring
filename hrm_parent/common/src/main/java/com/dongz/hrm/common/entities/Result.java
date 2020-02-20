@@ -48,8 +48,9 @@ public class Result {
 
         return new Result(ResultCode.FAILE);
     }
-    public static Result FAILE(Object data){
-        return new Result(ResultCode.FAILE, data);
+
+    public static Result FAILE(Integer code, String msg) {
+        return new Result(code, msg, false);
     }
 
     public static Result LOGINFAILE(){
