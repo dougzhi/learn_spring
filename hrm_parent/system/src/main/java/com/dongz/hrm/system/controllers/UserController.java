@@ -22,8 +22,9 @@ import java.util.Map;
  * @date 2020/2/20 00:45
  * @desc
  */
+@CrossOrigin
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/sys/user")
 public class UserController extends BaseController {
 
     @Autowired
@@ -50,11 +51,14 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/findAll")
-    public Result findAll() {
+    public Result findAll(
+            @RequestParam(required = false, defaultValue = "1") Integer currPage,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize
+    ) {
         StringBuilder sb = new StringBuilder();
         sb.append("select t.* from user t");
         Map<String, Object> params = new HashMap<>();
-        PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, 0, 20);
+        PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, currPage, pageSize);
         return Result.SUCCESS(pageResult);
     }
 
@@ -74,13 +78,13 @@ public class UserController extends BaseController {
         return Result.SUCCESS();
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public Result update(@RequestBody UserVO vo) {
         service.update(vo);
         return Result.SUCCESS();
     }
 
-    @PostMapping("/deleteById")
+    @DeleteMapping("/deleteById")
     public Result deleteById(@RequestParam Long id) {
         service.delete(id);
         return Result.SUCCESS();

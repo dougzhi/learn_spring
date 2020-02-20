@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
@@ -26,6 +27,7 @@ public class UserService extends BaseService {
      * 新增
      * @param vo vo
      */
+    @Transactional
     public Long create(UserVO vo) {
         Assert.notNull(vo, "用户信息不能为空");
         Assert.hasText(vo.getUsername(), "用户名称不能为空");

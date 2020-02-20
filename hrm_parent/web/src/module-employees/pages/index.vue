@@ -39,8 +39,8 @@
           <el-table-column sortable prop="timeOfEntry" label="入职时间" width="150"></el-table-column>
           <el-table-column sortable label="状态" width="120">
             <template slot-scope="scope">
-              <el-switch 
-              v-model="scope.row.accountStatus" 
+              <el-switch
+              v-model="scope.row.accountStatus"
               active-color="#13ce66"
               inactive-color="#ff4949"
                @change="handleStatus(scope.row)">
@@ -89,9 +89,9 @@ export default {
       dataList: [],
       counts: '',
       requestParameters:{
-        page: 1,
-        size: 10,
-      }    
+        currPage: 1,
+        pageSize: 10,
+      }
     }
   },
   methods: {
@@ -99,14 +99,14 @@ export default {
     doQuery(params) {
         list(this.requestParameters)
         .then(res => {
-          this.dataList = res.data.data.rows
+          this.dataList = res.data.data.list
           this.counts = res.data.data.total
         })
     },
     // 每页显示信息条数
     handleSizeChange(size) {
-      this.requestParameters.size = size
-      if (this.requestParameters.page === 1) {
+      this.requestParameters.pageSize = size
+      if (this.requestParameters.currPage === 1) {
         this.doQuery(this.requestParameters)
       }
     },

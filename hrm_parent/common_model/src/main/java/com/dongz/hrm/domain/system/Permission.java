@@ -4,8 +4,6 @@ import com.dongz.hrm.common.enums.PermissionStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;

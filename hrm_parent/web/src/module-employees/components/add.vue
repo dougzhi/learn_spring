@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { add, jobnumber } from '@/api/base/users'
+import { add } from '@/api/base/users'
 import  * as deptApi  from '@/api/base/department'
 import employeesData from '@/api/constant/employees'
 import commonApi from '@/utils/common'

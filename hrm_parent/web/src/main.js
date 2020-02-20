@@ -21,6 +21,7 @@ import demo from '@/module-demo/' // 面板
 import company from '@/module-company/'
 import departments from '@/module-departments/'
 import employees from '@/module-employees/'
+import settings from '@/module-settings/'
 
 import tools from './utils/common.js'
 Vue.prototype.$tools = tools
@@ -31,6 +32,7 @@ Vue.use(demo, store)
 Vue.use(company, store)
 Vue.use(departments, store)
 Vue.use(employees, store)
+Vue.use(settings, store)
 
 
 /*

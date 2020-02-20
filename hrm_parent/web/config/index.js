@@ -26,6 +26,14 @@ module.exports = {
           '^/api/department': ''
         }
       },
+      // 系统信息请求的远程服务
+      '/api/sys': {
+        target: 'http://localhost:9002/api/sys/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api/sys': ''
+        }
+      },
     },
 
     // Various Dev Server settings

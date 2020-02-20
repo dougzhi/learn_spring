@@ -1,6 +1,5 @@
 package com.dongz.hrm.domain.system.vos;
 
-import com.dongz.hrm.common.enums.EnableState;
 import com.dongz.hrm.common.enums.ServiceStatus;
 import lombok.Data;
 
@@ -15,6 +14,7 @@ import java.util.Date;
  */
 @Data
 public class UserVO implements Serializable {
+    private static final long serialVersionUID = 6276205424227877247L;
     /**
      * ID
      */
