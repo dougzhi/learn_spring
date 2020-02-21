@@ -54,9 +54,9 @@ public class UserController extends BaseController {
         Assert.isTrue(list.size() == 1, "查询失败");
         Map<String, Object> map = list.get(0);
 
-        sql = "select t.* from user_role t where t.user_id = :id";
-        List<UserRole> roleIds = this.queryForList(sql, params, UserRole.class);
-        map.put("roleIds", roleIds.stream().map(item -> item.getRoleId().toString()).collect(Collectors.toList()));
+        sql = "select t.role_id as roleId from user_role t where t.user_id = :id";
+        List<Map<String, Object>> mapList = this.queryForList(sql, params);
+        map.put("roleIds", mapList.stream().map(item -> (String)item.get("roleId")).collect(Collectors.toList()));
         return Result.SUCCESS(map);
     }
 

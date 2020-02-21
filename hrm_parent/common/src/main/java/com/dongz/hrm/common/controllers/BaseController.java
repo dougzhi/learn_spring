@@ -19,20 +19,10 @@ public abstract class BaseController {
     @Autowired
     protected NamedParameterJdbcTemplate jdbcTemplate;
 
-    public <T> T queryForObject(String sql, Map<String, Object> params, Class<T> t) {
-        List<T> list = this.jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(t));
-        Assert.isTrue(list.size() == 1, "查询条数异常");
-        return list.get(0);
-    }
-
     public Map<String,Object> queryForObject(String sql, Map<String, Object> params) {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, params);
         Assert.isTrue(list.size() == 1, "查询条数异常");
         return list.get(0);
-    }
-
-    public <T> List<T> queryForList(String sql, Map<String,Object> params,Class<T> t) {
-        return this.jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(t));
     }
 
     public List<Map<String, Object>> queryForList(String sql, Map<String, Object> params) {

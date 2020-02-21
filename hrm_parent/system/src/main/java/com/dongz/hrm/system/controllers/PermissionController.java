@@ -1,9 +1,9 @@
 package com.dongz.hrm.system.controllers;
 
-import com.alibaba.fastjson.JSONObject;
 import com.dongz.hrm.common.controllers.BaseController;
 import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
+import com.dongz.hrm.common.utils.StringCase;
 import com.dongz.hrm.domain.system.Permission;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
@@ -46,22 +46,21 @@ public class PermissionController extends BaseController {
     }
 
     @GetMapping("/findById")
-    public Result findById(@RequestParam Long id) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public Result findById(@RequestParam Long id) {
         String sql = "select t.* from permission t where t.id = :id ";
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        Map<String, Object> map = this.queryForObject(sql, params, Permission.class).getDataBaseMap();
-        PermissionStatus type = (PermissionStatus) map.get("type");
-        Class clazz = type.getClazz();
+        Map<String, Object> map = this.queryForObject(sql, params);
+        PermissionStatus type = PermissionStatus.parse((Integer) map.get("type"));
         StringBuilder sb = new StringBuilder();
         sb.append("select t.* from ")
                 .append(type.getTableName())
                 .append(" t where t.id = :id");
-        Method me = clazz.getDeclaredMethod("getDataBaseMap", Object.class);
-        Object o = this.queryForObject(sb.toString(), params, clazz);
-        Map<String, Object> invoke = (Map<String, Object>) me.invoke(clazz.newInstance(),o);
-        map.putAll(invoke);
-        return Result.SUCCESS(map);
+        Map<String, Object> map1 = this.queryForObject(sb.toString(), params);
+        map.putAll(map1);
+        Map<String, Object> data = new HashMap<>();
+        map.forEach((k, v) -> data.put(StringCase.underline2Camel(k), v));
+        return Result.SUCCESS(data);
     }
 
     @PostMapping("/create")
