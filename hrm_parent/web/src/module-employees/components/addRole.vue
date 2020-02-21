@@ -30,13 +30,9 @@ export default {
         }
     },
     methods: {
-        getList() {
-          list().then(res => {
-            this.roles = res.data.data.list
-          })
-        },
         toAssignPrem(id) {
             detail({id:id}).then(res => {
+              debugger
               this.checkedRoles = res.data.data.roleIds;
                 list().then(res => {
                     this.id = id;
@@ -46,7 +42,6 @@ export default {
             })
         },
         createData() {
-          debugger
           let fd = new FormData()
           fd.set("id", this.id)
           fd.set("roleIds", this.checkedRoles)

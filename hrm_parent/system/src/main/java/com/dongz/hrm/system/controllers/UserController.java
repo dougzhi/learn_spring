@@ -56,7 +56,7 @@ public class UserController extends BaseController {
 
         sql = "select t.* from user_role t where t.user_id = :id";
         List<UserRole> roleIds = this.queryForList(sql, params, UserRole.class);
-        map.put("roleIds", roleIds.stream().map(UserRole::getRoleId).collect(Collectors.toList()));
+        map.put("roleIds", roleIds.stream().map(item -> item.getRoleId().toString()).collect(Collectors.toList()));
         return Result.SUCCESS(map);
     }
 
