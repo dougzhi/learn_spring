@@ -17,6 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Result> handlerException(Exception e) {
+        System.out.println(e.getMessage());
         return new ResponseEntity<>(Result.FAILE(ResultCode.FAILE.code(), e.getMessage()), HttpStatus.OK);
     }
 }

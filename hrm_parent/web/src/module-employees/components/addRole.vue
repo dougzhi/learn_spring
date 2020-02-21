@@ -36,13 +36,17 @@ export default {
           })
         },
         toAssignPrem(id) {
-          this.id = id
-          this.roleFormVisible=true
-          /*detail({id:id}).then(res1 => {
-              this.checkedRoles = res1.data.data.roleIds;
-          })*/
+            detail({id:id}).then(res => {
+              this.checkedRoles = res.data.data.roleIds;
+                list().then(res => {
+                    this.id = id;
+                    this.roles = res.data.data.list
+                    this.roleFormVisible=true
+                })
+            })
         },
         createData() {
+          debugger
           let fd = new FormData()
           fd.set("id", this.id)
           fd.set("roleIds", this.checkedRoles)
@@ -51,9 +55,6 @@ export default {
                 this.roleFormVisible=false
             })
         }
-    },
-    created: function () {
-      this.getList()
     }
 }
 </script>
