@@ -3,6 +3,8 @@ package com.dongz.hrm.system.controllers;
 import com.dongz.hrm.common.controllers.BaseController;
 import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
+import com.dongz.hrm.common.enums.PermissionStatus;
+import com.dongz.hrm.domain.system.Permission;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
 import com.dongz.hrm.system.services.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +46,13 @@ public class PermissionController extends BaseController {
         String sql = "select t.* from permission t where t.id = :id ";
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        List<Map<String, Object>> list = this.queryForList(sql, params);
-        Assert.isTrue(list.size() == 1, "查询失败");
-        Map<String, Object> map = list.get(0);
-
+        Map<String, Object> map = this.queryForObject(sql, params);
+        StringBuilder sb = new StringBuilder();
+        sb.append("select t.* from ")
+                .append(PermissionStatus.parse((Integer) map.get("type")).getTableName())
+                .append(" t where t.id = :id");
+        Map<String, Object> maps = this.queryForObject(sb.toString(), params);
+        map.putAll(maps);
         return Result.SUCCESS(map);
     }
 
