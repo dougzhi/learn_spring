@@ -4,15 +4,14 @@ import com.dongz.hrm.common.enums.PermissionStatus;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.system.Permission;
-import com.dongz.hrm.domain.system.PermissionApi;
 import com.dongz.hrm.domain.system.PermissionMenu;
-import com.dongz.hrm.domain.system.PermissionPoint;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -81,12 +80,12 @@ public class PermissionService extends BaseService {
         return permissionId;
     }
 
-    private void permissionOption(Object vo,String methodName, String className) {
+    private void permissionOption(Object vo,String option, String className) {
         try {
-            Class<?> clazz = Class.forName(className);
-            Method create = clazz.getMethod(methodName, Object.class);
-            create.invoke(clazz, vo);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            Class clazz = Class.forName(className);
+            Method method = clazz.getMethod(option, Object.class, EntityManager.class);
+            method.invoke(clazz.newInstance(), vo, em);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException | InstantiationException e) {
             Assert.isTrue(false, e.getMessage());
             e.printStackTrace();
         }
@@ -156,69 +155,5 @@ public class PermissionService extends BaseService {
             em.persist(permissionRole);
         });
         removeList.forEach(item -> em.remove(item));*/
-    }
-
-
-}
-
-@Service
-@Transactional
-class PermissionApiService extends BaseService {
-    public void create(Object vo) {
-        PermissionVO permissionVO = (PermissionVO) vo;
-        PermissionApi api = new PermissionApi();
-
-        api.setId(permissionVO.getId());
-        api.setApiUrl(permissionVO.getApiUrl());
-        api.setApiMethod(permissionVO.getApiMethod());
-        api.setApiLevel(permissionVO.getApiLevel());
-
-        em.persist(api);
-    }
-
-    public void delete(Object id) {
-        Long permissionId = (Long) id;
-        em.remove(em.getReference(PermissionApi.class, permissionId));
-    }
-}
-
-@Service
-@Transactional
-class PermissionMenuService extends BaseService {
-    public void create(Object vo) {
-        PermissionVO permissionVO = (PermissionVO) vo;
-        PermissionMenu menu = new PermissionMenu();
-
-        menu.setId(permissionVO.getId());
-        menu.setMenuIcon(permissionVO.getMenuIcon());
-        menu.setMenuOrder(permissionVO.getMenuOrder());
-
-        em.persist(menu);
-    }
-
-    public void delete(Object id) {
-        Long permissionId = (Long) id;
-        em.remove(em.getReference(PermissionMenu.class, permissionId));
-    }
-}
-
-@Service
-@Transactional
-class PermissionPointService extends BaseService {
-    public void create(Object vo) {
-        PermissionVO permissionVO = (PermissionVO) vo;
-        PermissionPoint point = new PermissionPoint();
-
-        point.setId(permissionVO.getId());
-        point.setPointClass(permissionVO.getPointClass());
-        point.setPointIcon(permissionVO.getPointIcon());
-        point.setPointStatus(permissionVO.getPointStatus());
-
-        em.persist(point);
-    }
-
-    public void delete(Object id) {
-        Long permissionId = (Long) id;
-        em.remove(em.getReference(PermissionPoint.class, permissionId));
     }
 }

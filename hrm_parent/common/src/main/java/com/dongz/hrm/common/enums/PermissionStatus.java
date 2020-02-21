@@ -14,14 +14,14 @@ import java.util.Optional;
  */
 @Getter
 @AllArgsConstructor
-public enum PermissionStatus implements BaseEnum<Integer>{
-    MENU(1, "菜单", "PermissionMenu"),
-    Point(2, "功能", "PermissionPoint"),
-    API(3,"API", "PermissionApi");
+public enum PermissionStatus implements BaseEnum<Integer> {
+    MENU(1, "菜单", "com.dongz.hrm.system.services.PermissionMenuService"),
+    Point(2, "功能", "com.dongz.hrm.system.services.PermissionPointService"),
+    API(3,"API", "com.dongz.hrm.system.services.PermissionApiService");
 
     private Integer value;
     private String name;
-    private String ClassName;
+    private String className;
 
     public static PermissionStatus parse(Integer value) {
         Optional<PermissionStatus> first = Arrays.stream(PermissionStatus.values()).filter(c -> c.value == value).findFirst();
