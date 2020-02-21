@@ -6,13 +6,13 @@
             <el-table :data="dataList" fit style="width: 100%;" highlight-current-row>
                 <el-table-column fixed prop="name" label="菜单名称" width="200px">
                     <template slot-scope="scope">
-                        <i :class="scope.row.type==1?'ivu-icon fa fa-folder-open-o fa-fw':'ivu-icon  el-icon-view'" 
+                        <i :class="scope.row.type==1?'ivu-icon fa fa-folder-open-o fa-fw':'ivu-icon  el-icon-view'"
                             :style="scope.row.type==1?'margin-left: 0px':'margin-left: 20px'"></i>
                         <span @click="show(scope.$index,scope.row.id)">{{scope.row.name}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column fixed prop="code" label="权限标识" width="200"></el-table-column>
-                <el-table-column fixed prop="description" label="描述" width="200"></el-table-column>        
+                <el-table-column fixed prop="description" label="描述" width="200"></el-table-column>
                 <el-table-column fixed="right" label="操作">
                     <template slot-scope="scope">
                         <el-button v-if="scope.row.type==1" @click="handleCreate(null,2);setPid(2,scope.row.id)" type="text" size="small">添加权限点</el-button>
@@ -44,36 +44,36 @@
                 active-text="可见"
                 inactive-text="不可见">
               </el-switch>
-            </el-form-item>  
+            </el-form-item>
             <div v-if="type==1">
               <el-form-item label="菜单顺序">
                 <el-input v-model="formData.menuOrder" autocomplete="off" style="width:90%"></el-input>
-              </el-form-item> 
+              </el-form-item>
               <el-form-item label="菜单icon">
                 <el-input v-model="formData.menuIcon" autocomplete="off" style="width:90%"></el-input>
-              </el-form-item> 
+              </el-form-item>
             </div>
             <div v-else-if="type==2">
               <el-form-item label="按钮样式">
                 <el-input v-model="formData.pointClass" autocomplete="off" style="width:90%"></el-input>
-              </el-form-item> 
+              </el-form-item>
               <el-form-item label="按钮icon">
                 <el-input v-model="formData.pointIcon" autocomplete="off" style="width:90%"></el-input>
-              </el-form-item>  
+              </el-form-item>
               <el-form-item label="按钮状态">
                 <el-input v-model="formData.pointStatus" autocomplete="off" style="width:90%"></el-input>
-              </el-form-item> 
+              </el-form-item>
             </div>
             <div v-else-if="type==3">
               <el-form-item label="api请求地址">
                 <el-input v-model="formData.apiUrl" autocomplete="off" style="width:90%"></el-input>
-              </el-form-item> 
+              </el-form-item>
               <el-form-item label="api请求方式">
                 <el-input v-model="formData.apiMethod" autocomplete="off" style="width:90%"></el-input>
-              </el-form-item>  
+              </el-form-item>
               <el-form-item label="api类型">
                 <el-input v-model="formData.apiLevel" autocomplete="off" style="width:90%"></el-input>
-              </el-form-item>               
+              </el-form-item>
             </div>
 
           </el-form>
@@ -88,14 +88,14 @@
             <el-table :data="apiList" fit style="width: 100%;" max-height="250" >
                 <el-table-column fixed prop="name" label="菜单名称" width="120px"></el-table-column>
                 <el-table-column fixed prop="code" label="权限标识" width="200"></el-table-column>
-                <el-table-column fixed prop="description" label="描述" width="200"></el-table-column>        
+                <el-table-column fixed prop="description" label="描述" width="200"></el-table-column>
                 <el-table-column fixed="right" label="操作" width="200">
                     <template slot-scope="scope">
                         <el-button @click="handleCreate(scope.row.id,scope.row.type);setPid(scope.row.type,scope.row.pid)" type="text" size="small">查看</el-button>
                         <el-button @click="handleDelete(scope.row.id);handlerApiList(pid)" type="text" size="small">删除</el-button>
                     </template>
                 </el-table-column>
-            </el-table>        
+            </el-table>
       </el-dialog>
   </div>
 </template>
@@ -114,7 +114,11 @@ export default {
       formData:{},
       dataList:[],
       apiList:[],
-      pointEnable:{}
+      pointEnable:{},
+      params: {
+        type: 1,
+        pid: 0
+      }
     }
   },
   methods: {
@@ -124,7 +128,9 @@ export default {
     },
     handleCreate(id) {
       if(id && id !=undefined) {
-        detail({id}).then(res => {
+        let fd = new FormData();
+        fd.set("id", id);
+        detail(fd).then(res => {
           this.formData = res.data.data
           this.dialogFormVisible=true
         })
@@ -151,25 +157,27 @@ export default {
       })
     },
     handleDelete(id) {
-      remove({id}).then(res=> {
-        this.$message({message:res.data.message,type:res.data.success?"success":"error"});
-      })
+      let fd = new FormData();
+      fd.set("id", id);
+      remove(fd).then(res => {
+        this.$message({message: res.data.message, type: res.data.success ? "success" : "error"});
+      }).then(() => this.getList());
     },
     getList() {
-      list({type:1,pid:0}).then(res=> {
-          this.dataList = res.data.data
+      list(this.params).then(res=> {
+          this.dataList = res.data.data.list
       })
     },
     show(index,id) {
         if(!this.pointEnable[id] == null || this.pointEnable[id]==undefined){
             list({type:2,pid:id}).then(res=> {
-                if(res.data.data.length <=0) {
+                if(res.data.data.list.length <=0) {
                   this.$message.error("无子权限")
                 }else{
-                  for(var i = 0 ; i <res.data.data.length;i++) {
-                      this.dataList.splice(index+1,0,res.data.data[i]);
+                  for(var i = 0 ; i <res.data.data.list.length;i++) {
+                      this.dataList.splice(index+1,0,res.data.data.list[i]);
                   }
-                  this.pointEnable[id] = res.data.data.length;
+                  this.pointEnable[id] = res.data.data.list.length;
                 }
             })
         }else{
@@ -180,7 +188,7 @@ export default {
     handlerApiList(id) {
       this.pid = id;
       list({type:3,pid:id}).then(res=> {
-          this.apiList = res.data.data
+          this.apiList = res.data.data.list
           this.apiDialogVisible = true;
       })
     }

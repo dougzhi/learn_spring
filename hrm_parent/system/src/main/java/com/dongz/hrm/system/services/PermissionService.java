@@ -18,7 +18,6 @@ import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -56,11 +55,11 @@ public class PermissionService extends BaseService {
             Assert.hasText(vo.getPointStatus(), "权限点状态不能为空");
         }
 
-        long count = em.createQuery("select count(1) from Permission u where u.name = ?1 ", Long.class).setParameter(1, vo.getName()).getFirstResult();
+        long count = em.createQuery("select count(1) from Permission u where u.name = ?1 ", Long.class).setParameter(1, vo.getName()).getSingleResult();
         Assert.isTrue(count == 0, "权限名称重复， 新增失败");
 
-        if (!StringUtils.isEmpty(vo.getPid())) {
-            count = em.createQuery("select count(1) from Permission u where u.id = ?1 ", Long.class).setParameter(1, vo.getPid()).getFirstResult();
+        if (!(StringUtils.isEmpty(vo.getPid()) || "0".equals(vo.getPid()))) {
+            count = em.createQuery("select count(1) from Permission u where u.id = ?1 ", Long.class).setParameter(1, vo.getPid()).getSingleResult();
             Assert.isTrue(count == 1, "父级权限不存在");
         }
 
@@ -72,7 +71,7 @@ public class PermissionService extends BaseService {
         permission.setCode(vo.getCode());
         permission.setDescription(vo.getDescription());
         permission.setPid(vo.getPid());
-        permission.setIsVisible(true);
+        permission.setIsVisible(vo.getIsVisible());
 
         em.persist(permission);
         Long permissionId = permission.getId();

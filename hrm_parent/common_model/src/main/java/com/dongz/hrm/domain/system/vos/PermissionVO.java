@@ -31,6 +31,8 @@ public class PermissionVO implements Serializable {
 
     private Long pid;
 
+    private Boolean isVisible;
+
     /**
      * 链接
      */

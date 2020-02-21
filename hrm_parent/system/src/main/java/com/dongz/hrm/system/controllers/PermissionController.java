@@ -31,12 +31,16 @@ public class PermissionController extends BaseController {
 
     @GetMapping("/findAll")
     public Result findAll(
+            @RequestParam Integer type,
+            @RequestParam Long pid,
             @RequestParam(required = false, defaultValue = "1") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select t.* from permission t ");
+        sb.append("select t.* from permission t where t.type = :type and t.pid = :pid");
         Map<String, Object> params = new HashMap<>();
+        params.put("type", type);
+        params.put("pid", pid);
         PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, page, size);
         return Result.SUCCESS(pageResult);
     }

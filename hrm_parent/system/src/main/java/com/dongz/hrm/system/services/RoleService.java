@@ -32,7 +32,7 @@ public class RoleService extends BaseService {
         Assert.notNull(vo, "角色信息不能为空");
         Assert.hasText(vo.getName(), "角色名称不能为空");
 
-        long count = em.createQuery("select count(1) from Role u where u.name = ?1 and u.isDeleted = false ", Long.class).setParameter(1, vo.getName()).getFirstResult();
+        long count = em.createQuery("select count(1) from Role u where u.name = ?1 and u.isDeleted = false ", Long.class).setParameter(1, vo.getName()).getSingleResult();
         Assert.isTrue(count == 0, "角色名称重复， 新增失败");
 
         Role role = new Role();

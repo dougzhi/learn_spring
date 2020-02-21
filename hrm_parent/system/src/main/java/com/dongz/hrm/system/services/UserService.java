@@ -36,7 +36,7 @@ public class UserService extends BaseService {
         Assert.hasText(vo.getUsername(), "用户名称不能为空");
         Assert.hasText(vo.getMobile(), "用户手机号码不能为空");
 
-        long count = em.createQuery("select count(1) from User u where u.mobile = ?1 and u.isDeleted = false ", Long.class).setParameter(1, vo.getMobile()).getFirstResult();
+        long count = em.createQuery("select count(1) from User u where u.mobile = ?1 and u.isDeleted = false ", Long.class).setParameter(1, vo.getMobile()).getSingleResult();
         Assert.isTrue(count == 0, "用户手机号码重复， 新增失败");
 
         User user = new User();
