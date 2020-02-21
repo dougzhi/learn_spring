@@ -2,9 +2,6 @@ package com.dongz.hrm.domain.system.enums;
 
 import com.dongz.hrm.common.enums.BaseEnum;
 import com.dongz.hrm.common.enums.BaseEnumConverter;
-import com.dongz.hrm.domain.system.PermissionApi;
-import com.dongz.hrm.domain.system.PermissionMenu;
-import com.dongz.hrm.domain.system.PermissionPoint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.util.Assert;
@@ -20,15 +17,14 @@ import java.util.Optional;
 @Getter
 @AllArgsConstructor
 public enum PermissionStatus implements BaseEnum<Integer>{
-    MENU(1, "菜单", "PermissionMenuService","permission_menu", PermissionMenu.class),
-    POINT(2, "功能", "PermissionPointService","permission_point", PermissionPoint.class),
-    API(3, "API", "PermissionApiService", "permission_api", PermissionApi.class),;
+    MENU(1, "菜单", "PermissionMenuService","permission_menu"),
+    POINT(2, "功能", "PermissionPointService","permission_point"),
+    API(3, "API", "PermissionApiService", "permission_api"),;
 
     private Integer value;
     private String name;
     private String className;
     private String tableName;
-    private Class clazz;
 
     public static PermissionStatus parse(Integer value) {
         Optional<PermissionStatus> first = Arrays.stream(PermissionStatus.values()).filter(c -> c.value == value).findFirst();
