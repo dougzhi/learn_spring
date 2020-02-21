@@ -3,14 +3,18 @@ package com.dongz.hrm.system.services;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.system.User;
+import com.dongz.hrm.domain.system.UserRole;
 import com.dongz.hrm.domain.system.vos.UserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author dong
@@ -91,12 +95,31 @@ public class UserService extends BaseService {
      * 授权
      * @param id id
      */
-    public void assignRoles(Long id,Long[] roleIds) {
+    @Modifying
+    @Transactional
+    public void assignRoles(Long id, List<Long> roleIds) {
         Assert.notNull(id, "要授权的用户ID不能为空");
 
         User user = em.find(User.class, id);
         Assert.notNull(user, "用户信息不存在， 修改失败");
         Assert.isTrue(!user.isDeleted(), "用户信息已删除");
 
+        long count = em.createQuery("select count(1) from Role u where u.id in (:ids) and u.isDeleted = false", Long.class).setParameter("ids", roleIds).getSingleResult();
+        Assert.isTrue(count == roleIds.size(), "角色信息异常");
+
+        List<UserRole> list = em.createQuery("select u from UserRole u where u.userId = :id", UserRole.class).setParameter("id", id).getResultList();
+        // 取左差集，新增
+        List<Long> roleIdList = list.parallelStream().map(UserRole::getRoleId).collect(Collectors.toList());
+        List<Long> createList = roleIds.parallelStream().filter(item -> !roleIdList.contains(item)).collect(Collectors.toList());
+        // 取右差集，删除
+        List<UserRole> removeList = list.parallelStream().filter(item -> !roleIds.contains(item.getRoleId())).collect(Collectors.toList());
+
+        createList.forEach(item -> {
+            UserRole userRole = new UserRole(id, item);
+            em.persist(userRole);
+        });
+
+
+        removeList.forEach(item -> em.remove(item));
     }
 }

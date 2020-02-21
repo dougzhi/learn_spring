@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +73,7 @@ public class UserController extends BaseController {
 
     @PostMapping("/assignRoles")
     public Result assignRoles(@RequestParam Long id,@RequestParam("roleIds") Long[] roles) {
-        service.assignRoles(id, roles);
+        service.assignRoles(id, Arrays.asList(roles));
         return Result.SUCCESS();
     }
 }
