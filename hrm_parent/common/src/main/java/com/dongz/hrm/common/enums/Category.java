@@ -21,7 +21,7 @@ public enum Category implements BaseEnum<Integer>{
     private Integer value;
     private String name;
 
-    public Category parse(Integer value) {
+    public static Category parse(Integer value) {
         Optional<Category> first = Arrays.stream(Category.values()).filter(c -> c.value == value).findFirst();
         Assert.notNull(first.isPresent(), "审核状态未找到");
         return first.get();

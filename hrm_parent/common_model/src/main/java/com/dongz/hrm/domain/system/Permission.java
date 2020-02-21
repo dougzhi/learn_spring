@@ -43,16 +43,7 @@ public class Permission implements Serializable {
      */
     private String description;
 
-    private String pid;
+    private Long pid;
 
-    private Integer enVisible;
-
-    public Permission(String name, PermissionStatus type, String code, String description) {
-        this.name = name;
-        this.type = type;
-        this.code = code;
-        this.description = description;
-    }
-
-
+    private Boolean isVisible;
 }

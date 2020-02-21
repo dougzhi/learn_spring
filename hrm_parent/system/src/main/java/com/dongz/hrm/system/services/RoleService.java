@@ -60,7 +60,7 @@ public class RoleService extends BaseService {
         // 角色名称
         if (!role.getName().equals(vo.getName())) {
             Optional<Role> first = em.createQuery("select u from Role u where u.name = ?1 and u.isDeleted = false ", Role.class).setParameter(1, vo.getName()).getResultStream().findFirst();
-            Assert.isTrue((!first.isPresent()) || (first.get().getName().equals(vo.getName())), "角色名称重复， 新增失败");
+            Assert.isTrue((!first.isPresent()) || (first.get().getName().equals(vo.getName())), "角色名称重复， 修改失败");
             role.setName(vo.getName());
         }
 

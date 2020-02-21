@@ -21,7 +21,7 @@ public enum State implements BaseEnum<Integer>{
     private Integer value;
     private String name;
 
-    public State parse(Integer value) {
+    public static State parse(Integer value) {
         Optional<State> first = Arrays.stream(State.values()).filter(c -> c.value == value).findFirst();
         Assert.notNull(first.isPresent(), "状态未找到");
         return first.get();

@@ -21,7 +21,7 @@ public enum ServiceStatus implements BaseEnum<Integer>{
     private Integer value;
     private String name;
 
-    public ServiceStatus parse(Integer value) {
+    public static ServiceStatus parse(Integer value) {
         Optional<ServiceStatus> first = Arrays.stream(ServiceStatus.values()).filter(c -> c.value == value).findFirst();
         Assert.notNull(first.isPresent(), "状态未找到");
         return first.get();

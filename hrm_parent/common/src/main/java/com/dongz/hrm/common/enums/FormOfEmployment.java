@@ -21,7 +21,7 @@ public enum FormOfEmployment implements BaseEnum<Integer>{
     private Integer value;
     private String name;
 
-    public FormOfEmployment parse(Integer value) {
+    public static FormOfEmployment parse(Integer value) {
         Optional<FormOfEmployment> first = Arrays.stream(FormOfEmployment.values()).filter(c -> c.value == value).findFirst();
         Assert.notNull(first.isPresent(), "状态未找到");
         return first.get();

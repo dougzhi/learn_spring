@@ -21,7 +21,7 @@ public enum AuditState implements BaseEnum<Integer>{
     private Integer value;
     private String name;
 
-    public AuditState parse(Integer value) {
+    public static AuditState parse(Integer value) {
         Optional<AuditState> first = Arrays.stream(AuditState.values()).filter(c -> c.value == value).findFirst();
         Assert.notNull(first.isPresent(), "审核状态未找到");
         return first.get();

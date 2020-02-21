@@ -65,7 +65,7 @@ public class UserService extends BaseService {
         // 用户手机号码
         if (!user.getMobile().equals(vo.getMobile())) {
             Optional<User> first = em.createQuery("select u from User u where u.mobile = ?1 and u.isDeleted = false ", User.class).setParameter(1, vo.getMobile()).getResultStream().findFirst();
-            Assert.isTrue((!first.isPresent()) || (first.get().getMobile().equals(vo.getMobile())), "用户手机号码重复， 新增失败");
+            Assert.isTrue((!first.isPresent()) || (first.get().getMobile().equals(vo.getMobile())), "用户手机号码重复， 修改失败");
             user.setMobile(vo.getMobile());
         }
 
