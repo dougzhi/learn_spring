@@ -73,10 +73,4 @@ public class PermissionController extends BaseController {
         service.delete(id);
         return Result.SUCCESS();
     }
-
-    @PostMapping("/assignRoles")
-    public Result assignRoles(@RequestParam Long id,@RequestParam("roleIds") Long[] roles) {
-        service.assignRoles(id, Arrays.asList(roles));
-        return Result.SUCCESS();
-    }
 }

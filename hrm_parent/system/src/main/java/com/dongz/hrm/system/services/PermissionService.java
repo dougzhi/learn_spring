@@ -137,34 +137,6 @@ public class PermissionService extends BaseService {
         em.remove(permission);
     }
 
-    /**
-     * 授权
-     * @param id id
-     */
-    public void assignRoles(Long id, List<Long> roleIds) {
-       /* Assert.notNull(id, "要授权的权限ID不能为空");
-
-        Permission permission = em.find(Permission.class, id);
-        Assert.notNull(permission, "权限信息不存在， 修改失败");
-        Assert.isTrue(!permission.isDeleted(), "权限信息已删除");
-
-        long count = em.createQuery("select count(1) from Role u where u.id in (:ids) and u.isDeleted = false", Long.class).setParameter("ids", roleIds).getSingleResult();
-        Assert.isTrue(count == roleIds.size(), "角色信息异常");
-
-        List<PermissionRole> list = em.createQuery("select u from PermissionRole u where u.permissionId = :id", PermissionRole.class).setParameter("id", id).getResultList();
-        // 取左差集，新增
-        List<Long> roleIdList = list.parallelStream().map(PermissionRole::getRoleId).collect(Collectors.toList());
-        List<Long> createList = roleIds.parallelStream().filter(item -> !roleIdList.contains(item)).collect(Collectors.toList());
-        // 取右差集，删除
-        List<PermissionRole> removeList = list.parallelStream().filter(item -> !roleIds.contains(item.getRoleId())).collect(Collectors.toList());
-
-        createList.forEach(item -> {
-            PermissionRole permissionRole = new Permission()Role(id, item);
-            em.persist(permissionRole);
-        });
-        removeList.forEach(item -> em.remove(item));*/
-    }
-
     @Transactional
     class PermissionApiService {
         public void create(Object vo, EntityManager em) {
