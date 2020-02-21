@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author dong
@@ -33,4 +36,17 @@ public class PermissionPoint implements Serializable {
 
     private String pointStatus;
 
+
+    public Map<String, Object> getDataBaseMap(Object o){
+        PermissionPoint point = (PermissionPoint) o;
+        Map<String, Object> map = new HashMap<>();
+        Field[] declaredFields = PermissionPoint.class.getDeclaredFields();
+        for (Field field : declaredFields) {
+            field.setAccessible(true);
+            try{
+                map.put(field.getName(), field.get(point));
+            }catch (Exception ignored){}
+        }
+        return map;
+    }
 }

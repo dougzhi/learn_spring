@@ -128,9 +128,7 @@ export default {
     },
     handleCreate(id) {
       if(id && id !=undefined) {
-        let fd = new FormData();
-        fd.set("id", id);
-        detail(fd).then(res => {
+        detail({id: id}).then(res => {
           this.formData = res.data.data
           this.dialogFormVisible=true
         })

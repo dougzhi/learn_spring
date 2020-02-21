@@ -1,6 +1,5 @@
 package com.dongz.codeutils.entitys;
 
-import com.dongz.codeutils.utils.StringUtils;
 import lombok.Getter;
 
 import java.lang.reflect.Field;

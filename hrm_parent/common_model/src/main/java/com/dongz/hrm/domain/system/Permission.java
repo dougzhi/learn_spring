@@ -1,6 +1,6 @@
 package com.dongz.hrm.domain.system;
 
-import com.dongz.hrm.common.enums.PermissionStatus;
+import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author dong
@@ -46,4 +49,16 @@ public class Permission implements Serializable {
     private Long pid;
 
     private Boolean isVisible;
+
+    public Map<String, Object> getDataBaseMap(){
+        Map<String, Object> map = new HashMap<>();
+        Field[] declaredFields = Permission.class.getDeclaredFields();
+        for (Field field : declaredFields) {
+            field.setAccessible(true);
+            try{
+                map.put(field.getName(), field.get(this));
+            }catch (Exception ignored){}
+        }
+        return map;
+    }
 }

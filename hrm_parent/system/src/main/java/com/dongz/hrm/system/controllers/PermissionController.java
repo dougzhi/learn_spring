@@ -1,19 +1,19 @@
 package com.dongz.hrm.system.controllers;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dongz.hrm.common.controllers.BaseController;
 import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
-import com.dongz.hrm.common.enums.PermissionStatus;
 import com.dongz.hrm.domain.system.Permission;
+import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
 import com.dongz.hrm.system.services.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,17 +46,21 @@ public class PermissionController extends BaseController {
     }
 
     @GetMapping("/findById")
-    public Result findById(@RequestParam Long id) {
+    public Result findById(@RequestParam Long id) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         String sql = "select t.* from permission t where t.id = :id ";
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        Map<String, Object> map = this.queryForObject(sql, params);
+        Map<String, Object> map = this.queryForObject(sql, params, Permission.class).getDataBaseMap();
+        PermissionStatus type = (PermissionStatus) map.get("type");
+        Class clazz = type.getClazz();
         StringBuilder sb = new StringBuilder();
         sb.append("select t.* from ")
-                .append(PermissionStatus.parse((Integer) map.get("type")).getTableName())
+                .append(type.getTableName())
                 .append(" t where t.id = :id");
-        Map<String, Object> maps = this.queryForObject(sb.toString(), params);
-        map.putAll(maps);
+        Method me = clazz.getDeclaredMethod("getDataBaseMap", Object.class);
+        Object o = this.queryForObject(sb.toString(), params, clazz);
+        Map<String, Object> invoke = (Map<String, Object>) me.invoke(clazz.newInstance(),o);
+        map.putAll(invoke);
         return Result.SUCCESS(map);
     }
 

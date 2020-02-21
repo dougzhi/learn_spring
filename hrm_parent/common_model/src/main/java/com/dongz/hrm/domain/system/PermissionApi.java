@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author dong
@@ -34,4 +37,17 @@ public class PermissionApi implements Serializable {
      * 权限等级，1为通用接口权限，2为需校验接口权限
      */
     private String apiLevel;
+
+    public Map<String, Object> getDataBaseMap(Object o){
+        PermissionApi api = (PermissionApi) o;
+        Map<String, Object> map = new HashMap<>();
+        Field[] declaredFields = PermissionApi.class.getDeclaredFields();
+        for (Field field : declaredFields) {
+            field.setAccessible(true);
+            try{
+                map.put(field.getName(), field.get(api));
+            }catch (Exception ignored){}
+        }
+        return map;
+    }
 }

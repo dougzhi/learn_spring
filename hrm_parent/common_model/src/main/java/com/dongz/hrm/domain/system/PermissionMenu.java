@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author dong
@@ -33,4 +36,18 @@ public class PermissionMenu implements Serializable {
      * 排序号
      */
     private String menuOrder;
+
+
+    public Map<String, Object> getDataBaseMap(Object o){
+        PermissionMenu menu = (PermissionMenu) o;
+        Map<String, Object> map = new HashMap<>();
+        Field[] declaredFields = PermissionMenu.class.getDeclaredFields();
+        for (Field field : declaredFields) {
+            field.setAccessible(true);
+            try{
+                map.put(field.getName(), field.get(menu));
+            }catch (Exception ignored){}
+        }
+        return map;
+    }
 }

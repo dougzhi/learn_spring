@@ -1,6 +1,6 @@
 package com.dongz.hrm.system.services;
 
-import com.dongz.hrm.common.enums.PermissionStatus;
+import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.system.Permission;
@@ -11,13 +11,13 @@ import com.dongz.hrm.domain.system.vos.PermissionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -132,6 +132,10 @@ public class PermissionService extends BaseService {
 
         Permission permission = em.find(Permission.class, id);
         Assert.notNull(permission, "权限信息不存在， 修改失败");
+
+        //级联删除
+        List<Long> resultList = em.createQuery("select u.id from Permission u where u.pid = ?1", Long.class).setParameter(1, id).getResultList();
+        resultList.forEach(this::delete);
 
         permissionOption(id, "delete", permission.getType().getClassName());
         em.remove(permission);
