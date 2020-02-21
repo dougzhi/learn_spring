@@ -7,7 +7,6 @@ import com.dongz.hrm.domain.system.UserRole;
 import com.dongz.hrm.domain.system.vos.UserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
