@@ -4,7 +4,9 @@ import com.dongz.hrm.common.enums.PermissionStatus;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.system.Permission;
+import com.dongz.hrm.domain.system.PermissionApi;
 import com.dongz.hrm.domain.system.PermissionMenu;
+import com.dongz.hrm.domain.system.PermissionPoint;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,10 +85,15 @@ public class PermissionService extends BaseService {
 
     private void permissionOption(Object vo,String option, String className) {
         try {
-            Class clazz = Class.forName(className);
-            Method method = clazz.getMethod(option, Object.class, EntityManager.class);
-            method.invoke(clazz.newInstance(), vo, em);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException | InstantiationException e) {
+            Class<PermissionService> pClazz = PermissionService.class;
+            Class<?>[] declaredClasses = pClazz.getDeclaredClasses();
+            Optional<Class<?>> first = Arrays.stream(declaredClasses).filter(item -> item.getSimpleName().equals(className)).findFirst();
+            Assert.isTrue(first.isPresent(), "方法未找到");
+
+            Class<?> aClass = first.get();
+            Method method = aClass.getDeclaredMethod(option, Object.class, EntityManager.class);
+            method.invoke(aClass.getDeclaredConstructors()[0].newInstance(pClazz.newInstance()), vo, em);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             Assert.isTrue(false, e.getMessage());
             e.printStackTrace();
         }
@@ -155,5 +163,64 @@ public class PermissionService extends BaseService {
             em.persist(permissionRole);
         });
         removeList.forEach(item -> em.remove(item));*/
+    }
+
+    @Transactional
+    class PermissionApiService {
+        public void create(Object vo, EntityManager em) {
+            PermissionVO permissionVO = (PermissionVO) vo;
+            PermissionApi api = new PermissionApi();
+
+            api.setId(permissionVO.getId());
+            api.setApiUrl(permissionVO.getApiUrl());
+            api.setApiMethod(permissionVO.getApiMethod());
+            api.setApiLevel(permissionVO.getApiLevel());
+
+            em.persist(api);
+        }
+
+        public void delete(Object id, EntityManager em) {
+            Long permissionId = (Long) id;
+            em.remove(em.getReference(PermissionApi.class, permissionId));
+        }
+    }
+
+    @Transactional
+    class PermissionMenuService {
+        public void create(Object vo, EntityManager em) {
+            PermissionVO permissionVO = (PermissionVO) vo;
+            PermissionMenu menu = new PermissionMenu();
+
+            menu.setId(permissionVO.getId());
+            menu.setMenuIcon(permissionVO.getMenuIcon());
+            menu.setMenuOrder(permissionVO.getMenuOrder());
+
+            em.persist(menu);
+        }
+
+        public void delete(Object id, EntityManager em) {
+            Long permissionId = (Long) id;
+            em.remove(em.getReference(PermissionMenu.class, permissionId));
+        }
+    }
+
+    @Transactional
+    class PermissionPointService {
+        public void create(Object vo, EntityManager em) {
+            PermissionVO permissionVO = (PermissionVO) vo;
+            PermissionPoint point = new PermissionPoint();
+
+            point.setId(permissionVO.getId());
+            point.setPointClass(permissionVO.getPointClass());
+            point.setPointIcon(permissionVO.getPointIcon());
+            point.setPointStatus(permissionVO.getPointStatus());
+
+            em.persist(point);
+        }
+
+        public void delete(Object id, EntityManager em) {
+            Long permissionId = (Long) id;
+            em.remove(em.getReference(PermissionPoint.class, permissionId));
+        }
     }
 }

@@ -15,9 +15,9 @@ import java.util.Optional;
 @Getter
 @AllArgsConstructor
 public enum PermissionStatus implements BaseEnum<Integer> {
-    MENU(1, "菜单", "com.dongz.hrm.system.services.PermissionMenuService"),
-    Point(2, "功能", "com.dongz.hrm.system.services.PermissionPointService"),
-    API(3,"API", "com.dongz.hrm.system.services.PermissionApiService");
+    MENU(1, "菜单", "PermissionMenuService"),
+    Point(2, "功能", "PermissionPointService"),
+    API(3,"API", "PermissionApiService");
 
     private Integer value;
     private String name;
