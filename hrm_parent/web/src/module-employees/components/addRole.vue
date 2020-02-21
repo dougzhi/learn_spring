@@ -32,7 +32,6 @@ export default {
     methods: {
         toAssignPrem(id) {
             detail({id:id}).then(res => {
-              debugger
               this.checkedRoles = res.data.data.roleIds;
                 list().then(res => {
                     this.id = id;
