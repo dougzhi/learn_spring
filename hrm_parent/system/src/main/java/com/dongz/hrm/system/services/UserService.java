@@ -95,8 +95,6 @@ public class UserService extends BaseService {
      * 授权
      * @param id id
      */
-    @Modifying
-    @Transactional
     public void assignRoles(Long id, List<Long> roleIds) {
         Assert.notNull(id, "要授权的用户ID不能为空");
 
@@ -118,8 +116,6 @@ public class UserService extends BaseService {
             UserRole userRole = new UserRole(id, item);
             em.persist(userRole);
         });
-
-
         removeList.forEach(item -> em.remove(item));
     }
 }
