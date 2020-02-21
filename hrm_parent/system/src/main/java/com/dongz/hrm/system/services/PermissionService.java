@@ -41,6 +41,7 @@ public class PermissionService extends BaseService {
         Assert.notNull(vo.getType(), "权限类型不能为空");
         Assert.hasText(vo.getName(), "权限名称不能为空");
         Assert.hasText(vo.getCode(), "权限码不能为空");
+        Assert.notNull(vo.getPid(), "父级权限不能为空");
         PermissionStatus permissionStatus = PermissionStatus.parse(vo.getType());
         if (permissionStatus.equals(PermissionStatus.API)) {
             Assert.hasText(vo.getApiUrl(), "链接不能为空");
@@ -55,13 +56,13 @@ public class PermissionService extends BaseService {
             Assert.hasText(vo.getPointStatus(), "权限点状态不能为空");
         }
 
-        long count = em.createQuery("select count(1) from Permission u where u.name = ?1 ", Long.class).setParameter(1, vo.getName()).getSingleResult();
-        Assert.isTrue(count == 0, "权限名称重复， 新增失败");
-
-        if (!(StringUtils.isEmpty(vo.getPid()) || "0".equals(vo.getPid()))) {
-            count = em.createQuery("select count(1) from Permission u where u.id = ?1 ", Long.class).setParameter(1, vo.getPid()).getSingleResult();
+        if (vo.getPid() != 0) {
+            long count = em.createQuery("select count(1) from Permission u where u.id = ?1 ", Long.class).setParameter(1, vo.getPid()).getSingleResult();
             Assert.isTrue(count == 1, "父级权限不存在");
         }
+
+        long count = em.createQuery("select count(1) from Permission u where u.name = ?1 and u.pid = ?2 ", Long.class).setParameter(1, vo.getName()).setParameter(2, vo.getPid()).getSingleResult();
+        Assert.isTrue(count == 0, "权限名称重复， 新增失败");
 
         Permission permission = new Permission();
 
@@ -71,7 +72,7 @@ public class PermissionService extends BaseService {
         permission.setCode(vo.getCode());
         permission.setDescription(vo.getDescription());
         permission.setPid(vo.getPid());
-        permission.setIsVisible(vo.getIsVisible());
+        permission.setIsVisible(Boolean.parseBoolean(vo.getIsVisible()));
 
         em.persist(permission);
         Long permissionId = permission.getId();

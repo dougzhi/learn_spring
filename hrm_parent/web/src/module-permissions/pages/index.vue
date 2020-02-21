@@ -38,9 +38,9 @@
             </el-form-item>
             <el-form-item label="企业可见">
               <el-switch
-                v-model="formData.enVisible"
-                active-value="1"
-                inactive-value="0"
+                v-model="formData.isVisible"
+                active-value=1
+                inactive-value=0
                 active-text="可见"
                 inactive-text="不可见">
               </el-switch>
