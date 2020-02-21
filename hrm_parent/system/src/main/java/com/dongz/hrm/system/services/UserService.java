@@ -86,4 +86,17 @@ public class UserService extends BaseService {
         setDelete(user);
         em.merge(user);
     }
+
+    /**
+     * 授权
+     * @param id id
+     */
+    public void assignRoles(Long id,Long[] roleIds) {
+        Assert.notNull(id, "要授权的用户ID不能为空");
+
+        User user = em.find(User.class, id);
+        Assert.notNull(user, "用户信息不存在， 修改失败");
+        Assert.isTrue(!user.isDeleted(), "用户信息已删除");
+
+    }
 }

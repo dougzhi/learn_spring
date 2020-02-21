@@ -30,26 +30,6 @@ public class UserController extends BaseController {
     @Autowired
     private UserService service;
 
-    @PostMapping("/login")
-    public Result login(@RequestParam String mobile,@RequestParam String password) {
-        try {
-            // 加密密码(密码，盐，加密次数)
-            String hashPassword = new Md5Hash(password, mobile, 3).toString();
-            // 1，构造登录令牌
-            UsernamePasswordToken token = new UsernamePasswordToken(mobile, hashPassword);
-            // 2，获取subject
-            Subject subject = SecurityUtils.getSubject();
-            // 3，login
-            subject.login(token);
-
-            String sessionId = (String) subject.getSession().getId();
-
-            return Result.SUCCESS(sessionId);
-        } catch (Exception e) {
-            return Result.LOGINFAILE();
-        }
-    }
-
     @GetMapping("/findAll")
     public Result findAll(
             @RequestParam(required = false, defaultValue = "1") Integer page,
@@ -91,8 +71,8 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/assignRoles")
-    public Result assignRoles(@RequestParam Long id) {
-        service.delete(id);
+    public Result assignRoles(@RequestParam Long id,@RequestParam("roleIds") Long[] roles) {
+        service.assignRoles(id, roles);
         return Result.SUCCESS();
     }
 }

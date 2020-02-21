@@ -43,7 +43,10 @@ export default {
           })*/
         },
         createData() {
-            assignRoles({id:this.id,roleIds:this.checkedRoles}).then(res => {
+          let fd = new FormData()
+          fd.set("id", this.id)
+          fd.set("roleIds", this.checkedRoles)
+            assignRoles(fd).then(res => {
                 this.$message({message:res.data.message,type:res.data.success?"success":"error"});
                 this.roleFormVisible=false
             })
