@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @date 2020/1/3 00:35
  * @desc
  */
-public abstract class BaseEnumConverter<X extends BaseEnum<Y>, Y> implements AttributeConverter<BaseEnum<Y>, Y> {
+public abstract class BaseEnumConverter<X extends BaseEnum<Y>, Y> implements AttributeConverter<X, Y> {
     private Method valuesMethod;
 
     public BaseEnumConverter() {
@@ -24,8 +24,8 @@ public abstract class BaseEnumConverter<X extends BaseEnum<Y>, Y> implements Att
     }
 
     @Override
-    public Y convertToDatabaseColumn(BaseEnum<Y> baseEnum) {
-        return baseEnum == null ? null : baseEnum.getValue();
+    public Y convertToDatabaseColumn(X x) {
+        return x == null ? null : x.getValue();
     }
 
     @Override
