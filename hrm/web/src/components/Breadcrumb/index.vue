@@ -1,6 +1,6 @@
 <template>
 <div class="app-breadcrumb">
-  xxx有限公司<span class="breadBtn">体验版</span>
+  xxx有限公司
 </div>
 </template>
 
