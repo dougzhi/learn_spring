@@ -41,7 +41,7 @@ export default {
     error: '错误日志'
   },
   login: {
-    title: '黑马Admin',
+    title: '后台管理',
     logIn: '登录',
     username: '账号',
     password: '密码',

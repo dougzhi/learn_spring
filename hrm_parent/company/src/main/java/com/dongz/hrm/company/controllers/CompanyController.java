@@ -22,7 +22,7 @@ public class CompanyController extends BaseController {
 
     @GetMapping("list")
     public Result list() {
-        List<Company> query = jdbcTemplate.query("select * from co_company", new BeanPropertyRowMapper<>(Company.class));
+        List<Company> query = jdbcTemplate.query("select * from company", new BeanPropertyRowMapper<>(Company.class));
         return Result.SUCCESS(query);
     }
 
@@ -30,7 +30,7 @@ public class CompanyController extends BaseController {
     public Result info(@RequestParam(value = "id") Long id) {
         HashMap<String, Object> params = new HashMap<>(1);
         params.put("id", id);
-        List<Company> query = jdbcTemplate.query("select * from co_company where id = :id ", params, new BeanPropertyRowMapper<>(Company.class));
+        List<Company> query = jdbcTemplate.query("select * from company where id = :id ", params, new BeanPropertyRowMapper<>(Company.class));
         Assert.isTrue(query.size() == 1, "企业信息不存在");
         return Result.SUCCESS(query.get(0));
     }

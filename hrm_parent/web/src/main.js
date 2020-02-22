@@ -17,7 +17,6 @@ import './mock' // simulation data
 * 注册 - 业务模块
 */
 import dashboard from '@/module-dashboard/' // 面板
-import demo from '@/module-demo/' // 面板
 import company from '@/module-company/'
 import departments from '@/module-departments/'
 import employees from '@/module-employees/'
@@ -29,7 +28,6 @@ Vue.prototype.$tools = tools
 
 Vue.use(tools)
 Vue.use(dashboard, store)
-Vue.use(demo, store)
 Vue.use(company, store)
 Vue.use(departments, store)
 Vue.use(employees, store)

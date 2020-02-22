@@ -11,7 +11,7 @@
             <svg-icon icon-class="github"></svg-icon>
           </a>
         </p>
-        <p>copyright<svg-icon icon-class="copyright"></svg-icon> 2018 iHRM 系统 版权所有</p>
+        <p>copyright<svg-icon icon-class="copyright"></svg-icon> 2018 HRM 系统 版权所有</p>
       </div>
 		</div>
 	</div>
