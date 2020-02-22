@@ -86,6 +86,10 @@ public class UserService extends BaseService {
         Assert.notNull(user, "用户信息不存在， 修改失败");
         Assert.isTrue(!user.isDeleted(), "用户信息已删除");
 
+        //删除角色关联
+        List<UserRole> resultList = em.createQuery("select u from UserRole u where u.userId = ?1", UserRole.class).setParameter(1, id).getResultList();
+        resultList.forEach(item -> em.remove(item));
+
         setDelete(user);
         em.merge(user);
     }

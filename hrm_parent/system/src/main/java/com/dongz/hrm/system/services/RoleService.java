@@ -4,6 +4,7 @@ import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.system.Role;
 import com.dongz.hrm.domain.system.RolePermission;
+import com.dongz.hrm.domain.system.UserRole;
 import com.dongz.hrm.domain.system.vos.RoleVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,14 @@ public class RoleService extends BaseService {
         Role role = em.find(Role.class, id);
         Assert.notNull(role, "角色信息不存在， 修改失败");
         Assert.isTrue(!role.isDeleted(), "角色信息已删除");
+
+        // 删除用户关联
+        List<UserRole> userList = em.createQuery("select u from UserRole u where u.roleId = ?1", UserRole.class).setParameter(1, id).getResultList();
+        userList.forEach(item -> em.remove(item));
+
+        // 删除权限关联
+        List<RolePermission> resultList = em.createQuery("select u from RolePermission u where u.roleId = ?1", RolePermission.class).setParameter(1, id).getResultList();
+        resultList.forEach(item -> em.remove(item));
 
         setDelete(role);
         em.merge(role);

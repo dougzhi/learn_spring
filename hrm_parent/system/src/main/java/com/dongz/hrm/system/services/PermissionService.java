@@ -1,13 +1,10 @@
 package com.dongz.hrm.system.services;
 
 import com.dongz.hrm.common.enums.IsVisible;
+import com.dongz.hrm.domain.system.*;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
-import com.dongz.hrm.domain.system.Permission;
-import com.dongz.hrm.domain.system.PermissionApi;
-import com.dongz.hrm.domain.system.PermissionMenu;
-import com.dongz.hrm.domain.system.PermissionPoint;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -141,6 +138,10 @@ public class PermissionService extends BaseService {
 
         Permission permission = em.find(Permission.class, id);
         Assert.notNull(permission, "权限信息不存在， 修改失败");
+
+        //删除所有角色管理
+        List<RolePermission> roleList = em.createQuery("select u from RolePermission u where u.permissionId = ?1", RolePermission.class).setParameter(1, id).getResultList();
+        roleList.forEach(item -> em.remove(item));
 
         //级联删除
         List<Long> resultList = em.createQuery("select u.id from Permission u where u.pid = ?1", Long.class).setParameter(1, id).getResultList();
