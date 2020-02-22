@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author dong
@@ -43,9 +45,12 @@ public class RoleController extends BaseController {
         String sql = "select t.* from role t where t.id = :id and t.is_deleted = 0";
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        List<Map<String, Object>> list = this.queryForList(sql, params);
-        Assert.isTrue(list.size() == 1, "查询失败");
-        return Result.SUCCESS(list.get(0));
+        Map<String, Object> map = this.queryForObject(sql, params);
+
+        sql = "select t.permission_id from role_permission t where t.role_id = :id";
+        List<String> mapList = this.queryForList(sql, params, String.class);
+        map.put("permIds", mapList);
+        return Result.SUCCESS(map);
     }
 
     @PostMapping("/create")
@@ -66,9 +71,9 @@ public class RoleController extends BaseController {
         return Result.SUCCESS();
     }
 
-    @PostMapping("/assignprem")
-    public Result assignprem(@RequestBody RoleVO vo) {
-        service.create(vo);
+    @PostMapping("/assignPrem")
+    public Result assignPrem(@RequestParam Long id,@RequestParam("permIds") Long[] perms) {
+        service.assignPrem(id, Arrays.asList(perms).stream().distinct().collect(Collectors.toList()));
         return Result.SUCCESS();
     }
 }

@@ -3,6 +3,7 @@ package com.dongz.hrm.system.services;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.system.Role;
+import com.dongz.hrm.domain.system.RolePermission;
 import com.dongz.hrm.domain.system.vos.RoleVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author dong
@@ -81,5 +84,33 @@ public class RoleService extends BaseService {
 
         setDelete(role);
         em.merge(role);
+    }
+
+    /**
+     * 授权
+     * @param id id
+     */
+    public void assignPrem(Long id, List<Long> permIds) {
+        Assert.notNull(id, "角色ID不能为空");
+
+        Role role = em.find(Role.class, id);
+        Assert.notNull(role, "角色信息不存在， 修改失败");
+        Assert.isTrue(!role.isDeleted(), "角色信息已删除");
+
+        long count = em.createQuery("select count(1) from Permission u where u.id in (:ids)", Long.class).setParameter("ids", permIds).getSingleResult();
+        Assert.isTrue(count == permIds.size(), "权限信息异常");
+
+        List<RolePermission> list = em.createQuery("select u from RolePermission u where u.roleId = :id", RolePermission.class).setParameter("id", id).getResultList();
+        // 取左差集，新增
+        List<Long> permissionList = list.parallelStream().map(RolePermission::getPermissionId).collect(Collectors.toList());
+        List<Long> createList = permIds.parallelStream().filter(item -> !permissionList.contains(item)).collect(Collectors.toList());
+        // 取右差集，删除
+        List<RolePermission> removeList = list.parallelStream().filter(item -> !permIds.contains(item.getPermissionId())).collect(Collectors.toList());
+
+        createList.forEach(item -> {
+            RolePermission rolePermission = new RolePermission(id, item);
+            em.persist(rolePermission);
+        });
+        removeList.forEach(item -> em.remove(item));
     }
 }

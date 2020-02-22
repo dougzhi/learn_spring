@@ -32,7 +32,7 @@ public abstract class BaseController {
     }
 
     public <T> List<T> queryForList(String sql, Map<String,Object> params,Class<T> t) {
-        return this.jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(t));
+        return this.jdbcTemplate.queryForList(sql, params, t);
     }
 
     public List<Map<String, Object>> queryForList(String sql, Map<String, Object> params) {

@@ -32,16 +32,21 @@ public class PermissionController extends BaseController {
 
     @GetMapping("/findAll")
     public Result findAll(
-            @RequestParam Integer type,
-            @RequestParam Long pid,
+            Integer type,Long pid,
             @RequestParam(required = false, defaultValue = "1") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select t.* from permission t where t.type = :type and t.pid = :pid");
+        sb.append("select t.* from permission t where 1=1");
         Map<String, Object> params = new HashMap<>();
-        params.put("type", type);
-        params.put("pid", pid);
+        if (type != null) {
+            sb.append(" and t.type = :type");
+            params.put("type", type);
+        }
+        if (pid != null) {
+            sb.append(" and t.pid = :pid");
+            params.put("pid", pid);
+        }
         PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, page, size);
         return Result.SUCCESS(pageResult);
     }

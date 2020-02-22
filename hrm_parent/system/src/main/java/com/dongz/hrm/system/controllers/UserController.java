@@ -54,9 +54,9 @@ public class UserController extends BaseController {
         Assert.isTrue(list.size() == 1, "查询失败");
         Map<String, Object> map = list.get(0);
 
-        sql = "select t.role_id as roleId from user_role t where t.user_id = :id";
-        List<Map<String, Object>> mapList = this.queryForList(sql, params);
-        map.put("roleIds", mapList.stream().map(item -> (String)item.get("roleId")).collect(Collectors.toList()));
+        sql = "select t.role_id from user_role t where t.user_id = :id";
+        List<String> mapList = this.queryForList(sql, params, String.class);
+        map.put("roleIds", mapList);
         return Result.SUCCESS(map);
     }
 
@@ -80,7 +80,7 @@ public class UserController extends BaseController {
 
     @PostMapping("/assignRoles")
     public Result assignRoles(@RequestParam Long id,@RequestParam("roleIds") Long[] roles) {
-        service.assignRoles(id, Arrays.asList(roles));
+        service.assignRoles(id, Arrays.asList(roles).stream().distinct().collect(Collectors.toList()));
         return Result.SUCCESS();
     }
 }
