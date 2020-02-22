@@ -8,6 +8,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,17 +25,20 @@ import java.util.Map;
 @RequestMapping("/api/sys")
 public class LoginController extends BaseController {
 
+    @Autowired
+    JwtUtils jwtUtils;
+
     @PostMapping("/login")
     public Result login(@RequestParam String mobile,@RequestParam String password) {
         //查询用户信息
         Map<String, Object> params = new HashMap<>();
         params.put("mobile", mobile);
-        Map<String, Object> map = this.queryForObject("select t.username,t.passsword,t.enable_state as enableState form user t where t.mobile = :mibile and t.isdeleted = false", params);
+        Map<String, Object> map = this.queryForObject("select t.username,t.passsword,t.enable_state as enableState,company_id as companyId,company_name as companyName form user t where t.mobile = :mibile and t.isdeleted = false", params);
         Assert.isTrue(password.equals(map.get("password")), "密码错误，请重新输入密码！");
         Assert.isTrue(EnableState.Enable.equals(EnableState.parse((Integer) map.get("enableState"))), "用户已被禁用，请联系管理员！");
 
-        JwtUtils jwtUtils = new JwtUtils();
+        map.remove("password");
         String token = jwtUtils.createJwt(mobile, (String) map.get("username"), map);
-        return Result.SUCCESS(token);
+        return Result.LOGINSUCCESS(token);
     }
 }

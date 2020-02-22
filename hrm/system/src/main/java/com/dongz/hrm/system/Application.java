@@ -1,6 +1,7 @@
 package com.dongz.hrm.system;
 
 import com.dongz.hrm.common.utils.IdWorker;
+import com.dongz.hrm.common.utils.JwtUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -21,5 +22,10 @@ public class Application {
     @Bean
     public IdWorker idWorker() {
         return new IdWorker();
+    }
+
+    @Bean
+    public JwtUtils jwtUtils() {
+        return new JwtUtils();
     }
 }

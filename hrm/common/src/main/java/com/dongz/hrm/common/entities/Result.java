@@ -40,6 +40,10 @@ public class Result {
         return new Result(ResultCode.SUCCESS, data);
     }
 
+    public static Result LOGINSUCCESS(String token){
+        return new Result(ResultCode.LOGINSUCCESS, token);
+    }
+
     public static Result ERROR(){
         return new Result(ResultCode.SERVER_ERROR);
     }
