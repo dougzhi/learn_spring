@@ -52,8 +52,4 @@ public class Result {
     public static Result FAILE(Integer code, String msg) {
         return new Result(code, msg, false);
     }
-
-    public static Result LOGINFAILE(){
-        return new Result(ResultCode.LOGINFAILE);
-    }
 }

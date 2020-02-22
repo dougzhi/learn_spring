@@ -23,3 +23,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+
+jwt:
+  key: 123121
+  ttl: 2*60*60
