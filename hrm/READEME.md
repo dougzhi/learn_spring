@@ -11,7 +11,7 @@
 - 权限管理
 ##RBAC
 
-![image-20200206144656919](/Users/dong/IdeaProjects/javaLearn/hrm_parent/RBAC.png)
+![image-20200206144656919](/Users/dong/IdeaProjects/javaLearn/hrm/RBAC.png)
 
 #Swagger-html
 
