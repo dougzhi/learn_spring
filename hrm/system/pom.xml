@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>com.dongz.hrm</groupId>
-            <artifactId>common_model</artifactId>
+            <artifactId>model</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
