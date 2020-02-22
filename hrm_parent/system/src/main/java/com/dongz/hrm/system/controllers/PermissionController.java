@@ -1,11 +1,7 @@
 package com.dongz.hrm.system.controllers;
 
 import com.dongz.hrm.common.controllers.BaseController;
-import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
-import com.dongz.hrm.common.enums.IsVisible;
-import com.dongz.hrm.common.utils.StringCase;
-import com.dongz.hrm.domain.system.Permission;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
 import com.dongz.hrm.system.services.PermissionService;
@@ -15,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,10 +29,7 @@ public class PermissionController extends BaseController {
 
     @GetMapping("/findAll")
     public Result findAll(
-            Integer type,Long pid,
-            @RequestParam(required = false, defaultValue = "1") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer size
-    ) {
+            Integer type,Long pid) {
         StringBuilder sb = new StringBuilder();
         sb.append("select t.* from permission t where 1=1");
         Map<String, Object> params = new HashMap<>();
@@ -47,7 +41,7 @@ public class PermissionController extends BaseController {
             sb.append(" and t.pid = :pid");
             params.put("pid", pid);
         }
-        PageResult<Map<String, Object>> pageResult = this.queryForPagination(sb, params, page, size);
+        List<Map<String, Object>> pageResult = this.queryForList(sb.toString(), params);
         return Result.SUCCESS(pageResult);
     }
 

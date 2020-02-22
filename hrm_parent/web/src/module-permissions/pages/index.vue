@@ -163,19 +163,19 @@ export default {
     },
     getList() {
       list(this.params).then(res=> {
-          this.dataList = res.data.data.list
+          this.dataList = res.data.data
       })
     },
     show(index,id) {
         if(!this.pointEnable[id] == null || this.pointEnable[id]==undefined){
             list({type:2,pid:id}).then(res=> {
-                if(res.data.data.list.length <=0) {
+                if(res.data.data.length <=0) {
                   this.$message.error("无子权限")
                 }else{
-                  for(var i = 0 ; i <res.data.data.list.length;i++) {
-                      this.dataList.splice(index+1,0,res.data.data.list[i]);
+                  for(var i = 0 ; i <res.data.data.length;i++) {
+                      this.dataList.splice(index+1,0,res.data.data[i]);
                   }
-                  this.pointEnable[id] = res.data.data.list.length;
+                  this.pointEnable[id] = res.data.data.length;
                 }
             })
         }else{
@@ -186,7 +186,7 @@ export default {
     handlerApiList(id) {
       this.pid = id;
       list({type:3,pid:id}).then(res=> {
-          this.apiList = res.data.data.list
+          this.apiList = res.data.data
           this.apiDialogVisible = true;
       })
     }

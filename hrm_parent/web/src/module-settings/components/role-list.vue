@@ -97,7 +97,7 @@ export default {
          this.formData = res.data.data;
          this.checkNodes = res.data.data.permIds
           permApi.list().then(res => {
-            this.treeData = commonApi.transformTozTreeFormat(res.data.data.list)
+            this.treeData = commonApi.transformTozTreeFormat(res.data.data)
             this.permFormVisible=true
           })
        })
@@ -110,10 +110,12 @@ export default {
       this.$confirm(
         `本次操作将删除${obj.name},删除后角色将不可恢复，您确认删除吗？`
       ).then(() => {
-          remove({id: obj.id}).then(res => {
-              this.$message({message:res.data.message,type:res.data.success?"success":"error"});
-              this.doQuery()
-          })
+        let fd = new FormData();
+        fd.set("id", obj.id);
+        remove(fd).then(res => {
+            this.$message({message:res.data.message,type:res.data.success?"success":"error"});
+            this.doQuery()
+        })
       })
     },
     handleUpdate(obj) {
