@@ -38,7 +38,7 @@ public class PermissionService extends BaseService {
         Assert.notNull(vo, "权限信息不能为空");
         Assert.notNull(vo.getType(), "权限类型不能为空");
         Assert.hasText(vo.getName(), "权限名称不能为空");
-        Assert.hasText(vo.getCode(), "权限码不能为空");
+        Assert.hasText(vo.getCode(), "权限标识符不能为空");
         Assert.notNull(vo.getPid(), "父级权限不能为空");
         Assert.notNull(vo.getIsVisible(), "权限可见性不能为空");
         IsVisible isVisible = IsVisible.parse(vo.getIsVisible());
@@ -64,6 +64,9 @@ public class PermissionService extends BaseService {
 
         long count = em.createQuery("select count(1) from Permission u where u.name = ?1 and u.pid = ?2 ", Long.class).setParameter(1, vo.getName()).setParameter(2, vo.getPid()).getSingleResult();
         Assert.isTrue(count == 0, "权限名称重复， 新增失败");
+
+        count = em.createQuery("select count(1) from Permission u where u.code = ?1 ", Long.class).setParameter(1, vo.getCode()).setParameter(2, vo.getPid()).getSingleResult();
+        Assert.isTrue(count == 0, "权限标识符重复， 新增失败");
 
         Permission permission = new Permission();
 
@@ -92,7 +95,7 @@ public class PermissionService extends BaseService {
         Assert.notNull(vo, "权限信息不能为空");
         Assert.notNull(vo.getId(), "要修改的权限ID不能为空");
         Assert.hasText(vo.getName(), "权限名称不能为空");
-        Assert.hasText(vo.getCode(), "权限码不能为空");
+        Assert.hasText(vo.getCode(), "权限标识符不能为空");
         Assert.notNull(vo.getIsVisible(), "权限可见性不能为空");
         IsVisible isVisible = IsVisible.parse(vo.getIsVisible());
 
@@ -118,6 +121,12 @@ public class PermissionService extends BaseService {
             Optional<Permission> first = em.createQuery("select u from Permission u where u.name = ?1 ", Permission.class).setParameter(1, vo.getName()).getResultStream().findFirst();
             Assert.isTrue((!first.isPresent()) || (first.get().getName().equals(vo.getName())), "权限名称重复， 修改失败");
             permission.setName(vo.getName());
+        }
+
+        if (!permission.getCode().equals(vo.getCode())) {
+            Optional<Permission> first = em.createQuery("select u from Permission u where u.code = ?1 ", Permission.class).setParameter(1, vo.getCode()).getResultStream().findFirst();
+            Assert.isTrue((!first.isPresent()) || (first.get().getCode().equals(vo.getCode())), "权限标识符重复， 修改失败");
+            permission.setCode(vo.getCode());
         }
 
         permission.setDescription(vo.getDescription());
