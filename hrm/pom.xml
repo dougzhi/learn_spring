@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dongz.hrm</groupId>
-    <artifactId>hrm</artifactId>
+    <artifactId>parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>common</module>
         <module>common_model</module>
         <module>company</module>
         <module>system</module>
-        <module>zxing</module>
+        <module>pay</module>
     </modules>
 
     <packaging>pom</packaging>
