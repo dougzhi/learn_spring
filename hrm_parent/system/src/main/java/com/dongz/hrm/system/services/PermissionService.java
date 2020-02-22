@@ -1,5 +1,6 @@
 package com.dongz.hrm.system.services;
 
+import com.dongz.hrm.common.enums.IsVisible;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
@@ -43,6 +44,7 @@ public class PermissionService extends BaseService {
         Assert.hasText(vo.getCode(), "权限码不能为空");
         Assert.notNull(vo.getPid(), "父级权限不能为空");
         Assert.notNull(vo.getIsVisible(), "权限可见性不能为空");
+        IsVisible isVisible = IsVisible.parse(vo.getIsVisible());
 
         PermissionStatus permissionStatus = PermissionStatus.parse(vo.getType());
         if (permissionStatus.equals(PermissionStatus.API)) {
@@ -74,7 +76,7 @@ public class PermissionService extends BaseService {
         permission.setCode(vo.getCode());
         permission.setDescription(vo.getDescription());
         permission.setPid(vo.getPid());
-        permission.setIsVisible(Boolean.parseBoolean(vo.getIsVisible()));
+        permission.setIsVisible(isVisible);
 
         em.persist(permission);
         Long permissionId = permission.getId();
@@ -95,6 +97,7 @@ public class PermissionService extends BaseService {
         Assert.hasText(vo.getName(), "权限名称不能为空");
         Assert.hasText(vo.getCode(), "权限码不能为空");
         Assert.notNull(vo.getIsVisible(), "权限可见性不能为空");
+        IsVisible isVisible = IsVisible.parse(vo.getIsVisible());
 
         PermissionStatus permissionStatus = PermissionStatus.parse(vo.getType());
         if (permissionStatus.equals(PermissionStatus.API)) {
@@ -122,7 +125,7 @@ public class PermissionService extends BaseService {
 
         permission.setDescription(vo.getDescription());
         permission.setCode(vo.getCode());
-        permission.setIsVisible(Boolean.parseBoolean(vo.getIsVisible()));
+        permission.setIsVisible(isVisible);
 
         em.merge(permission);
 

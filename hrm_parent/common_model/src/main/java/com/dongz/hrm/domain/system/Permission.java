@@ -1,5 +1,6 @@
 package com.dongz.hrm.domain.system;
 
+import com.dongz.hrm.common.enums.IsVisible;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +49,8 @@ public class Permission implements Serializable {
 
     private Long pid;
 
-    private Boolean isVisible;
+    @Convert(converter = IsVisible.MyConverter.class)
+    private IsVisible isVisible;
 
     public Map<String, Object> getDataBaseMap(){
         Map<String, Object> map = new HashMap<>();
