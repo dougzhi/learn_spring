@@ -43,14 +43,16 @@ public class ShiroConfiguration {
         // 2，设置安全管理器
         filterFactory.setSecurityManager(securityManager);
         // 3，通用配置（跳转登录页，未授权页）
-        filterFactory.setLoginUrl("");
-        filterFactory.setUnauthorizedUrl("");
+        filterFactory.setLoginUrl("/api/error/authorError?code=1");
+        filterFactory.setUnauthorizedUrl("/api/error/authorError?code=2");
         // 设置请求过滤器集合
         Map<String, String> filterMap = new LinkedHashMap<>();
-        //filterMap.put("/xxx", "anon"); // 当前请求可匿名访问
-        //filterMap.put("/xxx", "authc"); // 当前请求可认证访问
-        //filterMap.put("/xxx", "permis[role1]"); // 当前请求具有角色权限可访问
-
+        // 当前请求可匿名访问
+        filterMap.put("/api/sys/login", "anon");
+        filterMap.put("/api/sys/register", "anon");
+        // 当前请求认证后可访问
+        filterMap.put("/**", "authc");
+        //filterMap.put("/xxx", "permis[role1]"); // 当前请求具有权限可访问 ，本系统使用注解配置授权
 
         filterFactory.setFilterChainDefinitionMap(filterMap);
         return filterFactory;
