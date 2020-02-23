@@ -39,12 +39,10 @@
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
-import loginSocialSignin from './../components/loginSocialSignin'
-import shajs from 'sha.js'
+  import LangSelect from '@/components/LangSelect'
+  import loginSocialSignin from './../components/loginSocialSignin'
 
-export default {
+  export default {
   components: { LangSelect, loginSocialSignin },
   name: 'login',
   data() {
@@ -105,8 +103,11 @@ export default {
           this.$router.push({ path: '/' })
         })
         .catch(res => {
-          debugger
-          this.$message.error(res);
+          if (res) {
+            this.$message.error(res);
+          } else {
+            this.$message.error("请求失败！");
+          }
           this.loading = false
         })
     },

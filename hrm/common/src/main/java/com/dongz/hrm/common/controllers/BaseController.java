@@ -31,11 +31,11 @@ public abstract class BaseController {
         Subject subject = SecurityUtils.getSubject();
         PrincipalCollection principals = subject.getPrincipals();
 
-        Object principal = principals.getPrimaryPrincipal();
-        // 获取安全数据
-        if (principal != null) {
+        if (principals != null) {
+            Object principal = principals.getPrimaryPrincipal();
             profile = (Profile) principal;
         }
+        // 获取安全数据
     }
 
     @Autowired

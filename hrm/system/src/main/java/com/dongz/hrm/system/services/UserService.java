@@ -1,5 +1,6 @@
 package com.dongz.hrm.system.services;
 
+import com.dongz.hrm.common.entities.Profile;
 import com.dongz.hrm.common.enums.EnableState;
 import com.dongz.hrm.common.enums.FormOfEmployment;
 import com.dongz.hrm.common.enums.LevelState;
@@ -9,7 +10,6 @@ import com.dongz.hrm.domain.system.Permission;
 import com.dongz.hrm.domain.system.User;
 import com.dongz.hrm.domain.system.UserRole;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
-import com.dongz.hrm.common.entities.Profile;
 import com.dongz.hrm.domain.system.vos.UserVO;
 import com.sun.istack.NotNull;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -171,7 +171,7 @@ public class UserService extends BaseService {
         }
         // 普通用户查询权限列表
         else {
-            roleList = em.createQuery("select p from Permission left join RolePermission o on p.id = o.permissionId " +
+            roleList = em.createQuery("select p from Permission p left join RolePermission o on p.id = o.permissionId " +
                     "left join Role r on o.roleId = r.id " +
                     "left join UserRole u on u.roleId = r.id where u.userId = ?1 and r.isDeleted = 0", Permission.class)
                     .setParameter(1, user.getId()).getResultList();

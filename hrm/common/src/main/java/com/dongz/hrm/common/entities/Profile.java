@@ -15,6 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class Profile implements Serializable, AuthCachePrincipal {
+    private static final long serialVersionUID = 8913745173701454838L;
     private String username;
     private String mobile;
     private Long companyId;
@@ -27,8 +28,8 @@ public class Profile implements Serializable, AuthCachePrincipal {
     }
 
     @Data
-    public static class Roles {
-
+    public static class Roles implements Serializable{
+        private static final long serialVersionUID = -7447543349720068403L;
         private List<String> menus;
         private List<String> points;
         private List<String> apis;
