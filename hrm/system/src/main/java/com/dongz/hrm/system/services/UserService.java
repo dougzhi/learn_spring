@@ -1,5 +1,8 @@
 package com.dongz.hrm.system.services;
 
+import com.dongz.hrm.common.enums.EnableState;
+import com.dongz.hrm.common.enums.FormOfEmployment;
+import com.dongz.hrm.common.enums.LevelState;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.system.User;
@@ -42,6 +45,7 @@ public class UserService extends BaseService {
         User user = new User();
         BeanUtils.copyProperties(vo, user);
         user.setId(idWorker.nextId());
+        user.setLevel(LevelState.NormalUser);
 
         setCreate(user);
         em.persist(user);
@@ -70,6 +74,8 @@ public class UserService extends BaseService {
         }
 
         user.setUsername(vo.getUsername());
+        user.setEnableState(EnableState.Enable);
+        user.setFormOfEmployment(FormOfEmployment.Formal);
 
         setLastUpdate(user);
         em.merge(user);

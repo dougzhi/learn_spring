@@ -3,6 +3,7 @@ package com.dongz.hrm.domain.system;
 import com.dongz.hrm.common.entities.BaseEntity;
 import com.dongz.hrm.common.enums.EnableState;
 import com.dongz.hrm.common.enums.FormOfEmployment;
+import com.dongz.hrm.common.enums.LevelState;
 import com.dongz.hrm.common.enums.ServiceStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -102,4 +103,10 @@ public class User extends BaseEntity implements Serializable {
     private Date exitTime;
 
     private String departmentName;
+
+    /**
+     * 用户权限等级
+     */
+    @Convert(converter = LevelState.MyConverter.class)
+    private LevelState level;
 }
