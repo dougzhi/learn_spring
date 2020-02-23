@@ -43,6 +43,9 @@ public class Result {
     public static Result LOGINSUCCESS(String token){
         return new Result(ResultCode.LOGINSUCCESS, token);
     }
+    public static Result LOGINFAILE(String message){
+        return new Result(ResultCode.LOGINFAILE, message);
+    }
 
     public static Result ERROR(){
         return new Result(ResultCode.SERVER_ERROR);

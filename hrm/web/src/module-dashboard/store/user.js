@@ -52,14 +52,18 @@ const user = {
     LoginByUsername({ commit }, userInfo) {
       const username = userInfo.mobile.trim()
       return new Promise((resolve, reject) => {
-        login({
-            mobile: username,
-            password: userInfo.password
-          }).then(response => {
-            const data = response.data.data
-            commit('SET_TOKEN', data.token)
-            setToken(data.token)
+        let fd = new FormData()
+        fd.set("mobile",username)
+        fd.set("password", userInfo.password);
+        login(fd).then(response => {
+          if (response.data.success) {
+            const token = response.data.data
+            commit('SET_TOKEN', token)
+            setToken(token)
             resolve()
+          } else {
+            reject(response.data.data)
+          }
         }).catch(error => {
           reject(error)
         })

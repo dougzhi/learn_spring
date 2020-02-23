@@ -12,7 +12,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +35,13 @@ public class LoginController extends BaseController {
         //查询用户信息
         Map<String, Object> params = new HashMap<>();
         params.put("mobile", mobile);
-        Map<String, Object> map = this.queryForObject("select t.username,t.mobile,t.password,t.enable_state as enableState,t.company_id as companyId,t.company_name as companyName from user t where t.mobile = :mobile and t.is_deleted = false", params);
-        Assert.isTrue(password.equals(map.get("password")), "密码错误，请重新输入密码！");
-        Assert.isTrue(EnableState.Enable.equals(EnableState.parse((Integer) map.get("enableState"))), "用户已被禁用，请联系管理员！");
+        List<Map<String, Object>> list = this.queryForList("select t.username,t.mobile,t.password,t.enable_state as enableState,t.company_id as companyId,t.company_name as companyName from user t where t.mobile = :mobile and t.is_deleted = false", params);
+        if (list.size() == 0) return Result.LOGINFAILE("用户不存在");
+        if (list.size() > 1) return Result.LOGINFAILE("用户重复，请联系管理员！");
+
+        Map<String, Object> map = list.get(0);
+        if (!password.equals(map.get("password"))) return Result.LOGINFAILE("密码错误，请重新输入密码！");
+        if (EnableState.Disable.equals(EnableState.parse((Integer) map.get("enableState")))) return Result.LOGINFAILE("用户已被禁用，请联系管理员！");
 
         map.remove("password");
         String token = jwtUtils.createJwt(mobile, (String) map.get("username"), map);
@@ -61,7 +64,7 @@ public class LoginController extends BaseController {
         params.clear();
         Map<String, Object> roles = new HashMap<>();
         // 根据用户等级返回权限信息
-        LevelState level = LevelState.parse((Integer) userInfo.get("level"));
+        LevelState level = LevelState.parse(Integer.parseInt((String) userInfo.get("level")));
         List<Map<String, Object>> roleList;
         // 超级管理员管理所有权限
         if (LevelState.Admin.equals(level)) {

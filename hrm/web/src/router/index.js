@@ -17,7 +17,7 @@ NProgress.configure({showSpinner: false}) // NProgress Configuration
 
 /**
  * 基础路由
- * 
+ *
 * root: true                     在一级栏目显示
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
 * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
@@ -95,9 +95,9 @@ router.beforeEach((to, from, next) => {
               next({...to, replace: true}) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
             })
           })
-          .catch(() => {
+          .catch(res => {
+            debugger
             store.dispatch('FedLogOut').then(() => {
-              Message.error('验证失败, 请重新登录')
               next({path: '/login'})
             })
           })

@@ -72,7 +72,7 @@ export default {
   computed: {
     myheader: function() {
       return {
-        Authorization: `Bearer ${getToken()}`
+        Authorization: `${getToken()}`
       }
     }
   },
