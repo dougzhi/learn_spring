@@ -100,11 +100,12 @@ export default {
           mobile: this.loginForm.username,
           password: this.loginForm.password
         })
-        .then(res => {
+        .then(() => {
           this.loading = false
           this.$router.push({ path: '/' })
         })
         .catch(res => {
+          debugger
           this.$message.error(res);
           this.loading = false
         })

@@ -10,8 +10,8 @@ public enum ResultCode {
     SERVER_ERROR(false,99999,"抱歉，系统繁忙，请稍后重试！"),
 
     //---用户操作返回码----
-    LOGINSUCCESS(true,20000,"登录成功"),
-    LOGINFAILE(false,20001,"登录失败");
+    LOGINSUCCESS(true,20000,"登录成功!"),
+    LOGINFAILE(false,20001,"登录失败!");
     //---企业操作返回码----
     //---权限操作返回码----
     //---其他操作返回码----

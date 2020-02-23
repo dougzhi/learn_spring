@@ -12,9 +12,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,7 +39,8 @@ public class LoginController extends BaseController {
 
         Map<String, Object> map = list.get(0);
         if (!password.equals(map.get("password"))) return Result.LOGINFAILE("密码错误，请重新输入密码！");
-        if (EnableState.Disable.equals(EnableState.parse((Integer) map.get("enableState")))) return Result.LOGINFAILE("用户已被禁用，请联系管理员！");
+        if (EnableState.Disable.equals(EnableState.parse((Integer) map.get("enableState"))))
+            return Result.LOGINFAILE("用户已被禁用，请联系管理员！");
 
         map.remove("password");
         String token = jwtUtils.createJwt(mobile, (String) map.get("username"), map);
@@ -77,16 +76,33 @@ public class LoginController extends BaseController {
         // 普通用户查询权限列表
         else {
             params.put("id", userInfo.get("id"));
-            roleList = this.queryForList("select p.code,p.type from permission p " +
+            roleList = this.queryForList("select p.code,p.type,p.full_code as fullCode from permission p " +
                     "left join role_permission o on p.id = o.permission_id " +
                     "left join role r on o.role_id = r.id " +
                     "left join user_role u on r.id = u.role_id where u.user_id = :id and r.is_deleted =0", params);
+            getParentPermission(roleList);
         }
-        Map<String, List<Map<String, Object>>> type = roleList.parallelStream().collect(Collectors.groupingBy(item -> PermissionStatus.parse((Integer) item.get("type")).getName()));
-        roles.put("menus", type.get(PermissionStatus.MENU.getName()).parallelStream().map(item -> (String) item.get("code")).collect(Collectors.toList()));
-        roles.put("points", type.get(PermissionStatus.POINT.getName()).parallelStream().map(item -> (String) item.get("code")).collect(Collectors.toList()));
-        roles.put("apis", type.get(PermissionStatus.API.getName()).parallelStream().map(item -> (String) item.get("code")).collect(Collectors.toList()));
+        Map<String, List<Map<String, Object>>> type = roleList.parallelStream().collect(Collectors.groupingBy(item -> PermissionStatus.parse((Integer) item.get("type")).name()));
+        roles.put("menus", type.containsKey(PermissionStatus.MENU.name()) ? type.get(PermissionStatus.MENU.name()).parallelStream().map(item -> (String) item.get("code")).collect(Collectors.toList()) : null);
+        roles.put("points", type.containsKey(PermissionStatus.POINT.name()) ? type.get(PermissionStatus.POINT.name()).parallelStream().map(item -> (String) item.get("code")).collect(Collectors.toList()) : null);
+        roles.put("apis", type.containsKey(PermissionStatus.API.name()) ? type.get(PermissionStatus.API.name()).parallelStream().map(item -> (String) item.get("code")).collect(Collectors.toList()) : null);
         userInfo.put("roles", roles);
         return Result.SUCCESS(userInfo);
+    }
+
+    /**
+     * 获取所有父级权限
+     * @param roleList
+     */
+    private void getParentPermission(final List<Map<String, Object>> roleList) {
+        //分割code，查询
+        List<String> fullCode = Arrays.asList(roleList.parallelStream().map(item -> (String) item.get("fullCode")).distinct().collect(Collectors.joining(".")).split("\\.")).parallelStream().distinct().filter(item -> !"".equals(item)).collect(Collectors.toList());
+
+        fullCode.parallelStream().forEach(item -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put("code", item);
+            List<Map<String, Object>> list = this.queryForList("select u.code,u.type,u.full_code as fullCode from permission u where u.code = :code", params);
+            roleList.addAll(list);
+        });
     }
 }

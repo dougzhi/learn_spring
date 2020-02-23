@@ -68,11 +68,12 @@ public class PermissionService extends BaseService {
         Permission permission = new Permission();
 
         if (vo.getPid() == 0) {
-            permission.setFullCode(vo.getCode());
+            permission.setFullCode("");
         } else {
-            Optional<String> fullCode = em.createQuery("select u.fullCode from Permission u where u.id = ?1 ", String.class).setParameter(1, vo.getPid()).getResultStream().findFirst();
-            Assert.isTrue(fullCode.isPresent(), "父级权限不存在");
-            permission.setFullCode(fullCode.get() + "." + vo.getCode());
+            Optional<Permission> pid = em.createQuery("select u from Permission u where u.id = ?1 ", Permission.class).setParameter(1, vo.getPid()).getResultStream().findFirst();
+            Assert.isTrue(pid.isPresent(), "父级权限不存在");
+            Permission parent = pid.get();
+            permission.setFullCode(parent.getFullCode() + parent.getCode() + ".");
         }
         permission.setId(idWorker.nextId());
         permission.setName(vo.getName());
@@ -131,13 +132,9 @@ public class PermissionService extends BaseService {
         if (!permission.getCode().equals(vo.getCode())) {
             Optional<Permission> first = em.createQuery("select u from Permission u where u.code = ?1 ", Permission.class).setParameter(1, vo.getCode()).getResultStream().findFirst();
             Assert.isTrue((!first.isPresent()) || (first.get().getCode().equals(vo.getCode())), "权限标识符重复， 修改失败");
-            // 更新fullCode
-            String oldFullCode = permission.getFullCode();
-            List<String> oldList = Arrays.asList(oldFullCode.split("\\."));
-            oldList.set(oldList.lastIndexOf(permission.getCode()), vo.getCode());
-            String newFullCode = String.join(".", oldList);
-            permission.setFullCode(newFullCode);
-            em.createNativeQuery("update permission set full_code = replace(full_code, ?1, ?2)").setParameter(1, oldFullCode + ".").setParameter(2, newFullCode + ".").executeUpdate();
+            // 更新下级权限fullCode
+            String fullCode = permission.getFullCode();
+            em.createNativeQuery("update permission set full_code = replace(full_code, ?1, ?2)").setParameter(1, fullCode + permission.getCode() + ".").setParameter(2, fullCode + vo.getCode() + ".").executeUpdate();
             permission.setCode(vo.getCode());
         }
 
