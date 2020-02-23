@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2020/2/20 00:38
  * @desc 获取安全数据， 构造权限信息
  */
-public abstract class BaseRealm extends AuthorizingRealm {
+public class BaseRealm extends AuthorizingRealm {
 
     @Override
     public void setName(String name) {
