@@ -37,7 +37,7 @@ public class ShiroConfiguration {
      * @return
      */
     @Bean
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         // 1, 创建过滤工厂
         ShiroFilterFactoryBean filterFactory = new ShiroFilterFactoryBean();
         // 2，设置安全管理器
@@ -106,9 +106,9 @@ public class ShiroConfiguration {
     }
 
     @Bean
-    public SecurityManager getSecurityManager(SystemRealm realm) {
+    public SecurityManager getSecurityManager() {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
-        manager.setRealm(realm);
+        manager.setRealm(systemRealm());
         // 将自定义的会话管理器注册到安全管理器中
         manager.setSessionManager(sessionManager());
         // 将自定义的Redis缓存管理器注册到安全管理器中

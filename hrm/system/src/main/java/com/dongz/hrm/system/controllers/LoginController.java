@@ -1,13 +1,12 @@
 package com.dongz.hrm.system.controllers;
 
 import com.dongz.hrm.common.controllers.BaseController;
-import com.dongz.hrm.common.entities.Profile;
 import com.dongz.hrm.common.entities.Result;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -42,10 +41,8 @@ public class LoginController extends BaseController {
 
     @GetMapping("/userInfo")
     public Result login() {
-        Subject subject = SecurityUtils.getSubject();
-        PrincipalCollection principals = subject.getPrincipals();
         // 获取安全数据
-        Profile profile = (Profile) principals.getPrimaryPrincipal();
+        Assert.notNull(profile, "获取用户信息失败");
 
         return Result.SUCCESS(profile);
     }

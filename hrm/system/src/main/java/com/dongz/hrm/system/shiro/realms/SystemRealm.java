@@ -1,19 +1,17 @@
 package com.dongz.hrm.system.shiro.realms;
 
-import com.dongz.hrm.common.shiro.realms.BaseRealm;
 import com.dongz.hrm.common.entities.Profile;
+import com.dongz.hrm.common.shiro.realms.BaseRealm;
 import com.dongz.hrm.system.services.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * @author dong
  * @date 2020/2/20 00:42
  * @desc
  */
-@Component
 public class SystemRealm extends BaseRealm {
 
     @Autowired

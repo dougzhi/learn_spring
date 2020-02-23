@@ -1,13 +1,16 @@
 package com.dongz.hrm.common.controllers;
 
 import com.dongz.hrm.common.entities.PageResult;
+import com.dongz.hrm.common.entities.Profile;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -18,13 +21,21 @@ import java.util.Map;
  */
 public abstract class BaseController {
 
+    protected Profile profile;
+
     /**
      * controller中每个方法前执行
-     * @param request
      */
     @ModelAttribute
-    public void init(HttpServletRequest request) {
+    public void init() {
+        Subject subject = SecurityUtils.getSubject();
+        PrincipalCollection principals = subject.getPrincipals();
 
+        Object principal = principals.getPrimaryPrincipal();
+        // 获取安全数据
+        if (principal != null) {
+            profile = (Profile) principal;
+        }
     }
 
     @Autowired
