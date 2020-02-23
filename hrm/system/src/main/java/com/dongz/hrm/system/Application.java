@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 
 /**
  * @author dong
@@ -27,5 +28,14 @@ public class Application {
     @Bean
     public JwtUtils jwtUtils() {
         return new JwtUtils();
+    }
+
+    /**
+     * 解决 no session
+     * @return
+     */
+    @Bean
+    public OpenEntityManagerInViewFilter openEntityManagerInViewFilter(){
+        return new OpenEntityManagerInViewFilter();
     }
 }

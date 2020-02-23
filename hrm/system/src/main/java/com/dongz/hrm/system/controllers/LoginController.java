@@ -6,13 +6,14 @@ import com.dongz.hrm.common.enums.EnableState;
 import com.dongz.hrm.common.enums.LevelState;
 import com.dongz.hrm.common.utils.JwtUtils;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,11 +49,7 @@ public class LoginController extends BaseController {
     }
 
     @GetMapping("/userInfo")
-    public Result login(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        Assert.hasText(token, "签名信息为空，请求重新登录！");
-
-        Claims claims = jwtUtils.parseJwt(token);
+    public Result login() {
         String mobile = (String) claims.get("mobile");
         Assert.notNull(mobile, "手机号不能为空");
         //查询用户信息
