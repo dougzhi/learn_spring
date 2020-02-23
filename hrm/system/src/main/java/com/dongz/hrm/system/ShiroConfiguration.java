@@ -50,6 +50,7 @@ public class ShiroConfiguration {
         // 当前请求可匿名访问
         filterMap.put("/api/sys/login", "anon");
         filterMap.put("/api/sys/register", "anon");
+        filterMap.put("/api/error /**", "anon");
         // 当前请求认证后可访问
         filterMap.put("/**", "authc");
         //filterMap.put("/xxx", "permis[role1]"); // 当前请求具有权限可访问 ，本系统使用注解配置授权

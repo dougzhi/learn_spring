@@ -1,7 +1,6 @@
 package com.dongz.hrm.common.controllers;
 
 import com.dongz.hrm.common.entities.PageResult;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,14 +18,13 @@ import java.util.Map;
  */
 public abstract class BaseController {
 
-    protected Claims claims;
-
+    /**
+     * controller中每个方法前执行
+     * @param request
+     */
     @ModelAttribute
     public void init(HttpServletRequest request) {
-        Object userClaims = request.getAttribute("user_claims");
-        if (userClaims != null) {
-            claims = (Claims) userClaims;
-        }
+
     }
 
     @Autowired

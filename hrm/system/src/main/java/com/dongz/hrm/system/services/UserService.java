@@ -154,19 +154,6 @@ public class UserService extends BaseService {
 
     /**
      * 获取安全数据
-     * @param id
-     * @return
-     */
-    public Profile getProfile(String mobile) {
-        Assert.hasText(mobile, "手机号不能为空");
-        User user = em.createQuery("select u from User u where u.mobile = ?1 and u.isDeleted = 0 ", User.class).setParameter(1, mobile).getResultStream().findFirst().orElse(null);
-        Assert.notNull(user, "用户信息不存在");
-
-        return getProfile(user);
-    }
-
-    /**
-     * 获取安全数据
      * @param user
      * @return
      */
