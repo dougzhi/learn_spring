@@ -44,7 +44,6 @@
         :data="treeData"
         default-expand-all
         show-checkbox
-        :check-strictly="true"
         node-key="id"
         ref="tree"
         :default-checked-keys="checkNodes"
