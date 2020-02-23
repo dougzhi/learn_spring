@@ -39,6 +39,7 @@ public class PermissionService extends BaseService {
         Assert.notNull(vo.getType(), "权限类型不能为空");
         Assert.hasText(vo.getName(), "权限名称不能为空");
         Assert.hasText(vo.getCode(), "权限标识符不能为空");
+        Assert.isTrue(!vo.getCode().contains("."), "权限标识符不能包含特殊字符\".\"");
         Assert.notNull(vo.getPid(), "父级权限不能为空");
         Assert.notNull(vo.getIsVisible(), "权限可见性不能为空");
         IsVisible isVisible = IsVisible.parse(vo.getIsVisible());
@@ -57,19 +58,22 @@ public class PermissionService extends BaseService {
             Assert.hasText(vo.getPointStatus(), "权限点状态不能为空");
         }
 
-        if (vo.getPid() != 0) {
-            long count = em.createQuery("select count(1) from Permission u where u.id = ?1 ", Long.class).setParameter(1, vo.getPid()).getSingleResult();
-            Assert.isTrue(count == 1, "父级权限不存在");
-        }
 
         long count = em.createQuery("select count(1) from Permission u where u.name = ?1 and u.pid = ?2 ", Long.class).setParameter(1, vo.getName()).setParameter(2, vo.getPid()).getSingleResult();
         Assert.isTrue(count == 0, "权限名称重复， 新增失败");
 
-        count = em.createQuery("select count(1) from Permission u where u.code = ?1 ", Long.class).setParameter(1, vo.getCode()).setParameter(2, vo.getPid()).getSingleResult();
+        count = em.createQuery("select count(1) from Permission u where u.code = ?1 ", Long.class).setParameter(1, vo.getCode()).getSingleResult();
         Assert.isTrue(count == 0, "权限标识符重复， 新增失败");
 
         Permission permission = new Permission();
 
+        if (vo.getPid() == 0) {
+            permission.setFullCode(vo.getCode());
+        } else {
+            Optional<String> fullCode = em.createQuery("select u.fullCode from Permission u where u.id = ?1 ", String.class).setParameter(1, vo.getPid()).getResultStream().findFirst();
+            Assert.isTrue(fullCode.isPresent(), "父级权限不存在");
+            permission.setFullCode(fullCode.get() + "." + vo.getCode());
+        }
         permission.setId(idWorker.nextId());
         permission.setName(vo.getName());
         permission.setType(permissionStatus);
@@ -96,6 +100,7 @@ public class PermissionService extends BaseService {
         Assert.notNull(vo.getId(), "要修改的权限ID不能为空");
         Assert.hasText(vo.getName(), "权限名称不能为空");
         Assert.hasText(vo.getCode(), "权限标识符不能为空");
+        Assert.isTrue(!vo.getCode().contains("."), "权限标识符不能包含特殊字符\".\"");
         Assert.notNull(vo.getIsVisible(), "权限可见性不能为空");
         IsVisible isVisible = IsVisible.parse(vo.getIsVisible());
 
@@ -126,11 +131,17 @@ public class PermissionService extends BaseService {
         if (!permission.getCode().equals(vo.getCode())) {
             Optional<Permission> first = em.createQuery("select u from Permission u where u.code = ?1 ", Permission.class).setParameter(1, vo.getCode()).getResultStream().findFirst();
             Assert.isTrue((!first.isPresent()) || (first.get().getCode().equals(vo.getCode())), "权限标识符重复， 修改失败");
+            // 更新fullCode
+            String oldFullCode = permission.getFullCode();
+            List<String> oldList = Arrays.asList(oldFullCode.split("\\."));
+            oldList.set(oldList.lastIndexOf(permission.getCode()), vo.getCode());
+            String newFullCode = String.join(".", oldList);
+            permission.setFullCode(newFullCode);
+            em.createNativeQuery("update permission set full_code = replace(full_code, ?1, ?2)").setParameter(1, oldFullCode + ".").setParameter(2, newFullCode + ".").executeUpdate();
             permission.setCode(vo.getCode());
         }
 
         permission.setDescription(vo.getDescription());
-        permission.setCode(vo.getCode());
         permission.setIsVisible(isVisible);
 
         em.merge(permission);

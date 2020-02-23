@@ -42,6 +42,8 @@ public class Permission implements Serializable {
 
     private String code;
 
+    private String fullCode;
+
     /**
      * 权限描述
      */
