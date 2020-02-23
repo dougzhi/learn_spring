@@ -1,11 +1,15 @@
 package com.dongz.hrm.common.shiro.realms;
 
+import com.dongz.hrm.common.entities.Profile;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+
+import java.util.List;
 
 /**
  * @author dong
@@ -16,7 +20,7 @@ public abstract class BaseRealm extends AuthorizingRealm {
 
     @Override
     public void setName(String name) {
-        super.setName("hrmRealm");
+        super.setName("baseRealm");
     }
 
     /**
@@ -26,7 +30,15 @@ public abstract class BaseRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        // 获取安全数据
+        Profile primaryPrincipal = (Profile) principalCollection.getPrimaryPrincipal();
+        // 获取权限信息
+        List<String> apis = primaryPrincipal.getRoles().getApis();
+        // 构造权限数据， 返回值
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.addStringPermissions(apis);
+
+        return info;
     }
 
     /**

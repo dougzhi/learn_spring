@@ -51,7 +51,7 @@ public class User extends BaseEntity implements Serializable {
     @Convert(converter = EnableState.MyConverter.class)
     private EnableState enableState;
 
-    private String companyId;
+    private Long companyId;
 
     private String companyName;
 
