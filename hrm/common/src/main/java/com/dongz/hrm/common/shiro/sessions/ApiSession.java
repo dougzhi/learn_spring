@@ -6,7 +6,6 @@ import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
  * @date 2020/2/24 14:57
  * @desc 获取所有api，权限信息
  */
-@Component
 public class ApiSession {
 
     public static List<String> topApiList;

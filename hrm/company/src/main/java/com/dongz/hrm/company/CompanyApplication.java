@@ -4,6 +4,7 @@ import com.dongz.hrm.common.utils.IdWorker;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -13,10 +14,11 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootApplication(scanBasePackages = "com.dongz")
 @EntityScan(value = "com.dongz.hrm.domain.company")
-public class Application {
+@EnableEurekaClient
+public class CompanyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(CompanyApplication.class, args);
     }
 
     @Bean

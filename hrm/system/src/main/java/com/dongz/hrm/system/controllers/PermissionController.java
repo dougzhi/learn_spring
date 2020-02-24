@@ -5,12 +5,16 @@ import com.dongz.hrm.common.entities.Result;
 import com.dongz.hrm.common.shiro.sessions.ApiSession;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
+import com.dongz.hrm.system.controllers.clients.CompanyFeignClient;
 import com.dongz.hrm.system.services.PermissionService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +33,7 @@ public class PermissionController extends BaseController {
     private PermissionService service;
 
     @Autowired
-    private ApiSession apiSession;
+    private CompanyFeignClient companyFeignClient;
 
     @GetMapping("/findAll")
     public Result findAll(
@@ -68,7 +72,8 @@ public class PermissionController extends BaseController {
         return Result.SUCCESS(map);
     }
 
-    @PostMapping("/create")
+    @RequiresPermissions("API-PERMISSION-ADD")
+    @PostMapping(value = "/create",name = "权限新增")
     public Result create(@RequestBody PermissionVO vo) {
         service.create(vo);
         return Result.SUCCESS();
@@ -80,7 +85,8 @@ public class PermissionController extends BaseController {
         return Result.SUCCESS();
     }
 
-    @DeleteMapping("/deleteById")
+    @RequiresPermissions("API-PERMISSION-DELETE")
+    @DeleteMapping(value = "/deleteById",name = "权限删除")
     public Result deleteById(@RequestParam Long id) {
         service.delete(id);
         return Result.SUCCESS();
@@ -88,6 +94,22 @@ public class PermissionController extends BaseController {
 
     @GetMapping("/getApis")
     public Result getApis() {
-        return Result.SUCCESS();
+        List<String> topApiList = new ArrayList<>(ApiSession.topApiList);
+        //company项目所有api
+        List<String> companyApiList = (List<String>) companyFeignClient.getApiList().getData();
+        topApiList.addAll(companyApiList);
+
+        return Result.SUCCESS(topApiList);
+    }
+
+    @GetMapping("/getChildApis")
+    public Result getChildApis(@RequestParam String name) {
+        Map<String, List<ApiSession.Auth>> childrenApis = new HashMap<>(ApiSession.childrenApis);
+        //company项目所有api
+        Map<String, List<ApiSession.Auth>> companyApiMap = (Map<String, List<ApiSession.Auth>>) companyFeignClient.getApiMap().getData();
+        childrenApis.putAll(companyApiMap);
+        Assert.isTrue(!childrenApis.containsKey(name), "api列表不存在");
+        List<ApiSession.Auth> auths = childrenApis.get(name);
+        return Result.SUCCESS(auths);
     }
 }

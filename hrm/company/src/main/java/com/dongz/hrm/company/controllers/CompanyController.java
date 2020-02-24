@@ -5,7 +5,6 @@ import com.dongz.hrm.common.entities.Result;
 import com.dongz.hrm.common.shiro.sessions.ApiSession;
 import com.dongz.hrm.domain.company.Company;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +22,6 @@ import java.util.List;
 @RequestMapping("/api/company")
 public class CompanyController extends BaseController {
 
-    @Autowired
-    ApiSession apiSession;
-
     @RequiresPermissions("API-COMPANY-LIST")
     @GetMapping(value = "list",name = "企业查询")
     public Result list() {
@@ -33,12 +29,23 @@ public class CompanyController extends BaseController {
         return Result.SUCCESS(query);
     }
 
-    @GetMapping("info")
+    @RequiresPermissions("API-COMPANY-INFO")
+    @GetMapping(value = "info", name = "企业详情")
     public Result info(@RequestParam(value = "id") Long id) {
         HashMap<String, Object> params = new HashMap<>(1);
         params.put("id", id);
         List<Company> query = jdbcTemplate.query("select * from company where id = :id ", params, new BeanPropertyRowMapper<>(Company.class));
         Assert.isTrue(query.size() == 1, "企业信息不存在");
         return Result.SUCCESS(query.get(0));
+    }
+
+    @GetMapping("getApiList")
+    public Result getApiList() {
+        return Result.SUCCESS(ApiSession.topApiList);
+    }
+
+    @GetMapping("getApiMap")
+    public Result getApiMap() {
+        return Result.SUCCESS();
     }
 }
