@@ -69,7 +69,7 @@ public class UserController extends BaseController {
     }
 
     @RequiresPermissions("API-USER-DELETE")
-    @DeleteMapping("/deleteById")
+    @DeleteMapping(value = "/deleteById",name = "用户删除")
     public Result deleteById(@RequestParam Long id) {
         service.delete(id);
         return Result.SUCCESS();

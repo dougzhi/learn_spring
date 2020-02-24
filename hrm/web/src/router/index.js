@@ -1,11 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store'
-import {Message} from 'element-ui'
 import NProgress from 'nprogress'
 import Layout from '@/module-dashboard/pages/layout'
 import {getToken} from '@/utils/auth'
-import {hasPermissionPoint, hasPermission} from '@/utils/permission'
 
 // 定义
 const _import = require('./import_' + process.env.NODE_ENV) // 懒加载 导包
@@ -95,8 +93,7 @@ router.beforeEach((to, from, next) => {
               next({...to, replace: true}) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
             })
           })
-          .catch(res => {
-            debugger
+          .catch(() => {
             store.dispatch('FedLogOut').then(() => {
               next({path: '/login'})
             })

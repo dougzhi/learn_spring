@@ -2,6 +2,7 @@ package com.dongz.hrm.system.controllers;
 
 import com.dongz.hrm.common.controllers.BaseController;
 import com.dongz.hrm.common.entities.Result;
+import com.dongz.hrm.common.shiro.sessions.ApiSession;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
 import com.dongz.hrm.system.services.PermissionService;
@@ -26,6 +27,9 @@ public class PermissionController extends BaseController {
 
     @Autowired
     private PermissionService service;
+
+    @Autowired
+    private ApiSession apiSession;
 
     @GetMapping("/findAll")
     public Result findAll(
@@ -79,6 +83,11 @@ public class PermissionController extends BaseController {
     @DeleteMapping("/deleteById")
     public Result deleteById(@RequestParam Long id) {
         service.delete(id);
+        return Result.SUCCESS();
+    }
+
+    @GetMapping("/getApis")
+    public Result getApis() {
         return Result.SUCCESS();
     }
 }
