@@ -6,6 +6,7 @@ import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
  * @date 2020/2/24 14:57
  * @desc 获取所有api，权限信息
  */
+@Component
 public class ApiSession {
 
     public static List<String> topApiList;
@@ -30,7 +32,7 @@ public class ApiSession {
         Set<Method> methods = reflections.getMethodsAnnotatedWith(RequiresPermissions.class);
 
         //同类下的方法集中处理
-        Map<String, List<Method>> collect = methods.parallelStream().collect(Collectors.groupingBy(item -> item.getDeclaringClass().getAnnotation(RequestMapping.class).value()[0]));
+        Map<String, List<Method>> collect = methods.stream().collect(Collectors.groupingBy(item -> item.getDeclaringClass().getAnnotation(RequestMapping.class).value()[0]));
 
         topApiList = collect.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
 

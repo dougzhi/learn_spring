@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @date 2020/2/24 22:42
  * @desc
  */
-@FeignClient("company")
+@FeignClient(value = "company")
 public interface CompanyFeignClient {
 
-    @GetMapping("getApiList")
+    @GetMapping("/api/company/getApiList")
     Result getApiList();
 
-    @GetMapping("getApiMap")
+    @GetMapping("/api/company/getApiMap")
     Result getApiMap();
 }

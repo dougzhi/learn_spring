@@ -96,7 +96,9 @@ public class PermissionController extends BaseController {
     public Result getApis() {
         List<String> topApiList = new ArrayList<>(ApiSession.topApiList);
         //company项目所有api
-        List<String> companyApiList = (List<String>) companyFeignClient.getApiList().getData();
+        Result apiList = companyFeignClient.getApiList();
+        Assert.isTrue(apiList.isSuccess(), "企业管理系统api获取失败，请联系管理员");
+        List<String> companyApiList = (List<String>) apiList.getData();
         topApiList.addAll(companyApiList);
 
         return Result.SUCCESS(topApiList);
@@ -106,9 +108,11 @@ public class PermissionController extends BaseController {
     public Result getChildApis(@RequestParam String name) {
         Map<String, List<ApiSession.Auth>> childrenApis = new HashMap<>(ApiSession.childrenApis);
         //company项目所有api
-        Map<String, List<ApiSession.Auth>> companyApiMap = (Map<String, List<ApiSession.Auth>>) companyFeignClient.getApiMap().getData();
+        Result apiMap = companyFeignClient.getApiMap();
+        Assert.isTrue(apiMap.isSuccess(), "企业管理系统api获取失败，请联系管理员");
+        Map<String, List<ApiSession.Auth>> companyApiMap = (Map<String, List<ApiSession.Auth>>) apiMap.getData();
         childrenApis.putAll(companyApiMap);
-        Assert.isTrue(!childrenApis.containsKey(name), "api列表不存在");
+        Assert.isTrue(childrenApis.containsKey(name), "api列表不存在");
         List<ApiSession.Auth> auths = childrenApis.get(name);
         return Result.SUCCESS(auths);
     }

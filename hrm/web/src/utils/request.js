@@ -43,12 +43,14 @@ instance.interceptors.response.use(
         message = "操作错误";
       } else if (message.includes("Required")) {
         message = "请求参数错误，请联系管理员处理";
+      } else if (message.includes("Read timed out")) {
+        message = "请求超时";
       }
       Message({
         message: message,
         type: 'error',
         duration: 5 * 1000
-      })
+      });
       return Promise.reject()
     }
     // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;

@@ -46,6 +46,6 @@ public class CompanyController extends BaseController {
 
     @GetMapping("getApiMap")
     public Result getApiMap() {
-        return Result.SUCCESS();
+        return Result.SUCCESS(ApiSession.childrenApis);
     }
 }
