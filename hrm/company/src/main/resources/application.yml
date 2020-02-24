@@ -24,8 +24,8 @@ spring:
     host: 127.0.0.1
     port: 6379
 
-  #微服务注册到eureka配置
-  eureka:
-    client:
-      service-url:
-        defaultZone: http://localhost:6868/eureka/
+#微服务注册到eureka配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6868/eureka/

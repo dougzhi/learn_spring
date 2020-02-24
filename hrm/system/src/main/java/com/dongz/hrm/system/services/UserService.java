@@ -11,7 +11,6 @@ import com.dongz.hrm.domain.system.User;
 import com.dongz.hrm.domain.system.UserRole;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.domain.system.vos.UserVO;
-import com.sun.istack.NotNull;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;

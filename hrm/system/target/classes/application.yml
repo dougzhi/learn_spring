@@ -27,3 +27,9 @@ spring:
 jwt:
   key: 123121
   ttl: 7200000
+
+#微服务注册到eureka配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6868/eureka/
