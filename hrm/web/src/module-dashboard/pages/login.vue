@@ -103,11 +103,6 @@
           this.$router.push({ path: '/' })
         })
         .catch(res => {
-          if (res) {
-            this.$message.error(res);
-          } else {
-            this.$message.error("请求失败！");
-          }
           this.loading = false
         })
     },

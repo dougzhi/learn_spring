@@ -53,7 +53,7 @@
                 查看
               </router-link>
               <el-button @click="handleRole(scope.row)" type="text" size="small">分配角色</el-button>
-              <el-button v-if="show('point-user-delete')" @click="handleDelete(scope.row)" type="text" size="small">删除</el-button>
+              <el-button @click="handleDelete(scope.row)" type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -73,13 +73,14 @@
 </template>
 
 <script>
-import constantApi from '@/api/constant/employees'
-import {list,remove} from "@/api/base/users"
-import PageTool from './../../components/page/page-tool'
-import employeesAdd from './../components/add'
-import addRole from './../components/addRole'
-import {hasPermissionPoint} from '@/utils/permission'
-export default {
+  import constantApi from '@/api/constant/employees'
+  import {list, remove} from "@/api/base/users"
+  import PageTool from './../../components/page/page-tool'
+  import employeesAdd from './../components/add'
+  import addRole from './../components/addRole'
+  import {hasPermissionPoint} from '@/utils/permission'
+
+  export default {
   name: 'employeesList',
   components: {
     PageTool,employeesAdd,addRole
@@ -132,8 +133,10 @@ export default {
          type: 'warning'
         }
       ).then(() => {
-          remove({ id: item.id })
-            .then(response => {
+        let fd = new FormData()
+        fd.set("id", item.id);
+          remove(fd)
+            .then(() => {
               this.$message.success('删除成功' + '!')
               this.doQuery();
             })

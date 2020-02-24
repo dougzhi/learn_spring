@@ -31,32 +31,46 @@ instance.interceptors.request.use(
 // respone interceptor
 instance.interceptors.response.use(
   response => {
-    // debugger
-    const res = response.data
-    const errCode = res.code
-    if (errCode !== undefined) {
-      // debugger
-      // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-      if (errCode === 50008 || errCode === 50012 || errCode === 50014) {
-        Message({
-          message: '你已被登出，请重新登录',
-          type: 'error',
-          duration: 5 * 1000
-        })
-        store.dispatch('FedLogOut').then(() => {
-          location.reload() // 为了重新实例化vue-router对象 避免bug
-        })
-        return Promise.reject(new Error('token expired'))
-      }else if (errCode != ok) {
-        Message({
-          message: res.message,
-          type: 'error',
-          duration: 5 * 1000
-        })
-      }
+    const success = response.data.success
+    if (success) {
       return response;
-    } else {
-      return response
+    }
+    const errCode = response.data.code
+    // debugger
+    if (errCode === 10001) {
+      let message = response.data.message
+      if (message === undefined) {
+        message = "操作错误";
+      } else if (message.includes("Required")) {
+        message = "请求参数错误，请联系管理员处理";
+      }
+      Message({
+        message: message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject()
+    }
+    // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
+    else if (errCode === 50008 || errCode === 50012 || errCode === 50014) {
+      Message({
+        message: '你已被登出，请重新登录',
+        type: 'error',
+        duration: 5 * 1000
+      })
+      store.dispatch('FedLogOut').then(() => {
+        location.reload() // 为了重新实例化vue-router对象 避免bug
+      })
+      return Promise.reject(new Error('token expired'))
+    }
+
+    else  {
+      Message({
+        message: response.data.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject()
     }
   },
   /**
