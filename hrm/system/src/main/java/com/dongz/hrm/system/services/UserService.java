@@ -186,7 +186,7 @@ public class UserService extends BaseService {
      */
     private void getParentPermission(final List<Permission> roleList) {
         //分割code，查询
-        List<String> fullCode = Arrays.asList(roleList.parallelStream().map(item -> item.getFullCode()).distinct().collect(Collectors.joining(".")).split("\\.")).parallelStream().distinct().filter(item -> !"".equals(item)).collect(Collectors.toList());
+        List<String> fullCode = Arrays.stream(roleList.parallelStream().map(Permission::getFullCode).distinct().collect(Collectors.joining(".")).split("\\.")).distinct().filter(item -> !"".equals(item)).collect(Collectors.toList());
 
         fullCode.parallelStream().forEach(item -> {
             List<Permission> list = em.createQuery("select u from Permission u where u.code = ?1", Permission.class).setParameter(1, item).getResultList();
