@@ -4,11 +4,11 @@ import com.dongz.hrm.common.controllers.BaseController;
 import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
 import com.dongz.hrm.company.services.DepartmentService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,13 +18,14 @@ import java.util.Map;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/api/department")
+@RequestMapping("/api/company")
 public class DepartmentController extends BaseController {
 
     @Autowired
     private DepartmentService service;
 
-    @GetMapping("/findAll")
+    @RequiresPermissions("API-DEPARTMENT-FINDALL")
+    @GetMapping(value = "/findAll",name = "组织机构查询")
     public Result findAll(
             @RequestParam(required = false, defaultValue = "1") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size

@@ -5,8 +5,8 @@ import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
 import com.dongz.hrm.domain.system.vos.RoleVO;
 import com.dongz.hrm.system.services.RoleService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -40,7 +40,8 @@ public class RoleController extends BaseController {
         return Result.SUCCESS(pageResult);
     }
 
-    @GetMapping("/findById")
+    @RequiresPermissions("API-ROLE-FIND")
+    @GetMapping(value = "/findById",name = "通过id查询")
     public Result findById(@RequestParam Long id) {
         String sql = "select t.* from role t where t.id = :id and t.is_deleted = 0";
         Map<String, Object> params = new HashMap<>();

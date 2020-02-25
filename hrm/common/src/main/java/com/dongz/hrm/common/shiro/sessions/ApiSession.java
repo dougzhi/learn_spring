@@ -1,11 +1,11 @@
 package com.dongz.hrm.common.shiro.sessions;
 
+import com.dongz.hrm.common.controllers.BaseController;
 import lombok.Data;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.reflections.Reflections;
-import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +20,15 @@ import java.util.stream.Collectors;
  * @desc 获取所有api，权限信息
  */
 @Component
-public class ApiSession {
+public class ApiSession implements ApplicationContextAware {
 
     public static List<String> topApiList;
-    public static Map<String, List<Auth>> childrenApis = new HashMap<>();
+    public static Map<String, List<Auth>> childrenApis;
 
-    static {
+    /**
+     * 打成jar后无法启动
+     */
+    /*static {
         Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forPackage("com.dongz.hrm")).setScanners(new MethodAnnotationsScanner()));
 
         //扫描包内带有@RequiresPermissions注解的所有方法集合
@@ -41,7 +44,7 @@ public class ApiSession {
             childrenApis.put(key, list);
         });
 
-    }
+    }*/
 
     private static Auth getAuth(String basePath,Method item) {
         //用于保存方法的请求类型
@@ -95,6 +98,34 @@ public class ApiSession {
         String fullName = ("/" + basePath + "/" + authUrl).replace("//", "/");
         auth.setAuthUrl(fullName);
         return auth;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(RestController.class);
+        // 获取所有controller
+        List<? extends Class<?>> controllerList = beansWithAnnotation.values().stream()
+                .map(Object::getClass)
+                .filter(BaseController.class::isAssignableFrom)
+                //排除CGLIB代理类
+                .map(item -> item.getSuperclass().equals(BaseController.class)?item: item.getSuperclass())
+                .collect(Collectors.toList());
+        //避免类 requestMapping 相同
+        Map<String, ? extends List<? extends Class<?>>> classMap = controllerList.stream().collect(Collectors.groupingBy(item -> item.getDeclaredAnnotation(RequestMapping.class).value()[0]));
+        // 分组合并
+        Map<String, List<Method>> collect = classMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                item -> item.getValue().stream().map(e -> new ArrayList<>(Arrays.asList(e.getDeclaredMethods())))
+                        .reduce((a, b) -> {
+                            a.addAll(b);
+                            return a;
+                        }).get().stream().filter(e->e.isAnnotationPresent(RequiresPermissions.class))
+                .collect(Collectors.toList())
+        ));
+        // 剔除size（）==0 ,无权限注解方法的类
+        childrenApis = collect.entrySet().stream().filter(item -> item.getValue().size() > 0)
+        // 封装类
+        .collect(Collectors.toMap(Map.Entry::getKey, item -> item.getValue().stream().map(e -> getAuth(item.getKey(), e)).collect(Collectors.toList())));
+        topApiList = childrenApis.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
     }
 
     @Data

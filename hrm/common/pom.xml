@@ -24,10 +24,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
         </dependency>
+        <!-- 打包后无法启动
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.12</version>
         </dependency>
+        -->
     </dependencies>
 </project>

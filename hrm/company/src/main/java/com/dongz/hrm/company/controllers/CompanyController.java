@@ -41,11 +41,14 @@ public class CompanyController extends BaseController {
 
     @GetMapping("getApiList")
     public Result getApiList() {
+        Assert.notNull(ApiSession.topApiList, "企业管理api列表查询错误，请联系管理员");
         return Result.SUCCESS(ApiSession.topApiList);
     }
 
     @GetMapping("getApiMap")
     public Result getApiMap() {
+        System.out.println(111);
+        Assert.notNull(ApiSession.childrenApis, "企业管理api集合查询错误，请联系管理员");
         return Result.SUCCESS(ApiSession.childrenApis);
     }
 }
