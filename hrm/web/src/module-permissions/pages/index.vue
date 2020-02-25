@@ -76,8 +76,11 @@
               <el-form-item label="api请求方式">
                 <el-input v-model="apiData.apiMethod" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
               </el-form-item>
+              <el-form-item label="api名称">
+                <el-input v-model="apiData.apiName" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
+              </el-form-item>
               <el-form-item label="api类型">
-                <el-input v-model="apiData.apiLevel" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
+                <el-input v-model="formData.apiLevel" autocomplete="off" style="width:90%"></el-input>
               </el-form-item>
             </div>
 
@@ -121,7 +124,7 @@
         apiUrl: [],
         code: '',
         apiMethod: '',
-        apiLevel: ''
+        apiName: ''
       },
       formData: {},
       dataList:[],
@@ -143,16 +146,33 @@
       if(id && id !=undefined) {
         detail({id: id}).then(res => {
           this.formData = res.data.data
+          this.apiData.apiUrl.push(this.formData.baseUrl)
+          this.apiData.apiUrl.push(this.formData.apiUrl)
+          this.apiData.code = this.formData.code
+          this.apiData.apiMethod = this.formData.apiMethod
+          this.apiData.apiName = this.formData.apiName
           this.dialogFormVisible=true
         })
       }else{
         this.formData = {}
+        this.apiData = {
+          apiUrl: [],
+          code: '',
+          apiMethod: '',
+          apiName: ''
+        }
         this.dialogFormVisible=true
       }
     },
     saveOrUpdate() {
       this.formData.type = this.type
       this.formData.pid = this.pid
+      this.formData.baseUrl = this.apiData.apiUrl[0]
+      this.formData.apiUrl = this.apiData.apiUrl[1]
+      this.formData.code = this.apiData.code
+      this.formData.apiMethod = this.apiData.apiMethod
+      this.formData.apiName = this.apiData.apiName
+
       saveOrUpdate(this.formData).then(res => {
         this.$message({message:res.data.message,type:res.data.success?"success":"error"});
         if(res.data.success){
@@ -188,7 +208,7 @@
       getApi({name: item[1]}).then(res => {
         this.apiData.code = res.data.data.authUniqueMark
         this.apiData.apiMethod = res.data.data.methodType
-        this.apiData.apiLevel = res.data.data.authName
+        this.apiData.apiName = res.data.data.authName
       })
     },
     show(index,id) {

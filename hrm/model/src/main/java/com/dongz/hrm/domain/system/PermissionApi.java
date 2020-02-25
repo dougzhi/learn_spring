@@ -28,11 +28,19 @@ public class PermissionApi implements Serializable {
     /**
      * 链接
      */
+    private String baseUrl;
+    /**
+     * 链接
+     */
     private String apiUrl;
     /**
      * 请求类型
      */
     private String apiMethod;
+    /**
+     * 请求类型
+     */
+    private String apiName;
     /**
      * 权限等级，1为通用接口权限，2为需校验接口权限
      */

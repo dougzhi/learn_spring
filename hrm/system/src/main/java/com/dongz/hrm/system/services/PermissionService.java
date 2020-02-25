@@ -1,10 +1,10 @@
 package com.dongz.hrm.system.services;
 
 import com.dongz.hrm.common.enums.IsVisible;
-import com.dongz.hrm.domain.system.*;
-import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
+import com.dongz.hrm.domain.system.*;
+import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.domain.system.vos.PermissionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +47,8 @@ public class PermissionService extends BaseService {
         PermissionStatus permissionStatus = PermissionStatus.parse(vo.getType());
         if (permissionStatus.equals(PermissionStatus.API)) {
             Assert.hasText(vo.getApiUrl(), "链接不能为空");
+            Assert.hasText(vo.getBaseUrl(), "链接不能为空");
+            Assert.hasText(vo.getApiName(), "链接名称不能为空");
             Assert.hasText(vo.getApiMethod(), "链接请求类型不能为空");
             Assert.hasText(vo.getApiLevel(), "链接权限等级不能为空");
         } else if (permissionStatus.equals(PermissionStatus.MENU)) {
@@ -108,6 +110,8 @@ public class PermissionService extends BaseService {
         PermissionStatus permissionStatus = PermissionStatus.parse(vo.getType());
         if (permissionStatus.equals(PermissionStatus.API)) {
             Assert.hasText(vo.getApiUrl(), "链接不能为空");
+            Assert.hasText(vo.getBaseUrl(), "链接不能为空");
+            Assert.hasText(vo.getApiName(), "链接名称不能为空");
             Assert.hasText(vo.getApiMethod(), "链接请求类型不能为空");
             Assert.hasText(vo.getApiLevel(), "链接权限等级不能为空");
         } else if (permissionStatus.equals(PermissionStatus.MENU)) {
@@ -192,6 +196,8 @@ public class PermissionService extends BaseService {
 
             api.setId(permissionVO.getId());
             api.setApiUrl(permissionVO.getApiUrl());
+            api.setBaseUrl(permissionVO.getBaseUrl());
+            api.setApiName(permissionVO.getApiName());
             api.setApiMethod(permissionVO.getApiMethod());
             api.setApiLevel(permissionVO.getApiLevel());
 
@@ -205,6 +211,8 @@ public class PermissionService extends BaseService {
             Assert.notNull(api, "权限链接信息不能为空");
 
             api.setApiUrl(permissionVO.getApiUrl());
+            api.setBaseUrl(permissionVO.getBaseUrl());
+            api.setApiName(permissionVO.getApiName());
             api.setApiMethod(permissionVO.getApiMethod());
             api.setApiLevel(permissionVO.getApiLevel());
 
