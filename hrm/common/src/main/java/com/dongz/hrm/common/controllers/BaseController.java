@@ -11,8 +11,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author dong
@@ -22,6 +24,9 @@ import java.util.Map;
 public abstract class BaseController {
 
     protected Profile profile;
+
+    @Autowired
+    protected NamedParameterJdbcTemplate jdbcTemplate;
 
     /**
      * controller中每个方法前执行
@@ -38,8 +43,16 @@ public abstract class BaseController {
         // 获取安全数据
     }
 
-    @Autowired
-    protected NamedParameterJdbcTemplate jdbcTemplate;
+    @SafeVarargs
+    public static <T> void mergeMap(final Map<String, List<T>>... maps) {
+        Arrays.stream(maps).reduce((a, b) -> {
+            a.keySet().stream().filter(b::containsKey).collect(Collectors.toSet())
+                    //避免覆盖
+                    .forEach(item -> b.get(item).addAll(a.get(item)));
+            a.putAll(b);
+            return a;
+        });
+    }
 
     public <T> T queryForObject(String sql, Map<String, Object> params, Class<T> t) {
         List<T> list = this.jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(t));

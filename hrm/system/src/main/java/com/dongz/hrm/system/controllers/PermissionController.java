@@ -121,20 +121,4 @@ public class PermissionController extends BaseController {
         mergeMap(childrenApis, companyApiMap);
         return Result.SUCCESS(childrenApis.getOrDefault(name, null));
     }
-
-    @SafeVarargs
-    private final void mergeMap(final Map<String, List<ApiSession.Auth>>... maps) {
-        if (maps.length < 2) return;
-        for (int i = 1; i < maps.length; i++) {
-            mergeTwoToOneMap(maps[0], maps[i]);
-        }
-    }
-
-    private static void mergeTwoToOneMap(final Map<String, List<ApiSession.Auth>> map1, final Map<String, List<ApiSession.Auth>> map2) {
-        // 取两个map交集
-        map1.keySet().stream().filter(map2::containsKey).collect(Collectors.toSet())
-                //避免覆盖
-                .forEach(item -> map2.get(item).addAll(map1.get(item)));
-        map1.putAll(map2);
-    }
 }
