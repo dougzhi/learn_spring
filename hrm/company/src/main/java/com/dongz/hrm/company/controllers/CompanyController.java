@@ -45,9 +45,14 @@ public class CompanyController extends BaseController {
         return Result.SUCCESS(ApiSession.topApiList);
     }
 
-    @GetMapping("getApiMap")
-    public Result getApiMap() {
+    @GetMapping("getChildrenApiMap")
+    public Result getChildrenApiMap() {
         Assert.notNull(ApiSession.childrenApis, "企业管理api集合查询错误，请联系管理员");
         return Result.SUCCESS(ApiSession.childrenApis);
+    }
+    @GetMapping("getApiMaps")
+    public Result getApiMaps() {
+        Assert.notNull(ApiSession.apiMaps, "企业管理api详情查询错误，请联系管理员");
+        return Result.SUCCESS(ApiSession.apiMaps);
     }
 }

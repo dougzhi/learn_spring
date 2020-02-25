@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,10 +24,12 @@ import java.util.stream.Collectors;
 public class ApiSession implements ApplicationContextAware {
 
     public static List<String> topApiList;
-    public static Map<String, List<Auth>> childrenApis;
+    public static Map<String, List<Map<String, Object>>> childrenApis;
+    public static Map<String, Map<String, Object>> apiMaps;
 
     /**
      * 打成jar后无法启动
+     * @return
      */
     /*static {
         Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forPackage("com.dongz.hrm")).setScanners(new MethodAnnotationsScanner()));
@@ -46,7 +49,7 @@ public class ApiSession implements ApplicationContextAware {
 
     }*/
 
-    private static Auth getAuth(String basePath,Method item) {
+    private static Map<String, Object> getAuth(String basePath, Method item) {
         //用于保存方法的请求类型
         String methodType = "";
 
@@ -97,7 +100,7 @@ public class ApiSession implements ApplicationContextAware {
         auth.setAuthName(authName);
         String fullName = ("/" + basePath + "/" + authUrl).replace("//", "/");
         auth.setAuthUrl(fullName);
-        return auth;
+        return auth.getDataBaseMap();
     }
 
     @Override
@@ -126,6 +129,11 @@ public class ApiSession implements ApplicationContextAware {
         // 封装类
         .collect(Collectors.toMap(Map.Entry::getKey, item -> item.getValue().stream().map(e -> getAuth(item.getKey(), e)).collect(Collectors.toList())));
         topApiList = childrenApis.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        // map
+        apiMaps = childrenApis.entrySet().stream().reduce((a, b) -> {
+            a.getValue().addAll(b.getValue());
+            return a;
+        }).get().getValue().stream().collect(Collectors.toMap(item -> (String)item.get("authUrl"), item -> item));
     }
 
     @Data
@@ -135,5 +143,17 @@ public class ApiSession implements ApplicationContextAware {
         private String authUniqueMark;
         private String authUrl;
         private String authName;
+
+        public Map<String, Object> getDataBaseMap(){
+            Map<String, Object> map = new HashMap<>();
+            Field[] declaredFields = Auth.class.getDeclaredFields();
+            for (Field field : declaredFields) {
+                field.setAccessible(true);
+                try{
+                    map.put(field.getName(), field.get(this));
+                }catch (Exception ignored){}
+            }
+            return map;
+        }
     }
 }

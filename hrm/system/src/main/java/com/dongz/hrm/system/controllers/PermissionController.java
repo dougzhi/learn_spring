@@ -36,9 +36,6 @@ public class PermissionController extends BaseController {
     @Autowired
     private CompanyFeignClient companyFeignClient;
 
-    @Autowired
-    private ApiSession apiSession;
-
     @GetMapping("/findAll")
     public Result findAll(
             Integer type,Long pid) {
@@ -99,26 +96,50 @@ public class PermissionController extends BaseController {
     @GetMapping("/getApis")
     public Result getApis() {
         Assert.notNull(ApiSession.topApiList, "系统管理api列表获取失败，请联系管理员");
+        Assert.notNull(ApiSession.childrenApis, "系统管理api集合获取失败，请联系管理员");
         List<String> topApiList = new ArrayList<>(ApiSession.topApiList);
+        Map<String, List<Map<String, Object>>> childrenApis = new HashMap<>(ApiSession.childrenApis);
         //company项目所有api
         Result apiList = companyFeignClient.getApiList();
         Assert.isTrue(apiList.isSuccess(), "企业管理系统api列表获取失败，请联系管理员");
         List<String> companyApiList = (List<String>) apiList.getData();
         topApiList.addAll(companyApiList);
+
+        //company项目所有api
+        Result apiMap = companyFeignClient.getChildrenApiMap();
+        Assert.isTrue(apiMap.isSuccess(), "企业管理系统api集合获取失败，请联系管理员");
+        Map<String, List<Map<String, Object>>> companyApiMap = (Map<String, List<Map<String, Object>>>) apiMap.getData();
+        //合并
+        mergeMap(childrenApis, companyApiMap);
         //去重
-        return Result.SUCCESS(topApiList.stream().distinct().collect(Collectors.toList()));
+        List<Map<String, Object>> collect = topApiList.stream().distinct().map(item -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("value", item);
+            map.put("label", item);
+            map.put("children", childrenApis.get(item).stream().map(e -> {
+                Map<String, Object> child = new HashMap<>();
+                child.put("value", e.get("authUrl"));
+                child.put("label", e.get("authUrl"));
+                return child;
+            }).collect(Collectors.toList()));
+            return map;
+        }).collect(Collectors.toList());
+        return Result.SUCCESS(collect);
     }
 
-    @GetMapping("/getChildApis")
-    public Result getChildApis(@RequestParam String name) {
-        Assert.notNull(ApiSession.childrenApis, "系统管理api集合获取失败，请联系管理员");
-        Map<String, List<ApiSession.Auth>> childrenApis = new HashMap<>(ApiSession.childrenApis);
-        //company项目所有api
-        Result apiMap = companyFeignClient.getApiMap();
-        Assert.isTrue(apiMap.isSuccess(), "企业管理系统api集合获取失败，请联系管理员");
-        Map<String, List<ApiSession.Auth>> companyApiMap = (Map<String, List<ApiSession.Auth>>) apiMap.getData();
-        //去重
-        mergeMap(childrenApis, companyApiMap);
-        return Result.SUCCESS(childrenApis.getOrDefault(name, null));
+    @GetMapping("/getApi")
+    public Result getApi(@RequestParam String name) {
+        Assert.notNull(ApiSession.apiMaps, "系统管理api信息获取失败，请联系管理员");
+        Map<String, Map<String, Object>> childrenApis = new HashMap<>(ApiSession.apiMaps);
+
+        if (childrenApis.containsKey(name)) {
+            return Result.SUCCESS(childrenApis.get(name));
+        }
+
+        Result apiMaps = companyFeignClient.getApiMaps();
+        Assert.isTrue(apiMaps.isSuccess(), "企业管理系统api信息获取失败，请联系管理员");
+        Map<String, Map<String, Object>> data = (Map<String, Map<String, Object>>) apiMaps.getData();
+
+        return Result.SUCCESS(data.getOrDefault(name, null));
     }
 }

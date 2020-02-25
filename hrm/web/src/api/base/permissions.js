@@ -6,3 +6,5 @@ export const add = data => createAPI('/sys/permission/create', 'post', data)
 export const update = data => createAPI('/sys/permission/update', 'put', data)
 export const remove = data => createAPI('/sys/permission/deleteById', 'delete', data)
 export const saveOrUpdate = data => {return data.id?update(data):add(data)}
+export const getApis = data => createAPI('/sys/permission/getApis', 'get', data)
+export const getApi = data => createAPI('/sys/permission/getApi', 'get', data)

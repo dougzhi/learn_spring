@@ -15,6 +15,9 @@ public interface CompanyFeignClient {
     @GetMapping("/api/company/getApiList")
     Result getApiList();
 
-    @GetMapping("/api/company/getApiMap")
-    Result getApiMap();
+    @GetMapping("/api/company/getChildrenApiMap")
+    Result getChildrenApiMap();
+
+    @GetMapping("/api/company/getApiMaps")
+    Result getApiMaps();
 }

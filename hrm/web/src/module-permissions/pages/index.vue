@@ -30,9 +30,11 @@
             <el-form-item label="权限名称">
               <el-input v-model="formData.name" autocomplete="off" style="width:90%"></el-input>
             </el-form-item>
-            <el-form-item label="权限标识">
-              <el-input v-model="formData.code" autocomplete="off" style="width:90%"></el-input>
-            </el-form-item>
+            <div v-if="type!=3">
+              <el-form-item label="权限标识">
+                <el-input v-model="formData.code" autocomplete="off" style="width:90%"></el-input>
+              </el-form-item>
+            </div>
             <el-form-item label="权限描述">
               <el-input v-model="formData.description" autocomplete="off" style="width:90%"></el-input>
             </el-form-item>
@@ -66,13 +68,16 @@
             </div>
             <div v-else-if="type==3">
               <el-form-item label="api请求地址">
-                <el-input v-model="formData.apiUrl" autocomplete="off" style="width:90%"></el-input>
+                <el-cascader v-model="formData.apiUrl" :options="options" @change="selectApi" :show-all-levels="false" style="width:90%"></el-cascader>
+              </el-form-item>
+              <el-form-item label="权限标识">
+                <el-input v-model="formData.code" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
               </el-form-item>
               <el-form-item label="api请求方式">
-                <el-input v-model="formData.apiMethod" autocomplete="off" style="width:90%"></el-input>
+                <el-input v-model="formData.apiMethod" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
               </el-form-item>
               <el-form-item label="api类型">
-                <el-input v-model="formData.apiLevel" autocomplete="off" style="width:90%"></el-input>
+                <el-input v-model="formData.apiLevel" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
               </el-form-item>
             </div>
 
@@ -101,8 +106,9 @@
 </template>
 
 <script>
-import {saveOrUpdate,list,detail,remove} from "@/api/base/permissions"
-export default {
+  import {detail, getApi, getApis, list, remove, saveOrUpdate} from "@/api/base/permissions"
+
+  export default {
   name: 'permissions-table-index',
   data() {
     return {
@@ -111,14 +117,19 @@ export default {
       pid:"",
       dialogFormVisible:false,
       apiDialogVisible:false,
-      formData:{},
+      formData:{
+        code: '',
+        apiMethod: '',
+        apiLevel: ''
+      },
       dataList:[],
       apiList:[],
       pointEnable:{},
       params: {
         type: 1,
         pid: 0
-      }
+      },
+      options: []
     }
   },
   methods: {
@@ -166,6 +177,20 @@ export default {
           this.dataList = res.data.data
       })
     },
+    getApiList() {
+      getApis().then(res => {
+        this.options = res.data.data;
+      })
+    },
+    selectApi(item) {
+      let _this = this
+      getApi({name: item[1]}).then(response => {
+        debugger
+        _this.formData.code = response.data.data.authUniqueMark
+        _this.formData.apiMethod = response.data.data.methodType
+        _this.formData.apiLevel = response.data.data.authName
+      })
+    },
     show(index,id) {
         if(!this.pointEnable[id] == null || this.pointEnable[id]==undefined){
             list({type:2,pid:id}).then(res=> {
@@ -193,6 +218,7 @@ export default {
   },
   created () {
     this.getList();
+    this.getApiList();
   }
 }
 </script>
