@@ -47,7 +47,6 @@ public class CompanyController extends BaseController {
 
     @GetMapping("getApiMap")
     public Result getApiMap() {
-        System.out.println(111);
         Assert.notNull(ApiSession.childrenApis, "企业管理api集合查询错误，请联系管理员");
         return Result.SUCCESS(ApiSession.childrenApis);
     }
