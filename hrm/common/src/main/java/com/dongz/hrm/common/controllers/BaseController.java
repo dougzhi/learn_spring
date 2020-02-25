@@ -43,6 +43,11 @@ public abstract class BaseController {
         // 获取安全数据
     }
 
+    /**
+     * 合并Map，key相同时同时合并value
+     * @param maps
+     * @param <T>
+     */
     @SafeVarargs
     public static <T> void mergeMap(final Map<String, List<T>>... maps) {
         Arrays.stream(maps).reduce((a, b) -> {

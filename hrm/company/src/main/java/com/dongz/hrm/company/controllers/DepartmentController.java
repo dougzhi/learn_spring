@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/api/company")
+@RequestMapping("/api/sys/user")
 public class DepartmentController extends BaseController {
 
     @Autowired
