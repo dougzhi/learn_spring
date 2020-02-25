@@ -68,16 +68,16 @@
             </div>
             <div v-else-if="type==3">
               <el-form-item label="api请求地址">
-                <el-cascader v-model="formData.apiUrl" :options="options" @change="selectApi" :show-all-levels="false" style="width:90%"></el-cascader>
+                <el-cascader v-model="apiData.apiUrl" :options="options" @change="selectApi" :show-all-levels="false" style="width:90%"></el-cascader>
               </el-form-item>
               <el-form-item label="权限标识">
-                <el-input v-model="formData.code" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
+                <el-input v-model="apiData.code" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
               </el-form-item>
               <el-form-item label="api请求方式">
-                <el-input v-model="formData.apiMethod" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
+                <el-input v-model="apiData.apiMethod" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
               </el-form-item>
               <el-form-item label="api类型">
-                <el-input v-model="formData.apiLevel" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
+                <el-input v-model="apiData.apiLevel" disabled="disabled" autocomplete="off" style="width:90%"></el-input>
               </el-form-item>
             </div>
 
@@ -117,11 +117,13 @@
       pid:"",
       dialogFormVisible:false,
       apiDialogVisible:false,
-      formData:{
+      apiData:{
+        apiUrl: [],
         code: '',
         apiMethod: '',
         apiLevel: ''
       },
+      formData: {},
       dataList:[],
       apiList:[],
       pointEnable:{},
@@ -183,12 +185,10 @@
       })
     },
     selectApi(item) {
-      let _this = this
-      getApi({name: item[1]}).then(response => {
-        debugger
-        _this.formData.code = response.data.data.authUniqueMark
-        _this.formData.apiMethod = response.data.data.methodType
-        _this.formData.apiLevel = response.data.data.authName
+      getApi({name: item[1]}).then(res => {
+        this.apiData.code = res.data.data.authUniqueMark
+        this.apiData.apiMethod = res.data.data.methodType
+        this.apiData.apiLevel = res.data.data.authName
       })
     },
     show(index,id) {
