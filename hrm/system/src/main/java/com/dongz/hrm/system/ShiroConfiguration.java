@@ -65,7 +65,8 @@ public class ShiroConfiguration {
      */
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost(host + ":" + port);
+        redisManager.setHost(host);
+        redisManager.setPort(port);
         return redisManager;
     }
 

@@ -11,6 +11,7 @@ import com.dongz.hrm.domain.system.User;
 import com.dongz.hrm.domain.system.UserRole;
 import com.dongz.hrm.domain.system.enums.PermissionStatus;
 import com.dongz.hrm.domain.system.vos.UserVO;
+import com.dongz.hrm.system.shiro.sessions.SystemRealmSession;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,6 +136,10 @@ public class UserService extends BaseService {
             em.persist(userRole);
         });
         removeList.forEach(item -> em.remove(item));
+
+        if ((createList.size() + removeList.size()) > 0 ) {
+            SystemRealmSession.reloadAuthorizing(getProfile(user));
+        }
     }
 
 
@@ -157,7 +162,7 @@ public class UserService extends BaseService {
      * @param user
      * @return
      */
-    private Profile getProfile(User user) {
+    public Profile getProfile(User user) {
         // 根据用户等级返回权限信息
         LevelState level = user.getLevel();
         List<Permission> roleList;
