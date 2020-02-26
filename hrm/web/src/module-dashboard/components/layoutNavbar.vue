@@ -11,13 +11,13 @@
           <el-button icon="el-icon-search" type="text" class="btnSearch" @click="handleBtnSearch"></el-button>
         </el-tooltip>
         <transition name="el-fade-in-linear">
-          <el-autocomplete 
+          <el-autocomplete
             ref="searchInput"
             v-model="searchVal"
-            :fetch-suggestions="querySearchAsync" 
-            @select="handleSelect" 
+            :fetch-suggestions="querySearchAsync"
+            @select="handleSelect"
             @blur="showSearchInput = false"
-            placeholder="站内搜索" 
+            placeholder="站内搜索"
             :trigger-on-focus="true"
             v-show="showSearchInput" ></el-autocomplete>
         </transition>
@@ -65,16 +65,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
-import ErrorLog from '@/components/ErrorLog'
-import Screenfull from '@/components/Screenfull'
-import LangSelect from '@/components/LangSelect'
-import ThemePicker from '@/components/ThemePicker'
-import { search } from '@/api/base/menus'
+  import {mapGetters} from 'vuex'
+  import Breadcrumb from '@/components/Breadcrumb'
+  import Hamburger from '@/components/Hamburger'
+  import ErrorLog from '@/components/ErrorLog'
+  import Screenfull from '@/components/Screenfull'
+  import LangSelect from '@/components/LangSelect'
+  import ThemePicker from '@/components/ThemePicker'
+  import {loginOut, search} from '@/api/base/menus'
 
-export default {
+  export default {
   name: 'layoutNavBar',
   components: {
     Breadcrumb,
@@ -100,8 +100,13 @@ export default {
       this.$store.dispatch('toggleSideBar')
     },
     logout() {
-      this.$store.dispatch('FedLogOut').then(() => {
-        location.reload() // In order to re-instantiate the vue-router object to avoid bugs
+      loginOut().then(result => {
+        this.$message.success("退出登录成功！")
+        setTimeout(() => {
+          this.$store.dispatch('FedLogOut').then(() => {
+            location.reload() // In order to re-instantiate the vue-router object to avoid bugs
+          })
+        }, 3000)
       })
     },
     handleBtnSearch() {

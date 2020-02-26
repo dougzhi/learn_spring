@@ -11,7 +11,8 @@ public enum ResultCode {
 
     //---用户操作返回码----
     LOGINSUCCESS(true,20000,"登录成功!"),
-    LOGINFAILE(false,20001,"登录失败!");
+    LOGINFAILE(false,20001,"登录失败!"),
+    LOGINPOUTSUCCESS(true,20002,"退出登录!");
     //---企业操作返回码----
     //---权限操作返回码----
     //---其他操作返回码----

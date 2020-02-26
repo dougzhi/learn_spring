@@ -73,7 +73,6 @@ public class PermissionController extends BaseController {
         return Result.SUCCESS(map);
     }
 
-    @RequiresPermissions("API-PERMISSION-ADD")
     @PostMapping(value = "/create",name = "权限新增")
     public Result create(@RequestBody PermissionVO vo) {
         service.create(vo);

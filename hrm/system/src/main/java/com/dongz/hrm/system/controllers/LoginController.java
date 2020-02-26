@@ -39,6 +39,12 @@ public class LoginController extends BaseController {
         }
     }
 
+    @PostMapping("/loginOut")
+    public Result loginOut() {
+        SecurityUtils.getSubject().logout();
+        return Result.LOGINOUTSUCCESS();
+    }
+
     @GetMapping("/userInfo")
     public Result login() {
         // 获取安全数据
