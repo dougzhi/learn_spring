@@ -130,10 +130,9 @@ public class ApiSession implements ApplicationContextAware {
         .collect(Collectors.toMap(Map.Entry::getKey, item -> item.getValue().stream().map(e -> getAuth(item.getKey(), e)).collect(Collectors.toList())));
         topApiList = childrenApis.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
         // map
-        apiMaps = childrenApis.entrySet().stream().reduce((a, b) -> {
-            a.getValue().addAll(b.getValue());
-            return a;
-        }).get().getValue().stream().collect(Collectors.toMap(item -> (String)item.get("authUrl"), item -> item));
+        List<Map<String, Object>> list = new ArrayList<>();
+        childrenApis.forEach((key, value) -> list.addAll(value));
+        apiMaps = list.stream().collect(Collectors.toMap(item -> (String)item.get("authUrl"), item -> item));
     }
 
     @Data

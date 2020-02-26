@@ -5,6 +5,7 @@ import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
 import com.dongz.hrm.domain.system.vos.RoleVO;
 import com.dongz.hrm.system.services.RoleService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,8 +71,9 @@ public class RoleController extends BaseController {
         return Result.SUCCESS();
     }
 
-    @PostMapping("/assignPrem")
-    public Result assignPrem(@RequestParam Long id,@RequestParam("permIds") Long[] perms) {
+    @RequiresPermissions("API-ROLE-ASSIGNPREM")
+    @PostMapping(value = "/assignPrem", name = "角色授权")
+    public Result assignPrem(@RequestParam Long id, @RequestParam("permIds") Long[] perms) {
         service.assignPrem(id, Arrays.asList(perms).stream().distinct().collect(Collectors.toList()));
         return Result.SUCCESS();
     }

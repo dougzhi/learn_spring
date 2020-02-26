@@ -180,8 +180,8 @@ public class UserService extends BaseService {
                     "left join Role r on o.roleId = r.id " +
                     "left join UserRole u on u.roleId = r.id where u.userId = ?1 and r.isDeleted = 0", Permission.class)
                     .setParameter(1, user.getId()).getResultList();
-            getParentPermission(roleList);
         }
+        getParentPermission(roleList);
         return new Profile(user.getId(), user.getUsername(), user.getMobile(), user.getCompanyId(), user.getCompanyName(), getRoles(roleList));
     }
 

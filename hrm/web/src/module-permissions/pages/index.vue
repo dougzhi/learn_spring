@@ -167,9 +167,13 @@
     saveOrUpdate() {
       this.formData.type = this.type
       this.formData.pid = this.pid
+      if(this.type === 3){
+        this.formData.code = this.apiData.code
+      } else {
+        this.formData.code = this.formData.code
+      }
       this.formData.baseUrl = this.apiData.apiUrl[0]
       this.formData.apiUrl = this.apiData.apiUrl[1]
-      this.formData.code = this.apiData.code
       this.formData.apiMethod = this.apiData.apiMethod
       this.formData.apiName = this.apiData.apiName
 
