@@ -4,8 +4,10 @@ import com.dongz.hrm.common.services.BaseService;
 import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.system.Role;
 import com.dongz.hrm.domain.system.RolePermission;
+import com.dongz.hrm.domain.system.User;
 import com.dongz.hrm.domain.system.UserRole;
 import com.dongz.hrm.domain.system.vos.RoleVO;
+import com.dongz.hrm.system.shiro.sessions.SystemRealmSession;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +52,7 @@ public class RoleService extends BaseService {
 
     /**
      * 修改
+     *
      * @param vo vo
      */
     public void update(RoleVO vo) {
@@ -74,6 +77,7 @@ public class RoleService extends BaseService {
 
     /**
      * 删除
+     *
      * @param id id
      */
     public void delete(Long id) {
@@ -97,6 +101,7 @@ public class RoleService extends BaseService {
 
     /**
      * 授权
+     *
      * @param id id
      */
     public void assignPrem(Long id, List<Long> permIds) {
@@ -106,8 +111,10 @@ public class RoleService extends BaseService {
         Assert.notNull(role, "角色信息不存在， 修改失败");
         Assert.isTrue(!role.isDeleted(), "角色信息已删除");
 
-        long count = em.createQuery("select count(1) from Permission u where u.id in (:ids)", Long.class).setParameter("ids", permIds).getSingleResult();
-        Assert.isTrue(count == permIds.size(), "权限信息异常");
+        if (permIds.size() != 0){
+            long count = em.createQuery("select count(1) from Permission u where u.id in (:ids)", Long.class).setParameter("ids", permIds).getSingleResult();
+            Assert.isTrue(count == permIds.size(), "权限信息异常");
+        }
 
         List<RolePermission> list = em.createQuery("select u from RolePermission u where u.roleId = :id", RolePermission.class).setParameter("id", id).getResultList();
         // 取左差集，新增
@@ -121,5 +128,11 @@ public class RoleService extends BaseService {
             em.persist(rolePermission);
         });
         removeList.forEach(item -> em.remove(item));
+        // 权限刷新
+        if ((createList.size() + removeList.size()) > 0) {
+            //查询所有具有role角色用户
+            List<User> userList = em.createQuery("select u from User u left join UserRole r on u.id = r.userId where r.roleId = ?1 and u.isDeleted = 0 ", User.class).setParameter(1, id).getResultList();
+            SystemRealmSession.reloadAuthorizing(userList);
+        }
     }
 }

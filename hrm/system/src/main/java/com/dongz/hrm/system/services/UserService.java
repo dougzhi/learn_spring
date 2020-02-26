@@ -177,7 +177,7 @@ public class UserService extends BaseService {
                     .setParameter(1, user.getId()).getResultList();
             getParentPermission(roleList);
         }
-        return new Profile(user.getUsername(), user.getMobile(), user.getCompanyId(), user.getCompanyName(), getRoles(roleList));
+        return new Profile(user.getId(), user.getUsername(), user.getMobile(), user.getCompanyId(), user.getCompanyName(), getRoles(roleList));
     }
 
     /**

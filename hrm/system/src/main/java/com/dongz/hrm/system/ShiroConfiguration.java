@@ -65,8 +65,7 @@ public class ShiroConfiguration {
      */
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost(host);
-        redisManager.setPort(port);
+        redisManager.setHost(host + ":" + port);
         return redisManager;
     }
 
@@ -113,7 +112,6 @@ public class ShiroConfiguration {
         manager.setSessionManager(sessionManager());
         // 将自定义的Redis缓存管理器注册到安全管理器中
         manager.setCacheManager(cacheManager());
-
         return manager;
     }
 
