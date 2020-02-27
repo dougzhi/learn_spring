@@ -1,7 +1,7 @@
 package com.dongz.hrm.company;
 
 import com.dongz.hrm.common.shiro.realms.BaseRealm;
-import com.dongz.hrm.common.shiro.sessions.ShiroSession;
+import com.dongz.hrm.common.shiro.sessions.ShiroSessionManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -80,13 +80,13 @@ public class ShiroConfiguration {
      * @return
      */
     public DefaultWebSessionManager sessionManager() {
-        ShiroSession shiroSession = new ShiroSession();
-        shiroSession.setSessionDAO(redisSessionDAO());
+        ShiroSessionManager shiroSessionManager = new ShiroSessionManager();
+        shiroSessionManager.setSessionDAO(redisSessionDAO());
         // 禁用Cookie
-        shiroSession.setSessionIdCookieEnabled(false);
+        shiroSessionManager.setSessionIdCookieEnabled(false);
         // 禁用url重写（禁止拼接 josnId）
-        shiroSession.setSessionIdUrlRewritingEnabled(false);
-        return shiroSession;
+        shiroSessionManager.setSessionIdUrlRewritingEnabled(false);
+        return shiroSessionManager;
     }
 
     public RedisCacheManager cacheManager(){

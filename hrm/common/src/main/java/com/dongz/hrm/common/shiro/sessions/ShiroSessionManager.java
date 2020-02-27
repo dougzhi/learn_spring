@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @date 2020/2/20 00:27
  * @desc
  */
-public class ShiroSession extends DefaultWebSessionManager {
+public class ShiroSessionManager extends DefaultWebSessionManager {
     @Override
     public Serializable getSessionId(ServletRequest request, ServletResponse response) {
         // 获取请求头中authorization中的信息
