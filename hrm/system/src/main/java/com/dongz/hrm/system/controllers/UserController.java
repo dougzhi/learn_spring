@@ -77,7 +77,7 @@ public class UserController extends BaseController {
 
     @PostMapping("/assignRoles")
     public Result assignRoles(@RequestParam Long id,@RequestParam("roleIds") Long[] roles) {
-        service.assignRoles(id, Arrays.asList(roles).stream().distinct().collect(Collectors.toList()));
+        service.assignRoles(id, Arrays.stream(roles).distinct().collect(Collectors.toList()));
         return Result.SUCCESS();
     }
 }

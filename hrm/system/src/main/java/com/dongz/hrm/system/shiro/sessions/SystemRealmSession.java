@@ -31,6 +31,7 @@ public class SystemRealmSession {
         SimplePrincipalCollection principals = new SimplePrincipalCollection(profile,realmName);
         subject.runAs(principals);
         systemRealm.getAuthorizationCache().remove(subject.getPrincipals());
+        systemRealm.clearAllCache();
         subject.releaseRunAs();
     }
 

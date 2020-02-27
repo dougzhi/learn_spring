@@ -2,7 +2,7 @@ package com.dongz.hrm.system.shiro.realms;
 
 import com.dongz.hrm.common.entities.Profile;
 import com.dongz.hrm.common.shiro.realms.BaseRealm;
-import com.dongz.hrm.system.services.UserService;
+import com.dongz.hrm.system.services.AuthService;
 import org.apache.shiro.authc.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SystemRealm extends BaseRealm {
 
     @Autowired
-    private UserService service;
+    private AuthService authService;
 
     /**
      * 认证方法
@@ -30,7 +30,7 @@ public class SystemRealm extends BaseRealm {
         String password = new String(token.getPassword());
         // 2，根据手机号查询用户
         // 3，判断用户是否存在， 密码是否一致
-        Profile profile = service.assertUserAndGetRoles(mobile, password);
+        Profile profile = authService.assertUserAndGetRoles(mobile, password);
         if (profile != null) {
             // 4，构造安全数据并返回 （安全数据：用户基本信息， 权限信息 ）
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(profile, password, this.getName());

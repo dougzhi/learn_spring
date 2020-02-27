@@ -32,7 +32,7 @@ public class RoleService extends BaseService {
     private IdWorker idWorker;
 
     @Autowired
-    private UserService userService;
+    public AuthService authService;
 
     /**
      * 新增
@@ -139,7 +139,7 @@ public class RoleService extends BaseService {
         if ((createList.size() + removeList.size()) > 0) {
             //查询所有具有role角色用户
             List<User> userList = em.createQuery("select u from User u left join UserRole r on u.id = r.userId where r.roleId = ?1 and u.isDeleted = 0 ", User.class).setParameter(1, id).getResultList();
-            List<Profile> profileList = userList.stream().distinct().map(item -> userService.getProfile(item)).collect(Collectors.toList());
+            List<Profile> profileList = userList.stream().distinct().map(item -> authService.getProfile(item)).collect(Collectors.toList());
             SystemRealmSession.reloadAuthorizing(profileList);
         }
     }
