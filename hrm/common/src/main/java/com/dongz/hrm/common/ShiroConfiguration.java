@@ -1,10 +1,10 @@
-package com.dongz.hrm.system;
+package com.dongz.hrm.common;
 
 import com.dongz.hrm.common.shiro.listeners.ShiroSessionListener;
+import com.dongz.hrm.common.shiro.realms.BaseRealm;
 import com.dongz.hrm.common.shiro.redis.RedisCacheManager;
 import com.dongz.hrm.common.shiro.redis.RedisManager;
 import com.dongz.hrm.common.shiro.redis.RedisSessionDAO;
-import com.dongz.hrm.system.shiro.realms.SystemRealm;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.SessionListener;
@@ -20,11 +20,8 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,21 +33,15 @@ import java.util.Map;
  * @date 2020/2/23 23:41
  * @desc
  */
-@Configuration
-public class ShiroConfiguration {
-
-    @Value("${spring.redis.host}")
-    private String host;
-    @Value("${spring.redis.port}")
-    private int port;
+public abstract class ShiroConfiguration {
 
     /**
      * 过滤器
      * @param securityManager
      * @return
      */
-    @Bean(name = "shirFilter")
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("securityManager") SecurityManager securityManager) {
+    @Bean
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         // 1, 创建过滤工厂
         ShiroFilterFactoryBean filterFactory = new ShiroFilterFactoryBean();
         // 2，设置安全管理器
@@ -83,11 +74,11 @@ public class ShiroConfiguration {
      * 配置核心安全事务管理器
      * @return
      */
-    @Bean(name="securityManager")
+    @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
         //设置自定义realm.
-        securityManager.setRealm(systemRealm());
+        securityManager.setRealm(baseRealm());
         //配置记住我
         securityManager.setRememberMeManager(rememberMeManager());
         //配置redis缓存
@@ -111,20 +102,20 @@ public class ShiroConfiguration {
      * @return
      */
     @Bean
-    public SystemRealm systemRealm(){
-        SystemRealm systemRealm = new SystemRealm();
-        systemRealm.setCachingEnabled(true);
+    public BaseRealm baseRealm(){
+        BaseRealm baseRealm = new BaseRealm();
+        baseRealm.setCachingEnabled(true);
         //启用身份验证缓存，即缓存AuthenticationInfo信息，默认false
-        systemRealm.setAuthenticationCachingEnabled(true);
+        baseRealm.setAuthenticationCachingEnabled(true);
         //缓存AuthenticationInfo信息的缓存名称 在ehcache-shiro.xml中有对应缓存的配置
-        systemRealm.setAuthenticationCacheName("authenticationCache");
+        baseRealm.setAuthenticationCacheName("authenticationCache");
         //启用授权缓存，即缓存AuthorizationInfo信息，默认false
-        systemRealm.setAuthorizationCachingEnabled(true);
+        baseRealm.setAuthorizationCachingEnabled(true);
         //缓存AuthorizationInfo信息的缓存名称  在ehcache-shiro.xml中有对应缓存的配置
-        systemRealm.setAuthorizationCacheName("authorizationCache");
+        baseRealm.setAuthorizationCacheName("authorizationCache");
         //配置自定义密码比较器
-        //systemRealm.setCredentialsMatcher(retryLimitHashedCredentialsMatcher());
-        return systemRealm;
+        //baseRealm.setCredentialsMatcher(retryLimitHashedCredentialsMatcher());
+        return baseRealm;
     }
 
     /**
@@ -248,7 +239,7 @@ public class ShiroConfiguration {
      * 默认为: JSESSIONID 问题: 与SERVLET容器名冲突,重新定义为sid
      * @return
      */
-    @Bean("sessionIdCookie")
+    @Bean()
     public SimpleCookie sessionIdCookie(){
         //这个参数是cookie的名称
         SimpleCookie simpleCookie = new SimpleCookie("sid");
@@ -268,7 +259,7 @@ public class ShiroConfiguration {
      * 配置会话管理器，设定会话超时及保存
      * @return
      */
-    @Bean("sessionManager")
+    @Bean
     public SessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         Collection<SessionListener> listeners = new ArrayList<>();

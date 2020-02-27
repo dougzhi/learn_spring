@@ -1,9 +1,9 @@
 package com.dongz.hrm.common.utils;
 
 import org.apache.shiro.io.SerializationException;
-import org.crazycake.shiro.serializer.RedisSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
 import java.io.*;
 
