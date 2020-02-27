@@ -5,6 +5,7 @@ import lombok.Data;
 import org.crazycake.shiro.AuthCachePrincipal;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,8 +32,8 @@ public class Profile implements AuthCachePrincipal,Serializable {
     @Data
     public static class Roles implements Serializable{
         private static final long serialVersionUID = -7447543349720068403L;
-        private List<String> menus;
-        private List<String> points;
-        private List<String> apis;
+        private List<String> menus = new ArrayList<>();
+        private List<String> points = new ArrayList<>();
+        private List<String> apis = new ArrayList<>();
     }
 }

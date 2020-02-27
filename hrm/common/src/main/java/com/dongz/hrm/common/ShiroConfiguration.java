@@ -2,9 +2,6 @@ package com.dongz.hrm.common;
 
 import com.dongz.hrm.common.shiro.listeners.ShiroSessionListener;
 import com.dongz.hrm.common.shiro.realms.BaseRealm;
-import com.dongz.hrm.common.shiro.redis.RedisCacheManager;
-import com.dongz.hrm.common.shiro.redis.RedisManager;
-import com.dongz.hrm.common.shiro.redis.RedisSessionDAO;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.SessionListener;
@@ -20,6 +17,9 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 
@@ -34,6 +34,8 @@ import java.util.Map;
  * @desc
  */
 public abstract class ShiroConfiguration {
+
+    public static RedisSessionDAO dao;
 
     /**
      * 过滤器
@@ -171,8 +173,6 @@ public abstract class ShiroConfiguration {
     public RedisCacheManager cacheManager(){
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
-        //redis中针对不同用户缓存
-        redisCacheManager.setPrincipalIdFieldName("username");
         //用户权限信息缓存时间
         redisCacheManager.setExpire(200000);
         return redisCacheManager;
@@ -230,6 +230,7 @@ public abstract class ShiroConfiguration {
         redisSessionDAO.setRedisManager(redisManager());
         //session在redis中的保存时间,最好大于session会话超时时间
         redisSessionDAO.setExpire(12000);
+        dao = redisSessionDAO;
         return redisSessionDAO;
     }
 

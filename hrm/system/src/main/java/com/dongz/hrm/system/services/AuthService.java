@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +87,6 @@ public class AuthService extends BaseService {
      * @return
      */
     private Profile.Roles getRoles(List<Permission> roleList) {
-        if (roleList == null) return null;
         Profile.Roles roles = new Profile.Roles();
         Map<String, List<String>> type = roleList.parallelStream().distinct()
                 .collect(Collectors.groupingBy(item -> item.getType().name()))
@@ -94,9 +94,9 @@ public class AuthService extends BaseService {
                 .collect(Collectors.toMap(Map.Entry::getKey, item -> item.getValue().stream().map(Permission::getCode)
                         .collect(Collectors.toList())));
 
-        roles.setMenus(type.getOrDefault(PermissionStatus.MENU.name(), null));
-        roles.setPoints(type.getOrDefault(PermissionStatus.POINT.name(), null));
-        roles.setApis(type.getOrDefault(PermissionStatus.API.name(), null));
+        roles.setMenus(type.getOrDefault(PermissionStatus.MENU.name(), new ArrayList<>()));
+        roles.setPoints(type.getOrDefault(PermissionStatus.POINT.name(), new ArrayList<>()));
+        roles.setApis(type.getOrDefault(PermissionStatus.API.name(), new ArrayList<>()));
         return roles;
     }
 

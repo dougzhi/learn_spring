@@ -8,7 +8,7 @@ import com.dongz.hrm.common.utils.IdWorker;
 import com.dongz.hrm.domain.system.User;
 import com.dongz.hrm.domain.system.UserRole;
 import com.dongz.hrm.domain.system.vos.UserVO;
-import com.dongz.hrm.system.shiro.sessions.SystemRealmSession;
+import com.dongz.hrm.system.shiro.sessions.SystemSessionManager;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,7 +135,7 @@ public class UserService extends BaseService {
         removeList.forEach(item -> em.remove(item));
 
         if ((createList.size() + removeList.size()) > 0 ) {
-            SystemRealmSession.reloadAuthorizing(authService.getProfile(user));
+            SystemSessionManager.reloadAuthorizing(authService.getProfile(user));
         }
     }
 

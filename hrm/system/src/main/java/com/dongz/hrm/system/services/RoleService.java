@@ -8,7 +8,7 @@ import com.dongz.hrm.domain.system.RolePermission;
 import com.dongz.hrm.domain.system.User;
 import com.dongz.hrm.domain.system.UserRole;
 import com.dongz.hrm.domain.system.vos.RoleVO;
-import com.dongz.hrm.system.shiro.sessions.SystemRealmSession;
+import com.dongz.hrm.system.shiro.sessions.SystemSessionManager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,7 +140,7 @@ public class RoleService extends BaseService {
             //查询所有具有role角色用户
             List<User> userList = em.createQuery("select u from User u left join UserRole r on u.id = r.userId where r.roleId = ?1 and u.isDeleted = 0 ", User.class).setParameter(1, id).getResultList();
             List<Profile> profileList = userList.stream().distinct().map(item -> authService.getProfile(item)).collect(Collectors.toList());
-            SystemRealmSession.reloadAuthorizing(profileList);
+            SystemSessionManager.reloadAuthorizing(profileList);
         }
     }
 }
