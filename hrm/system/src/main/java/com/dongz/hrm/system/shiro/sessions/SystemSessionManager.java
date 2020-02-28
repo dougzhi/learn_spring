@@ -29,20 +29,11 @@ public class SystemSessionManager {
      * @param profile 用户名
      */
     public static void reloadAuthorizing(@NotNull Profile profile){
-        DefaultWebSecurityManager shiroSession = (DefaultWebSecurityManager) SecurityUtils.getSecurityManager();
-        SystemRealm systemRealm = (SystemRealm) shiroSession.getRealms().iterator().next();
-        Subject subject = SecurityUtils.getSubject();
-
-        //第一个参数为用户名,第二个参数为realmName
-        systemRealm.getAuthorizationCache().remove(subject.getPrincipals());
-        systemRealm.clearAllCache();
+        String realmName = clearCacheAndgetRealmName();
 
         Collection<Session> activeSessions = SystemShiroConfiguration.dao.getActiveSessions();
         activeSessions.stream().filter(item -> isContent(item, profile)).forEach(item -> {
-            SimplePrincipalCollection simplePrincipalCollection = new SimplePrincipalCollection();
-            simplePrincipalCollection.add(profile, systemRealm.getName());
-            item.setAttribute(SESSION_KEY, simplePrincipalCollection);
-            SystemShiroConfiguration.dao.update(item);
+            updateSession(item, profile, realmName);
         });
     }
 
@@ -51,23 +42,33 @@ public class SystemSessionManager {
      * @param profiles 用户名
      */
     public static void reloadAuthorizing(List<Profile> profiles){
-        DefaultWebSecurityManager shiroSession = (DefaultWebSecurityManager) SecurityUtils.getSecurityManager();
-        SystemRealm systemRealm = (SystemRealm) shiroSession.getRealms().iterator().next();
-        Subject subject = SecurityUtils.getSubject();
-        //第一个参数为用户名,第二个参数为realmName
-        systemRealm.getAuthorizationCache().remove(subject.getPrincipals());
-        systemRealm.clearAllCache();
+        String realmName = clearCacheAndgetRealmName();
 
         Map<Long, Profile> map = profiles.stream().collect(Collectors.toMap(Profile::getId, item -> item));
 
         List<Long> userIds = profiles.stream().distinct().map(Profile::getId).collect(Collectors.toList());
         Collection<Session> activeSessions = SystemShiroConfiguration.dao.getActiveSessions();
         activeSessions.stream().filter(item -> userIds.contains(getId(item))).forEach(item -> {
-            SimplePrincipalCollection simplePrincipalCollection = new SimplePrincipalCollection();
-            simplePrincipalCollection.add(map.get(getId(item)), systemRealm.getName());
-            item.setAttribute(SESSION_KEY, simplePrincipalCollection);
-            SystemShiroConfiguration.dao.update(item);
+            updateSession(item, map.get(getId(item)), realmName);
         });
+    }
+
+    private static synchronized void updateSession(final Session item,Profile profile,String realmName) {
+        SimplePrincipalCollection simplePrincipalCollection = new SimplePrincipalCollection();
+        simplePrincipalCollection.add(profile, realmName);
+        item.setAttribute(SESSION_KEY, simplePrincipalCollection);
+        SystemShiroConfiguration.dao.update(item);
+    }
+
+    private static String clearCacheAndgetRealmName() {
+        DefaultWebSecurityManager shiroSession = (DefaultWebSecurityManager) SecurityUtils.getSecurityManager();
+        SystemRealm systemRealm = (SystemRealm) shiroSession.getRealms().iterator().next();
+        Subject subject = SecurityUtils.getSubject();
+
+        //第一个参数为用户名,第二个参数为realmName
+        systemRealm.getAuthorizationCache().remove(subject.getPrincipals());
+        systemRealm.clearAllCache();
+        return systemRealm.getName();
     }
 
     private static boolean isContent(final Session activeSession, Profile profile) {
