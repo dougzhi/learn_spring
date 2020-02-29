@@ -82,7 +82,9 @@ public class StepSecondController extends BaseController{
             columns.setItems(null);
             columns.setId(null);
             selectedTable = null;
+            selectedColumn = null;
             isExtend.setVisible(false);
+            foreignBox.setVisible(false);
         } else {
             selectedTable = table;
             selectedTables.putIfAbsent(table.getClassName(), table);
@@ -132,7 +134,6 @@ public class StepSecondController extends BaseController{
         String columnName = source.getText();
         Table table = selectedTables.get(talbeName);
         List<Column> columns = table.getColumns();
-        columns.stream().filter(item -> item.getFieldName().equals(columnName)).forEach(item -> item.setSelected(!item.isSelected()));
         Column column= columns.stream().filter(item -> item.getFieldName().equals(columnName)).findFirst().orElseGet(null);
         if (column == null) {
             alert(Alert.AlertType.WARNING, "所选字段不存在");
@@ -141,12 +142,13 @@ public class StepSecondController extends BaseController{
         if (column.equals(selectedColumn)) {
             foreignBox.setVisible(false);
             source.setSelected(false);
+            selectedColumn.setSelected(false);
             selectedColumn = null;
         } else {
             selectedColumn = column;
+            selectedColumn.setSelected(true);
             source.setSelected(true);
             foreignBox.setVisible(true);
-
             isOnly.setSelected(selectedColumn.isOnly());
             getForeign();
         }
@@ -216,6 +218,13 @@ public class StepSecondController extends BaseController{
         selectedTable.getColumns().stream().filter(item -> item.getFieldName().equals(source)).findFirst().get().setForeignColumn(null);
         foreignBtn.setText("新增");
         foreignInfo.setText("无");
+        foreignBtn.setOnMouseClicked(events -> {
+            try {
+                addForeign(events);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
 

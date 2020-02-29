@@ -79,7 +79,7 @@ public abstract class BaseController implements Initializable {
         anotherStage.setTitle(title);
         anotherStage.setScene(new Scene(anotherRoot));
         anotherStage.centerOnScreen();
-        anotherStage.setAlwaysOnTop(true);
+        anotherStage.setAlwaysOnTop(false);
         anotherStage.show();
     }
 }
