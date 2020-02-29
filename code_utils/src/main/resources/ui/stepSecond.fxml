@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="824.0" styleClass="back" stylesheets="@step.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dongz.codeutils.controllers.StepSecondController">
+<?import javafx.scene.text.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="1000.0" styleClass="back" stylesheets="@step.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dongz.codeutils.controllers.StepSecondController">
    <children>
       <GridPane fx:id="grid1" layoutX="2.0" layoutY="41.0" prefHeight="200.0" prefWidth="152.0">
         <columnConstraints>
@@ -56,40 +47,89 @@
          </children>
       </GridPane>
       <Line endX="154.0" startX="154.0" startY="520.0" strokeWidth="0.4" />
-      <Button fx:id="nextBtn" layoutX="727.0" layoutY="468.0" mnemonicParsing="false" onAction="#next" style="-fx-background-color: #3D5183;" text="下一步" textFill="#171616" />
-      <Button fx:id="close" layoutX="578.0" layoutY="468.0" mnemonicParsing="false" onAction="#close" text="关闭" textFill="#252323" />
-      <Button fx:id="forwardBtn" layoutX="646.0" layoutY="468.0" mnemonicParsing="false" onAction="#forward" text="上一步" textFill="#171616" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="166.0" layoutY="41.0" prefHeight="396.0" prefWidth="310.0" vbarPolicy="NEVER">
+      <Button fx:id="nextBtn" layoutX="915.0" layoutY="468.0" mnemonicParsing="false" onAction="#next" style="-fx-background-color: #3D5183;" text="下一步" textFill="#171616" />
+      <Button fx:id="close" layoutX="764.0" layoutY="468.0" mnemonicParsing="false" onAction="#close" text="关闭" textFill="#252323" />
+      <Button fx:id="forwardBtn" layoutX="833.0" layoutY="468.0" mnemonicParsing="false" onAction="#forward" text="上一步" textFill="#171616" />
+      <ScrollPane hbarPolicy="NEVER" layoutX="166.0" layoutY="41.0" prefHeight="396.0" prefWidth="262.0" vbarPolicy="NEVER">
         <content>
-          <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;">
+          <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="261.0" style="-fx-background-color: #4b4b53;">
                <children>
-                   <ListView fx:id="entities" layoutX="-3.0" layoutY="1.0" maxHeight="1.7976931348623157E308" prefHeight="396.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                   <ListView fx:id="entities" layoutX="-3.0" layoutY="1.0" maxHeight="1.7976931348623157E308" prefHeight="396.0" prefWidth="260.0" style="-fx-background-color: #4b4b53;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
-                        <Insets top="3.0" />
+                        <Insets top="10.0" />
                      </padding></ListView>
                </children>
             </AnchorPane>
         </content>
       </ScrollPane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="484.0" layoutY="41.0" prefHeight="396.0" prefWidth="310.0" vbarPolicy="NEVER">
+      <ScrollPane hbarPolicy="NEVER" layoutX="443.0" layoutY="41.0" prefHeight="396.0" prefWidth="260.0" vbarPolicy="NEVER">
          <content>
-            <VBox>
+            <AnchorPane prefHeight="394.0" prefWidth="260.0" style="-fx-background-color: #4b4b53;">
                <children>
-                  <AnchorPane prefHeight="37.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;">
+                  <VBox fx:id="columnBox">
                      <children>
-                        <CheckBox fx:id="isExtend" layoutX="9.0" layoutY="8.0" mnemonicParsing="false" onAction="#isExtend" text="继承BaseEntity" />
+                        <CheckBox fx:id="isExtend" mnemonicParsing="false" onAction="#isExtend" text="继承BaseEntity">
+                           <VBox.margin>
+                              <Insets left="17.0" top="20.0" />
+                           </VBox.margin>
+                        </CheckBox>
+                        <ListView fx:id="columns" maxHeight="1.7976931348623157E308" prefHeight="332.0" prefWidth="244.0" style="-fx-background-color: #4b4b53;" styleClass="columnsStyle">
+                           <VBox.margin>
+                              <Insets left="7.0" right="7.0" top="13.0" />
+                           </VBox.margin>
+                        </ListView>
                      </children>
-                  </AnchorPane>
-                  <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="356.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;">
-                     <children>
-                        <ListView fx:id="columns" layoutX="-3.0" layoutY="10.0" maxHeight="1.7976931348623157E308" prefHeight="349.0" prefWidth="307.0" style="-fx-background-color: #4b4b53;" styleClass="columnsStyle" AnchorPane.leftAnchor="0.0" />
-                     </children>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </AnchorPane>
+                  </VBox>
                </children>
-            </VBox>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+      <ScrollPane hbarPolicy="NEVER" layoutX="719.0" layoutY="41.0" prefHeight="396.0" prefWidth="262.0" vbarPolicy="NEVER">
+         <content>
+            <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="394.0" prefWidth="261.0" style="-fx-background-color: #4b4b53;">
+               <children>
+                  <VBox fx:id="foreignBox" prefHeight="396.0" prefWidth="260.0">
+                     <children>
+                        <CheckBox fx:id="isOnly" mnemonicParsing="false" onAction="#isOnly" text="唯一">
+                           <VBox.margin>
+                              <Insets left="17.0" top="20.0" />
+                           </VBox.margin>
+                        </CheckBox>
+                        <HBox prefHeight="46.0" prefWidth="260.0">
+                           <children>
+                              <Label prefHeight="22.0" prefWidth="121.0" text="外键关联" textFill="#dad7d7">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="17.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="foreignBtn" contentDisplay="RIGHT" ellipsisString="" mnemonicParsing="false" text="新增">
+                                 <HBox.margin>
+                                    <Insets left="56.0" right="8.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </HBox>
+                        <Label fx:id="foreignInfo" prefHeight="22.0" prefWidth="184.0" textFill="#ddd6d6">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="17.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
          </content>
       </ScrollPane>
    </children>

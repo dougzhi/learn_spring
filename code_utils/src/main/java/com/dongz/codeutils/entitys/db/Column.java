@@ -33,8 +33,14 @@ public class Column implements Cloneable{
 	 * 是否是主键
 	 */
 	private String columnKey;
-
+	/**
+	 * 是否选中
+	 */
 	private boolean selected;
+	/**
+	 * 是否唯一
+	 */
+	private boolean isOnly;
 	/**
 	 * 外键关联表关系
 	 */
@@ -50,7 +56,7 @@ public class Column implements Cloneable{
 	protected Column clone() {
 		Column column = null;
 		try {
-			 column = (Column) super.clone();
+			column = (Column) super.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}

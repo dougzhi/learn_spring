@@ -116,7 +116,7 @@ public class DataBaseUtils {
                         if (Arrays.asList(keys.toString().split(",")).contains(columnName)) {
                             pri = "PRI";
                         }
-                        Column column = new Column(columnName, attName, javaType, dbType, comment, pri, true, null);
+                        Column column = new Column(columnName, attName, javaType, dbType, comment, pri, true, false, null);
                         columnList.add(column);
                     }
                     Table table = new Table(tableName, className, remarks, keys.toString(), columnList, true);

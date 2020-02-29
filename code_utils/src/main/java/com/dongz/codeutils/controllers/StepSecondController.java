@@ -5,12 +5,10 @@ import com.dongz.codeutils.entitys.db.Table;
 import com.dongz.codeutils.utils.DataBaseUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,10 +30,15 @@ public class StepSecondController extends BaseController{
     public ListView entities;
     public ListView columns;
     public CheckBox isExtend;
+    public VBox foreignBox;
+    public CheckBox isOnly;
+    public Label foreignInfo;
+    public Button foreignBtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         isExtend.setVisible(false);
+        foreignBox.setVisible(false);
         if (tables == null) {
             try {
                 tables = DataBaseUtils.getDbInfo(db);
@@ -106,7 +109,7 @@ public class StepSecondController extends BaseController{
         return table.getColumns().stream().filter(item -> item.getForeignColumn() != null && item.getForeignColumn().getTable() != null).map(item -> item.getForeignColumn().getTable()).collect(Collectors.toList());
     }
 
-    public void showColumns(Table table) {
+    protected void showColumns(Table table) {
         List<BorderPane> collect = table.getColumns().stream().map(item -> {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(item.getFieldName());
@@ -116,36 +119,11 @@ public class StepSecondController extends BaseController{
             checkBox.setOnMouseClicked(this::clickColumn);
             BorderPane bp = new BorderPane();
             bp.setLeft(checkBox);
-            addColumnBtn(item, bp);
             return bp;
         }).collect(Collectors.toList());
         columns.setItems(null);
         columns.setId(table.getClassName());
         columns.setItems(FXCollections.observableArrayList(collect));
-    }
-
-    private void addColumnBtn(Column item,final BorderPane bp) {
-        if (item.getColumnKey() == null) {
-            if (item.getForeignColumn() == null) {
-                Button button = new Button("外键关联");
-                button.setId(item.getFieldName());
-                button.setOnMouseClicked(event -> {
-                    try {
-                        addForeign(event);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                bp.setRight(button);
-            }
-            else{
-                bp.setCenter(new Button(item.getForeignColumn().getTable().getClassName()+"."+item.getForeignColumn().getColumn().getFieldName()));
-                Button button = new Button("删除");
-                button.setId(item.getFieldName());
-                button.setOnMouseClicked(this::removeForeign);
-                bp.setRight(button);
-            }
-        }
     }
 
     private void clickColumn(MouseEvent event) {
@@ -155,10 +133,50 @@ public class StepSecondController extends BaseController{
         Table table = selectedTables.get(talbeName);
         List<Column> columns = table.getColumns();
         columns.stream().filter(item -> item.getFieldName().equals(columnName)).forEach(item -> item.setSelected(!item.isSelected()));
+        Column column= columns.stream().filter(item -> item.getFieldName().equals(columnName)).findFirst().orElseGet(null);
+        if (column == null) {
+            alert(Alert.AlertType.WARNING, "所选字段不存在");
+            return;
+        }
+        if (column.equals(selectedColumn)) {
+            foreignBox.setVisible(false);
+            source.setSelected(false);
+            selectedColumn = null;
+        } else {
+            selectedColumn = column;
+            source.setSelected(true);
+            foreignBox.setVisible(true);
+
+            isOnly.setSelected(selectedColumn.isOnly());
+            getForeign();
+        }
     }
 
+    protected void getForeign() {
+        foreignBtn.setId(selectedColumn.getFieldName());
+        if (selectedColumn.getColumnKey() == null) {
+            if (selectedColumn.getForeignColumn() == null) {
+                foreignBtn.setText("新增");
+                foreignInfo.setText("无");
+                foreignBtn.setOnMouseClicked(event -> {
+                    try {
+                        addForeign(event);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            else{
+                foreignInfo.setText(selectedColumn.getForeignColumn().getTable().getClassName() + "." + selectedColumn.getForeignColumn().getColumn().getFieldName());
+                foreignBtn.setText("删除");
+                foreignBtn.setOnMouseClicked(this::removeForeign);
+            }
+        }
+    }
 
     public void forward() throws IOException {
+        selectedColumn = null;
+        selectedTable = null;
         changeStep(forwardBtn, STEP1);
     }
 
@@ -167,6 +185,8 @@ public class StepSecondController extends BaseController{
             alert(Alert.AlertType.WARNING, "请选择要生成的实体类");
             return;
         }
+        selectedColumn = null;
+        selectedTable = null;
         changeStep(nextBtn, STEP3);
     }
 
@@ -174,21 +194,28 @@ public class StepSecondController extends BaseController{
         selectedTable.setExtendsBase(!selectedTable.isExtendsBase());
     }
 
+    public void isOnly() {
+        selectedColumn.setOnly(!selectedColumn.isOnly());
+    }
+
+    /**
+     * 新增外键
+     * @param event
+     * @throws IOException
+     */
     public void addForeign(MouseEvent event) throws IOException {
-        String source = ((Button) event.getSource()).getId();
-        Column column = selectedTable.getColumns().stream().filter(item -> item.getFieldName().equals(source)).findFirst().get();
-        if (!column.isSelected()) {
+        if (selectedColumn == null) {
             alert(Alert.AlertType.WARNING, "请选择字段");
             return;
         }
-        selectedColumn = column;
         openMadel(SELECTFOREIGN, "selectForeign");
     }
 
     private void removeForeign(MouseEvent event) {
         String source = ((Button) event.getSource()).getId();
         selectedTable.getColumns().stream().filter(item -> item.getFieldName().equals(source)).findFirst().get().setForeignColumn(null);
-        showColumns(selectedTable);
+        foreignBtn.setText("新增");
+        foreignInfo.setText("无");
     }
 }
 
