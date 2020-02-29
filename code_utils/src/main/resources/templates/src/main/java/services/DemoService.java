@@ -39,7 +39,7 @@ public class ${ClassName}Service extends BaseService {
         Assert.notNull(vo, "${table.comment?default('xxx')}不能为空");
         //断言
         <#list table.columns as column>
-        <#if column.notNull=true>
+        <#if column.notNull=true && !baseEntity?contains(column.fieldName)>
         <#if column.columnType=='String'>
         Assert.hasText(vo.${column.getName}(), "${column.columnComment?default('xxx')}不能为空");
         <#else>

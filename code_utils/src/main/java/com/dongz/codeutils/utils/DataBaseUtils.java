@@ -93,7 +93,7 @@ public class DataBaseUtils {
                     // 2， 类名
                     String className = removePrefix(tableName);
                     // 3， 描述
-                    String remarks = tables.getString("REMARKS");
+                    String remarks = StringUtils.isBlank(tables.getString("REMARKS")) ? "xxx" : tables.getString("REMARKS");
                     StringBuilder keys = new StringBuilder();
                     while (primaryKeys.next()) {
                         String columnName = primaryKeys.getString("COLUMN_NAME");
@@ -109,7 +109,7 @@ public class DataBaseUtils {
                         String dbType = columns.getString("TYPE_NAME");
                         String javaType = PropertiesUtils.customMap.get(dbType);
                         // 4, 备注
-                        String comment = columns.getString("REMARKS");
+                        String comment = StringUtils.isBlank(columns.getString("REMARKS")) ? "xxx" : columns.getString("REMARKS");
                         // 5, 是否主键
                         String pri = null;
                         if (Arrays.asList(keys.toString().split(",")).contains(columnName)) {

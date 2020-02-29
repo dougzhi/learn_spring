@@ -20,7 +20,7 @@ public enum TemplateEnum {
     ResultCode("ResultCode.java","/%s/src/main/java/%s/entities/",true),
     TableVO("DemoTableVO.java","/%s/src/main/java/%s/entities/vos/",false),
     Service("DemoService.java","/%s/src/main/java/%s/services/",false),
-    BaseService("DemoService.java","/%s/src/main/java/%s/services/",true),
+    BaseService("DemoService.java","/%s/src/main/java/%s/services/",false),
     Controller("DemoController.java","/%s/src/main/java/%s/controllers/",false),
     BaseController("BaseController.java","/%s/src/main/java/%s/controllers/",true),
     IdWorker("IdWorker.java","/%s/src/main/java/%s/utils/",true),
