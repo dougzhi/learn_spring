@@ -34,6 +34,7 @@ public class StepSecondController extends BaseController{
     public CheckBox isOnly;
     public Label foreignInfo;
     public Button foreignBtn;
+    public CheckBox notNull;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -150,6 +151,7 @@ public class StepSecondController extends BaseController{
             source.setSelected(true);
             foreignBox.setVisible(true);
             isOnly.setSelected(selectedColumn.isOnly());
+            notNull.setSelected(selectedColumn.isNotNull());
             getForeign();
         }
     }
@@ -198,6 +200,10 @@ public class StepSecondController extends BaseController{
 
     public void isOnly() {
         selectedColumn.setOnly(!selectedColumn.isOnly());
+    }
+
+    public void isNotNull() {
+        selectedColumn.setNotNull(!selectedColumn.isNotNull());
     }
 
     /**

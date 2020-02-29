@@ -95,6 +95,11 @@
                               <Insets left="17.0" top="20.0" />
                            </VBox.margin>
                         </CheckBox>
+                        <CheckBox fx:id="notNull" mnemonicParsing="false" onAction="#isNotNull" text="非空">
+                           <VBox.margin>
+                              <Insets left="17.0" top="20.0" />
+                           </VBox.margin>
+                        </CheckBox>
                         <HBox prefHeight="46.0" prefWidth="260.0">
                            <children>
                               <Label prefHeight="22.0" prefWidth="121.0" text="外键关联" textFill="#dad7d7">

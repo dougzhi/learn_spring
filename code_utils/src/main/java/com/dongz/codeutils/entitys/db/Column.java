@@ -42,6 +42,10 @@ public class Column implements Cloneable{
 	 */
 	private boolean isOnly;
 	/**
+	 * 是否非空
+	 */
+	private boolean isNotNull;
+	/**
 	 * 外键关联表关系
 	 */
 	private ForeignColumn foreignColumn;
