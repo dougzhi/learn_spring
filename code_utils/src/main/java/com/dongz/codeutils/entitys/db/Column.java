@@ -45,11 +45,11 @@ public class Column implements Cloneable{
 	/**
 	 * 是否唯一
 	 */
-	private boolean isOnly;
+	private boolean only;
 	/**
 	 * 是否非空
 	 */
-	private boolean isNotNull;
+	private boolean notNull;
 	/**
 	 * 外键关联表关系
 	 */

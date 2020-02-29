@@ -1,9 +1,11 @@
 package ${pPackage}.services;
 
 import ${pPackage}.entities.${ClassName};
+<#if hasVO=true>
 import ${pPackage}.entities.vos.${ClassName}VO;
+</#if>
 <#list foreignTables as foreignTable>
-import ${pPackage}.entities.${foreignTable.ClassName};
+import ${pPackage}.entities.${foreignTable.className};
 </#list>
 import ${pPackage}.services.BaseService;
 import org.springframework.beans.BeanUtils;
@@ -34,27 +36,41 @@ public class ${ClassName}Service extends BaseService {
      * @param vo vo
      */
     public Long create(${ClassName}VO vo) {
-        Assert.notNull(vo, "用户信息不能为空");
+        Assert.notNull(vo, "${table.comment?default('xxx')}不能为空");
+        //断言
         <#list table.columns as column>
-        Assert.hasText(vo.getUsername(), "用户名称不能为空");
-<#if column.isNotNull>
-        Assert.hasText(vo.getUsername(), "用户名称不能为空");
-        Assert.hasText(vo.getMobile(), "用户手机号码不能为空");
+        <#if column.notNull=true>
+        <#if column.columnType=='String'>
+        Assert.hasText(vo.${column.getName}(), "${column.columnComment?default('xxx')}不能为空");
+        <#else>
+        Assert.notNull(vo.${column.getName}(), "${column.columnComment?default('xxx')}不能为空");
+        </#if>
         </#if>
         </#list>
-        long count = em.createQuery("select count(1) from User u where u.mobile = ?1 and u.isDeleted = false ", Long.class).setParameter(1, vo.getMobile()).getSingleResult();
-        Assert.isTrue(count == 0, "用户手机号码重复， 新增失败");
 
-        User user = new User();
-        BeanUtils.copyProperties(vo, user);
-        user.setId(idWorker.nextId());
-        user.setLevel(LevelState.NormalUser);
-        //默认密码
-        user.setPassword(new Md5Hash("123456", vo.getMobile(), 3).toString());
+        //唯一
+        <#list table.columns as column>
+        <#if column.only=true>
+        long count = em.createQuery("select count(1) from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", Long.class).setParameter(1, vo.${column.getName}()).getSingleResult();
+        Assert.isTrue(count == 0, "${column.columnComment}?default('xxx')重复， 新增失败");
+        </#if>
+        </#list>
 
-        setCreate(user);
-        em.persist(user);
-        return user.getId();
+        //外键
+        <#list table.columns as column>
+        <#if column.foreignColumn??>
+        long count = em.createQuery("select count(1) from ${column.foreignColumn.table.className} u where u.${column.foreignColumn.column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", Long.class).setParameter(1, vo.${column.getName}()).getSingleResult();
+        Assert.isTrue(count == 0, "${column.columnComment}?default('xxx')外键关联不存在， 新增失败");
+        </#if>
+        </#list>
+
+        ${table.className} entity = new ${table.className}();
+        BeanUtils.copyProperties(vo, entity);
+        entity.setId(idWorker.nextId());
+
+        setCreate(entity);
+        em.persist(entity);
+        return entity.getId();
     }
 
     /**
