@@ -143,6 +143,8 @@ public class DataBaseUtils {
     public static void makeTemplate() throws IOException {
         createTable(TemplateEnum.Table, ".java");
         createTable(TemplateEnum.TableVO, "VO.java");
+        createTable(TemplateEnum.Service, "Service.java");
+        createTable(TemplateEnum.Controller, "Controller.java");
         Arrays.asList(TemplateEnum.values()).parallelStream().filter(TemplateEnum::isBase).forEach(item -> {
             try {
                 createOthers(item);
@@ -191,9 +193,15 @@ public class DataBaseUtils {
         // 2, 元数据
         resetIsExtends(table);
         dataModel.put("table", table);
+        // 外键
+        dataModel.put("foreignTables", getAllForeignTables(table));
         // 4, 类型
         dataModel.put("ClassName", table.getClassName());
         return dataModel;
+    }
+
+    private static List<Table> getAllForeignTables(final Table table) {
+        return table.getColumns().stream().filter(item -> item.getForeignColumn() != null).map(item -> item.getForeignColumn().getTable()).distinct().collect(Collectors.toList());
     }
 
     public static void resetIsExtends(final Table table) {

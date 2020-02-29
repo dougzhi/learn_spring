@@ -79,7 +79,7 @@ public class StepFourthController extends BaseController{
         String path1Text = path1.getText();
         String path2Text = path2.getText();
         String path3Text = path3.getText();
-        if (StringUtils.isBlank(path1Text)||StringUtils.isBlank(path2Text)||StringUtils.isBlank(path3Text)) {
+        if (StringUtils.isBlank(path1Text) || StringUtils.isBlank(path2Text) || StringUtils.isBlank(path3Text)) {
             alert(Alert.AlertType.WARNING, "请输入完整包名");
             return;
         }
