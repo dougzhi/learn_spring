@@ -15,8 +15,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.dongz.codeutils.controllers.BaseController.selectedTables;
-import static com.dongz.codeutils.controllers.BaseController.settings;
+import static com.dongz.codeutils.controllers.BaseController.*;
 
 /**
  * @author dong
@@ -116,7 +115,7 @@ public class DataBaseUtils {
                         if (Arrays.asList(keys.toString().split(",")).contains(columnName)) {
                             pri = "PRI";
                         }
-                        Column column = new Column(columnName, attName, javaType, dbType, comment, pri, true, false, true, null);
+                        Column column = new Column(columnName, attName, StringUtils.makeGetName(columnName), StringUtils.makeSetName(columnName),javaType, dbType, comment, pri, true, false, true, null);
                         columnList.add(column);
                     }
                     Table table = new Table(tableName, className, remarks, keys.toString(), columnList, true);
@@ -142,7 +141,7 @@ public class DataBaseUtils {
 
     public static void makeTemplate() throws IOException {
         createTable(TemplateEnum.Table, ".java");
-        createTable(TemplateEnum.TableVO, "VO.java");
+        createTableVO(TemplateEnum.TableVO, "VO.java");
         createTable(TemplateEnum.Service, "Service.java");
         createTable(TemplateEnum.Controller, "Controller.java");
         Arrays.asList(TemplateEnum.values()).parallelStream().filter(TemplateEnum::isBase).forEach(item -> {
@@ -158,6 +157,22 @@ public class DataBaseUtils {
         Template template = getTemplate(templateEnum);
         String outPath = templateEnum.getOutPath();
         selectedTables.forEach((k, v) ->
+                {
+                    try {
+                        Map<String, Object> dataModel = getDataModel(v);
+                        dataModel.put("hasVO", selectedVos.containsKey(v.getClassName()));
+                        template.process(dataModel, new FileWriter(FileUtils.mkdir(outPath, k + suffix)));
+                    } catch (TemplateException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+
+    private static void createTableVO(TemplateEnum templateEnum, String suffix) throws IOException {
+        Template template = getTemplate(templateEnum);
+        String outPath = templateEnum.getOutPath();
+        selectedVos.forEach((k, v) ->
                 {
                     try {
                         template.process(getDataModel(v), new FileWriter(FileUtils.mkdir(outPath, k + suffix)));

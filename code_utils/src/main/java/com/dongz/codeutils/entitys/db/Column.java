@@ -18,6 +18,11 @@ public class Column implements Cloneable{
 	 */
 	private String fieldName;
 	/**
+	 * 方法名称
+	 */
+	private String getName;
+	private String setName;
+	/**
 	 * java列类型
 	 */
 	private String columnType;
@@ -65,5 +70,45 @@ public class Column implements Cloneable{
 			e.printStackTrace();
 		}
 		return column;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	public boolean isOnly() {
+		return isOnly;
+	}
+
+	public void setOnly(boolean only) {
+		isOnly = only;
+	}
+
+	public boolean isNotNull() {
+		return isNotNull;
+	}
+
+	public void setNotNull(boolean notNull) {
+		isNotNull = notNull;
+	}
+
+	public String getColumnName() {
+		return columnName;
+	}
+
+	public void setColumnName(String columnName) {
+		this.columnName = columnName;
+	}
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
 	}
 }

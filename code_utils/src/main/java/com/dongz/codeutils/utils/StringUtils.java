@@ -132,6 +132,21 @@ public class StringUtils {
         return result;
     }
 
+    public static String makeGetName(String sqlName) {
+        if (sqlName.startsWith("is_")) {
+            return makeAllWordFirstLetterUpperCase(sqlName);
+        } else {
+            return "get" + makeAllWordFirstLetterUpperCase(sqlName);
+        }
+    }
+
+    public static String makeSetName(String sqlName) {
+        if (sqlName.startsWith("is_")) {
+            sqlName = sqlName.replace("is_", "");
+        }
+        return "set" + makeAllWordFirstLetterUpperCase(sqlName);
+    }
+
     public static int indexOfByRegex(String input,String regex) {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(input);
@@ -174,7 +189,7 @@ public class StringUtils {
         // the index of an occurrence we've found, or -1
         int patLen = oldPattern.length();
         while (index >= 0) {
-            sbuf.append(inString.substring(pos, index));
+            sbuf.append(inString, pos, index);
             sbuf.append(newPattern);
             pos = index + patLen;
             index = inString.indexOf(oldPattern, pos);

@@ -35,9 +35,13 @@ public class ${ClassName}Service extends BaseService {
      */
     public Long create(${ClassName}VO vo) {
         Assert.notNull(vo, "用户信息不能为空");
+        <#list table.columns as column>
+        Assert.hasText(vo.getUsername(), "用户名称不能为空");
+<#if column.isNotNull>
         Assert.hasText(vo.getUsername(), "用户名称不能为空");
         Assert.hasText(vo.getMobile(), "用户手机号码不能为空");
-
+        </#if>
+        </#list>
         long count = em.createQuery("select count(1) from User u where u.mobile = ?1 and u.isDeleted = false ", Long.class).setParameter(1, vo.getMobile()).getSingleResult();
         Assert.isTrue(count == 0, "用户手机号码重复， 新增失败");
 

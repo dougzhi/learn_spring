@@ -164,7 +164,7 @@ public class StepSecondController extends BaseController{
                 foreignInfo.setText("无");
                 foreignBtn.setOnMouseClicked(event -> {
                     try {
-                        addForeign(event);
+                        addForeign();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -208,10 +208,9 @@ public class StepSecondController extends BaseController{
 
     /**
      * 新增外键
-     * @param event
      * @throws IOException
      */
-    public void addForeign(MouseEvent event) throws IOException {
+    public void addForeign() throws IOException {
         if (selectedColumn == null) {
             alert(Alert.AlertType.WARNING, "请选择字段");
             return;
@@ -226,7 +225,7 @@ public class StepSecondController extends BaseController{
         foreignInfo.setText("无");
         foreignBtn.setOnMouseClicked(events -> {
             try {
-                addForeign(events);
+                addForeign();
             } catch (IOException e) {
                 e.printStackTrace();
             }
