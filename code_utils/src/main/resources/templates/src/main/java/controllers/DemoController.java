@@ -44,10 +44,13 @@ public class ${ClassName}Controller extends BaseController {
         ) {
         StringBuilder sb = new StringBuilder();
         <#if hasVO>
-        sb.append("select <#list tableVO.columns as column><#if column.selected && column.notNull && !baseEntity?contains(column.fieldName)>t.${column.columnName} as ${column.fieldName}<#if column_has_next>,</#if></#if></#list> from permission t where 1=1");
+        sb.append("select <#list tableVO.columns as column><#if column.selected && column.notNull && !baseEntity?contains(column.fieldName)>t.${column.columnName} as ${column.fieldName}<#if column_has_next>,</#if></#if></#list> from permission t <#if !foreignTables??>where 1=1</#if>");
         <#else>
-        sb.append("select <#list table.columns as column><#if column.selected && column.notNull && !baseEntity?contains(column.fieldName)>t.${column.columnName} as ${column.fieldName}<#if column_has_next>,</#if></#if></#list> from permission t where 1=1");
+        sb.append("select <#list table.columns as column><#if column.selected && column.notNull && !baseEntity?contains(column.fieldName)>t.${column.columnName} as ${column.fieldName}<#if column_has_next>,</#if></#if></#list> from permission t <#if !foreignTables??>where 1=1</#if>");
         </#if>
+        <#list foreignTables as foreignTable>
+        sb.append(" left join ${foreignTable.table.name} as t${foreignTable_index + 1} on t${foreignTable_index + 1}.${foreignTable.foreignColumn.columnName} = t.${foreignTable.column.columnName} <#if !foreignTable_has_next>where 1=1 </#if>");
+        </#list>
         Map<String, Object> params = new HashMap<>();
         <#list table.columns as column>
         <#if column.selected && !baseEntity?contains(column.fieldName)>
@@ -69,10 +72,13 @@ public class ${ClassName}Controller extends BaseController {
     @GetMapping(value = "/info", name="详情")
     public Result info(@RequestParam Long id) {
         <#if hasVO>
-        String sql = "select <#list tableVO.columns as column><#if column.selected && column.notNull && !baseEntity?contains(column.fieldName)>t.${column.columnName} as ${column.fieldName}<#if column_has_next>,</#if></#if></#list> from permission t where t.id = :id ";
+        String sql = "select <#list tableVO.columns as column><#if column.selected && column.notNull && !baseEntity?contains(column.fieldName)>t.${column.columnName} as ${column.fieldName}<#if column_has_next>,</#if></#if></#list> from permission t <#if !foreignTables??>where t.id = :id </#if>";
         <#else>
-        String sql = "select <#list table.columns as column><#if column.selected && column.notNull && !baseEntity?contains(column.fieldName)>t.${column.columnName} as ${column.fieldName}<#if column_has_next>,</#if></#if></#list> from permission t where t.id = :id ";
+        String sql = "select <#list table.columns as column><#if column.selected && column.notNull && !baseEntity?contains(column.fieldName)>t.${column.columnName} as ${column.fieldName}<#if column_has_next>,</#if></#if></#list> from permission t <#if !foreignTables??>where t.id = :id </#if>";
         </#if>
+        <#list foreignTables as foreignTable>
+        sb.append(" left join ${foreignTable.table.name} as t${foreignTable_index + 1} on t${foreignTable_index + 1}.${foreignTable.foreignColumn.columnName} = t.${foreignTable.column.columnName} <#if !foreignTable_has_next>where t.id = :id </#if>");
+        </#list>
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         Map<String, Object> map = this.queryForObject(sql, params);

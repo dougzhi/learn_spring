@@ -142,8 +142,8 @@ public class DataBaseUtils {
     public static void makeTemplate() throws IOException {
         createTable(TemplateEnum.Table, ".java");
         createTableVO(TemplateEnum.TableVO, "VO.java");
-        createService(TemplateEnum.Service, "Service.java");
-        createTable(TemplateEnum.Controller, "Controller.java");
+        createProfession(TemplateEnum.Service, "Service.java");
+        createProfession(TemplateEnum.Controller, "Controller.java");
         Arrays.asList(TemplateEnum.values()).parallelStream().filter(TemplateEnum::isBase).forEach(item -> {
             try {
                 createOthers(item);
@@ -160,12 +160,6 @@ public class DataBaseUtils {
                 {
                     try {
                         Map<String, Object> dataModel = getDataModel(v);
-                        // 2, 元数据
-                        resetIsExtends(v);
-                        dataModel.put("table", v);
-                        // 外键
-                        dataModel.put("foreignTables", getAllForeignTables(v));
-                        dataModel.put("hasVO", selectedVos.containsKey(k));
                         template.process(dataModel, new FileWriter(FileUtils.mkdir(outPath, k + suffix)));
                     } catch (TemplateException | IOException e) {
                         e.printStackTrace();
@@ -181,11 +175,6 @@ public class DataBaseUtils {
                 {
                     try {
                         Map<String, Object> dataModel = getDataModel(v);
-                        // 2, 元数据
-                        resetIsExtends(v);
-                        dataModel.put("table", v);
-                        // 外键
-                        dataModel.put("foreignTables", getAllForeignTables(v));
                         template.process(dataModel, new FileWriter(FileUtils.mkdir(outPath, k + suffix)));
                     } catch (TemplateException | IOException e) {
                         e.printStackTrace();
@@ -194,16 +183,13 @@ public class DataBaseUtils {
         );
     }
 
-    private static void createService(TemplateEnum templateEnum, String suffix) throws IOException {
+    private static void createProfession(TemplateEnum templateEnum, String suffix) throws IOException {
         Template template = getTemplate(templateEnum);
         String outPath = templateEnum.getOutPath();
         selectedTables.forEach((k, v) ->
                 {
                     try {
                         Map<String, Object> dataModel = getDataModel(v);
-                        // 2, 元数据
-                        resetIsExtends(v);
-                        dataModel.put("table", v);
                         dataModel.put("hasVO", selectedVos.containsKey(k));
                         if (selectedVos.containsKey(k)) {
                             dataModel.put("tableVO", selectedVos.get(k));
@@ -238,6 +224,9 @@ public class DataBaseUtils {
     private static Map<String, Object> getDataModel(final Table table) {
         // 1, 自定义配置
         Map<String, Object> dataModel = new HashMap<>(PropertiesUtils.customMap);
+        // 2, 元数据
+        resetIsExtends(table);
+        dataModel.put("table", table);
         // 3, setting
         dataModel.putAll(settings.getSettingMap());
         // 4, 类型
@@ -245,8 +234,14 @@ public class DataBaseUtils {
         return dataModel;
     }
 
-    private static List<Table> getAllForeignTables(final Table table) {
-        return table.getColumns().stream().filter(item -> item.getForeignColumn() != null).map(item -> item.getForeignColumn().getTable()).distinct().collect(Collectors.toList());
+    private static List<Map<String, Object>> getAllForeignTables(final Table table) {
+        return table.getColumns().stream().filter(item -> item.getForeignColumn() != null).map(item -> {
+            Map<String, Object> info = new HashMap<>();
+            info.put("table", item.getForeignColumn().getTable());
+            info.put("foreignColumn", item.getForeignColumn().getColumn());
+            info.put("column", item);
+            return info;
+        }).distinct().collect(Collectors.toList());
     }
 
     public static void resetIsExtends(final Table table) {

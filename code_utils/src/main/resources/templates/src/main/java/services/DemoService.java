@@ -5,7 +5,7 @@ import ${pPackage}.entities.${ClassName};
 import ${pPackage}.entities.vos.${ClassName}VO;
 </#if>
 <#list foreignTables as foreignTable>
-import ${pPackage}.entities.${foreignTable.className};
+import ${pPackage}.entities.${foreignTable.table.className};
 </#list>
 import ${pPackage}.services.BaseService;
 import org.springframework.beans.BeanUtils;
