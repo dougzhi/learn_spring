@@ -78,7 +78,7 @@ public class ${ClassName}Service extends BaseService {
      * 新增
      *
      */
-    public Long create(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>${column.columnType} ${column.fieldName}<#if column_has_next>,</#if> </#if></#list>) {
+    public Long create(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>${column.columnType} ${column.fieldName}<#if column_has_next>, </#if></#if></#list>) {
         //断言
         <#list table.columns as column>
         <#if column.selected && column.notNull=true && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
@@ -179,7 +179,7 @@ public class ${ClassName}Service extends BaseService {
      * 修改
      *
      */
-    public void update(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName)>${column.columnType} ${column.fieldName}<#if column_has_next>,</#if> </#if></#list>) {
+    public void update(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName)>${column.columnType} ${column.fieldName}<#if column_has_next>, </#if></#if></#list>) {
         //断言
         <#list table.columns as column>
         <#if column.selected && column.notNull=true && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
