@@ -53,7 +53,7 @@ public class ${ClassName}Service extends BaseService {
         <#list table.columns as column>
         <#if column.selected && column.only>
         long count = em.createQuery("select count(1) from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", Long.class).setParameter(1, vo.${column.getName}()).getSingleResult();
-        Assert.isTrue(count == 0, "${column.columnComment}?default('xxx')重复， 新增失败");
+        Assert.isTrue(count == 0, "${column.columnComment?default('xxx')}重复， 新增失败");
         </#if>
         </#list>
 
@@ -61,7 +61,7 @@ public class ${ClassName}Service extends BaseService {
         <#list table.columns as column>
         <#if column.selected && column.foreignColumn??>
         long count = em.createQuery("select count(1) from ${column.foreignColumn.table.className} u where u.${column.foreignColumn.column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", Long.class).setParameter(1, vo.${column.getName}()).getSingleResult();
-        Assert.isTrue(count == 0, "${column.columnComment}?default('xxx')外键关联不存在， 新增失败");
+        Assert.isTrue(count == 0, "${column.columnComment?default('xxx')}外键关联不存在， 新增失败");
         </#if>
         </#list>
 
@@ -78,7 +78,7 @@ public class ${ClassName}Service extends BaseService {
      * 新增
      *
      */
-    public Long create(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>${column.columnType} ${column.fieldName},</#if></#list>) {
+    public Long create(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>${column.columnType} ${column.fieldName}<#if column_has_next>,</#if> </#if></#list>) {
         //断言
         <#list table.columns as column>
         <#if column.selected && column.notNull=true && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
@@ -94,7 +94,7 @@ public class ${ClassName}Service extends BaseService {
         <#list table.columns as column>
         <#if column.selected && column.only>
         long count = em.createQuery("select count(1) from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", Long.class).setParameter(1, ${column.fieldName}).getSingleResult();
-        Assert.isTrue(count == 0, "${column.columnComment}?default('xxx')重复， 新增失败");
+        Assert.isTrue(count == 0, "${column.columnComment?default('xxx')}重复， 新增失败");
         </#if>
         </#list>
 
@@ -102,7 +102,7 @@ public class ${ClassName}Service extends BaseService {
         <#list table.columns as column>
         <#if column.selected && column.foreignColumn??>
         long count = em.createQuery("select count(1) from ${column.foreignColumn.table.className} u where u.${column.foreignColumn.column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", Long.class).setParameter(1, ${column.fieldName}).getSingleResult();
-        Assert.isTrue(count == 0, "${column.columnComment}?default('xxx')外键关联不存在， 新增失败");
+        Assert.isTrue(count == 0, "${column.columnComment?default('xxx')}外键关联不存在， 新增失败");
         </#if>
         </#list>
 
@@ -151,7 +151,7 @@ public class ${ClassName}Service extends BaseService {
         <#if column.selected && column.only>
         if (!entity.${column.getName}().equals(vo.${column.getName}())) {
             Optional<${table.className}> optional = em.createQuery("select u from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", ${table.className}.class).setParameter(1, vo.${column.getName}()).getResultStream().findFirst();
-            Assert.isTrue((!optional.isPresent()) || (optional.get().${column.getName}().equals(vo.${column.getName}())), "${column.columnComment}?default('xxx')重复， 修改失败");
+            Assert.isTrue((!optional.isPresent()) || (optional.get().${column.getName}().equals(vo.${column.getName}())), "${column.columnComment?default('xxx')}重复， 修改失败");
             entity.${column.setName}(vo.${column.getName}());
         }
         </#if>
@@ -161,7 +161,7 @@ public class ${ClassName}Service extends BaseService {
         <#list table.columns as column>
         <#if column.selected && column.foreignColumn??>
         long count = em.createQuery("select count(1) from ${column.foreignColumn.table.className} u where u.${column.foreignColumn.column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", Long.class).setParameter(1, ${column.fieldName}).getSingleResult();
-        Assert.isTrue(count == 0, "${column.columnComment}?default('xxx')外键关联不存在， 新增失败");
+        Assert.isTrue(count == 0, "${column.columnComment?default('xxx')}外键关联不存在， 新增失败");
         </#if>
         </#list>
 
@@ -179,7 +179,7 @@ public class ${ClassName}Service extends BaseService {
      * 修改
      *
      */
-    public void update(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName)>${column.columnType} ${column.fieldName},</#if></#list>) {
+    public void update(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName)>${column.columnType} ${column.fieldName}<#if column_has_next>,</#if> </#if></#list>) {
         //断言
         <#list table.columns as column>
         <#if column.selected && column.notNull=true && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
@@ -202,7 +202,7 @@ public class ${ClassName}Service extends BaseService {
         <#if column.selected && column.only>
         if (!entity.${column.getName}().equals(${column.fieldName})) {
         Optional<${table.className}> optional = em.createQuery("select u from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", ${table.className}.class).setParameter(1, ${column.fieldName}).getResultStream().findFirst();
-        Assert.isTrue((!optional.isPresent()) || (optional.get().${column.getName}().equals(${column.fieldName})), "${column.columnComment}?default('xxx')重复， 修改失败");
+        Assert.isTrue((!optional.isPresent()) || (optional.get().${column.getName}().equals(${column.fieldName})), "${column.columnComment?default('xxx')}重复， 修改失败");
         entity.${column.setName}(${column.fieldName});
         }
         </#if>
@@ -212,7 +212,7 @@ public class ${ClassName}Service extends BaseService {
         <#list table.columns as column>
         <#if column.selected && column.foreignColumn??>
         long count = em.createQuery("select count(1) from ${column.foreignColumn.table.className} u where u.${column.foreignColumn.column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", Long.class).setParameter(1, ${column.fieldName}).getSingleResult();
-        Assert.isTrue(count == 0, "${column.columnComment}?default('xxx')外键关联不存在， 新增失败");
+        Assert.isTrue(count == 0, "${column.columnComment?default('xxx')}外键关联不存在， 新增失败");
         </#if>
         </#list>
 
