@@ -4,9 +4,11 @@ import ${pPackage}.entities.${ClassName};
 <#if hasVO>
 import ${pPackage}.entities.vos.${ClassName}VO;
 </#if>
+<#if foreignTables??>
 <#list foreignTables as foreignTable>
 import ${pPackage}.entities.${foreignTable.table.className};
 </#list>
+</#if>
 import ${pPackage}.services.BaseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
