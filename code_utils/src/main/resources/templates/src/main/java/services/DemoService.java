@@ -225,6 +225,7 @@ public class ${ClassName}Service extends BaseService {
         setLastUpdate(entity);
         em.merge(entity);
     }
+    </#if>
 
     /**
      * 删除
