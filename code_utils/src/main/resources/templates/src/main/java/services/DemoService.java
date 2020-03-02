@@ -40,7 +40,7 @@ public class ${ClassName}Service extends BaseService {
         Assert.notNull(vo, "${table.comment?default('xxx')}不能为空");
         //断言
         <#list tableVO.columns as column>
-        <#if column.selected && column.notNull && !baseEntity?contains(column.fieldName) && column.fieldName !== 'id'>
+        <#if column.selected && column.notNull && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
         <#if column.columnType=='String'>
         Assert.hasText(vo.${column.getName}(), "${column.columnComment?default('xxx')}不能为空");
         <#else>
@@ -78,10 +78,10 @@ public class ${ClassName}Service extends BaseService {
      * 新增
      *
      */
-    public Long create(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName !== 'id'>${column.columnType} ${column.fieldName},</#if></#list>) {
+    public Long create(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>${column.columnType} ${column.fieldName},</#if></#list>) {
         //断言
         <#list table.columns as column>
-        <#if column.selected && column.notNull=true && !baseEntity?contains(column.fieldName) && column.fieldName !== 'id'>
+        <#if column.selected && column.notNull=true && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
         <#if column.columnType=='String'>
         Assert.hasText(${column.fieldName}, "${column.columnComment?default('xxx')}不能为空");
         <#else>
@@ -166,7 +166,7 @@ public class ${ClassName}Service extends BaseService {
         </#list>
 
         <#list table.columns as column>
-        <#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName !== 'id'>
+        <#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
         entity.${column.setName}(vo.${column.getName}());
         </#if>
         </#list>
@@ -182,7 +182,7 @@ public class ${ClassName}Service extends BaseService {
     public void update(<#list table.columns as column><#if column.selected && !baseEntity?contains(column.fieldName)>${column.columnType} ${column.fieldName},</#if></#list>) {
         //断言
         <#list table.columns as column>
-        <#if column.selected && column.notNull=true && !baseEntity?contains(column.fieldName) && column.fieldName !== 'id'>
+        <#if column.selected && column.notNull=true && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
         <#if column.columnType=='String'>
         Assert.hasText(${column.fieldName}, "${column.columnComment?default('xxx')}不能为空");
         <#else>
@@ -217,14 +217,14 @@ public class ${ClassName}Service extends BaseService {
         </#list>
 
         <#list table.columns as column>
-        <#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName !== 'id'>
+        <#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
         entity.${column.setName}(${column.fieldName});
         </#if>
         </#list>
 
         setLastUpdate(entity);
         em.merge(entity);
-        }
+    }
 
     /**
      * 删除
@@ -243,6 +243,6 @@ public class ${ClassName}Service extends BaseService {
         em.merge(entity);
         <#else>
         em.remove(entity);
-        </if>
+        </#if>
     }
 }
