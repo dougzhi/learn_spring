@@ -204,7 +204,7 @@ public class ${ClassName}Service extends BaseService {
         <#if column.selected && column.only>
         if (!${table.shortName}.${column.getName}().equals(${column.fieldName})) {
         Optional<${table.className}> optional = em.createQuery("select u from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", ${table.className}.class).setParameter(1, ${column.fieldName}).getResultStream().findFirst();
-        Assert.isTrue(!optional.isPresent() || optional.get().${column.getName}().equals(${column.fieldName}), "${column.columnComment?default('xxx')}重复， 修改失败");
+        Assert.isTrue(!optional.isPresent() && optional.get().${column.getName}().equals(${column.fieldName}), "${column.columnComment?default('xxx')}重复， 修改失败");
         ${table.shortName}.${column.setName}(${column.fieldName});
         }
         </#if>
@@ -232,13 +232,22 @@ public class ${ClassName}Service extends BaseService {
     /**
      * 删除
      *
-     * @param id id
      */
-    public void delete(Long id) {
-        Assert.notNull(id, "要删除的${table.comment?default('xxx')}ID不能为空");
+    public void delete(<#list table.columns as column><#if column.selected && column.columnKey??>${column.columnType} ${column.fieldName}<#if column_has_next>, </#if></#if></#list>) {
+        <#list table.columns as column>
+        <#if column.selected && column.columnKey??>
+        <#if column.columnType=='String'>
+        Assert.hasText(${column.fieldName}, "要删除的${column.columnComment?default('xxx')}不能为空");
+        <#else>
+        Assert.notNull(${column.fieldName}, "要删除的${column.columnComment?default('xxx')}不能为空");
+        </#if>
+        </#if>
+        </#list>
 
-        ${table.className} ${table.shortName} = em.find(${table.className}.class, id);
-        Assert.notNull(${table.shortName}, "${table.comment?default('xxx')}不存在， 删除失败");
+        Optional<${table.className}> optional = em.createQuery("select u from ${table.className} u where <#list table.columns as column><#if column.selected && column.columnKey??>u.${column.fieldName} = ?${column_index +1 } <#if column_has_next>and </#if></#if></#list>", ${table.className}.class)<#list table.columns as column><#if column.selected && column.columnKey??>.setParameter(${column_index + 1 }, ${column.fieldName})</#if></#list>.getResultStream().findFirst();
+        Assert.isTrue(optional.isPresent(), "${table.comment?default('xxx')}不存在， 删除失败");
+
+        ${table.className} ${table.shortName} = optional.get();
         <#if table.extendsBase>
         Assert.isTrue(!${table.shortName}.isDeleted(), "${table.comment?default('xxx')}已删除");
 

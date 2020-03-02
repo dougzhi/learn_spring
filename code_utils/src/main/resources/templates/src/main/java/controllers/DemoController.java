@@ -127,8 +127,14 @@ public class ${ClassName}Controller extends BaseController {
     </#if>
 
     @DeleteMapping(value = "/deleteById",name = "删除")
-    public Result deleteById(@RequestParam Long id) {
-        service.delete(id);
+    public Result deleteById(
+        <#list table.columns as column>
+        <#if column.selected && column.columnKey??>
+        @RequestParam ${column.columnType} ${column.fieldName}<#if column_has_next>,</#if>
+        </#if>
+        </#list>
+        ) {
+        service.delete(<#list table.columns as column><#if column.selected && column.columnKey??>${column.fieldName}<#if column_has_next>, </#if></#if></#list>);
         return Result.SUCCESS();
     }
 }
