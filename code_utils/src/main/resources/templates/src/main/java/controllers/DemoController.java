@@ -7,7 +7,6 @@ import ${pPackage}.shiro.sessions.ApiSession;
 import ${pPackage}.entities.vos.${ClassName}VO;
 </#if>
 import ${pPackage}.services.${ClassName}Service;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -87,13 +86,13 @@ public class ${ClassName}Controller extends BaseController {
 
     <#if hasVO>
     @PostMapping(value = "/create",name = "新增")
-    public Result create(@RequestBody PermissionVO vo) {
+    public Result create(@RequestBody ${ClassName}VO vo) {
         service.create(vo);
         return Result.SUCCESS();
     }
 
     @PutMapping(value = "/update",name = "修改")
-    public Result update(@RequestBody PermissionVO vo) {
+    public Result update(@RequestBody ${ClassName}VO vo) {
         service.update(vo);
         return Result.SUCCESS();
     }

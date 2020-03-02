@@ -195,7 +195,8 @@ public class DataBaseUtils {
                             dataModel.put("tableVO", selectedVos.get(k));
                         }
                         // 外键
-                        dataModel.put("foreignTables", getAllForeignTables(v));
+                        List<Map<String, Object>> allForeignTables = getAllForeignTables(v);
+                        dataModel.put("foreignTables", allForeignTables.size() == 0 ? null : allForeignTables);
                         template.process(dataModel, new FileWriter(FileUtils.mkdir(outPath, k + suffix)));
                     } catch (TemplateException | IOException e) {
                         e.printStackTrace();
