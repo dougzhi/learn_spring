@@ -142,7 +142,7 @@ public class DataBaseUtils {
     public static void makeTemplate() throws IOException {
         createTable(TemplateEnum.Table, ".java");
         createTableVO(TemplateEnum.TableVO, "VO.java");
-        createTable(TemplateEnum.Service, "Service.java");
+        createService(TemplateEnum.Service, "Service.java");
         createTable(TemplateEnum.Controller, "Controller.java");
         Arrays.asList(TemplateEnum.values()).parallelStream().filter(TemplateEnum::isBase).forEach(item -> {
             try {
@@ -160,7 +160,12 @@ public class DataBaseUtils {
                 {
                     try {
                         Map<String, Object> dataModel = getDataModel(v);
-                        dataModel.put("hasVO", selectedVos.containsKey(v.getClassName()));
+                        // 2, 元数据
+                        resetIsExtends(v);
+                        dataModel.put("table", v);
+                        // 外键
+                        dataModel.put("foreignTables", getAllForeignTables(v));
+                        dataModel.put("hasVO", selectedVos.containsKey(k));
                         template.process(dataModel, new FileWriter(FileUtils.mkdir(outPath, k + suffix)));
                     } catch (TemplateException | IOException e) {
                         e.printStackTrace();
@@ -175,7 +180,37 @@ public class DataBaseUtils {
         selectedVos.forEach((k, v) ->
                 {
                     try {
-                        template.process(getDataModel(v), new FileWriter(FileUtils.mkdir(outPath, k + suffix)));
+                        Map<String, Object> dataModel = getDataModel(v);
+                        // 2, 元数据
+                        resetIsExtends(v);
+                        dataModel.put("table", v);
+                        // 外键
+                        dataModel.put("foreignTables", getAllForeignTables(v));
+                        template.process(dataModel, new FileWriter(FileUtils.mkdir(outPath, k + suffix)));
+                    } catch (TemplateException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+
+    private static void createService(TemplateEnum templateEnum, String suffix) throws IOException {
+        Template template = getTemplate(templateEnum);
+        String outPath = templateEnum.getOutPath();
+        selectedTables.forEach((k, v) ->
+                {
+                    try {
+                        Map<String, Object> dataModel = getDataModel(v);
+                        // 2, 元数据
+                        resetIsExtends(v);
+                        dataModel.put("table", v);
+                        dataModel.put("hasVO", selectedVos.containsKey(k));
+                        if (selectedVos.containsKey(k)) {
+                            dataModel.put("tableVO", selectedVos.get(k));
+                        }
+                        // 外键
+                        dataModel.put("foreignTables", getAllForeignTables(v));
+                        template.process(dataModel, new FileWriter(FileUtils.mkdir(outPath, k + suffix)));
                     } catch (TemplateException | IOException e) {
                         e.printStackTrace();
                     }
@@ -205,11 +240,6 @@ public class DataBaseUtils {
         Map<String, Object> dataModel = new HashMap<>(PropertiesUtils.customMap);
         // 3, setting
         dataModel.putAll(settings.getSettingMap());
-        // 2, 元数据
-        resetIsExtends(table);
-        dataModel.put("table", table);
-        // 外键
-        dataModel.put("foreignTables", getAllForeignTables(table));
         // 4, 类型
         dataModel.put("ClassName", table.getClassName());
         return dataModel;

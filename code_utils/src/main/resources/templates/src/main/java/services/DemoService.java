@@ -39,8 +39,8 @@ public class ${ClassName}Service extends BaseService {
     public Long create(${ClassName}VO vo) {
         Assert.notNull(vo, "${table.comment?default('xxx')}不能为空");
         //断言
-        <#list table.columns as column>
-        <#if column.selected && column.notNull && !baseEntity?contains(column.fieldName) && column.fieldName !== 'id'>
+        <#list tableVO.columns as column>
+        <#if column.selected && column.fieldName !== 'id'>
         <#if column.columnType=='String'>
         Assert.hasText(vo.${column.getName}(), "${column.columnComment?default('xxx')}不能为空");
         <#else>
@@ -130,8 +130,8 @@ public class ${ClassName}Service extends BaseService {
     public void update(${ClassName}VO vo) {
         Assert.notNull(vo, "${table.comment?default('xxx')}不能为空");
         //断言
-        <#list table.columns as column>
-        <#if column.selected && column.notNull && !baseEntity?contains(column.fieldName)>
+        <#list tableVO.columns as column>
+        <#if column.selected>
         <#if column.columnType=='String'>
         Assert.hasText(vo.${column.getName}(), "${column.columnComment?default('xxx')}不能为空");
         <#else>
