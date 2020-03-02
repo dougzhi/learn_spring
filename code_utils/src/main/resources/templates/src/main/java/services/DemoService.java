@@ -151,7 +151,7 @@ public class ${ClassName}Service extends BaseService {
         <#if column.selected && column.only>
         if (!entity.${column.getName}().equals(vo.${column.getName}())) {
             Optional<${table.className}> optional = em.createQuery("select u from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", ${table.className}.class).setParameter(1, vo.${column.getName}()).getResultStream().findFirst();
-            Assert.isTrue((!optional.isPresent()) || (optional.get().${column.getName}().equals(vo.${column.getName}())), "${column.columnComment?default('xxx')}重复， 修改失败");
+            Assert.isTrue(!optional.isPresent() && optional.get().${column.getName}().equals(vo.${column.getName}()), "${column.columnComment?default('xxx')}重复， 修改失败");
             entity.${column.setName}(vo.${column.getName}());
         }
         </#if>
@@ -202,7 +202,7 @@ public class ${ClassName}Service extends BaseService {
         <#if column.selected && column.only>
         if (!entity.${column.getName}().equals(${column.fieldName})) {
         Optional<${table.className}> optional = em.createQuery("select u from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", ${table.className}.class).setParameter(1, ${column.fieldName}).getResultStream().findFirst();
-        Assert.isTrue((!optional.isPresent()) || (optional.get().${column.getName}().equals(${column.fieldName})), "${column.columnComment?default('xxx')}重复， 修改失败");
+        Assert.isTrue(!optional.isPresent() || optional.get().${column.getName}().equals(${column.fieldName}), "${column.columnComment?default('xxx')}重复， 修改失败");
         entity.${column.setName}(${column.fieldName});
         }
         </#if>
