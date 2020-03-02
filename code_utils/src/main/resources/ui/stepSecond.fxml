@@ -90,9 +90,17 @@
                <children>
                   <VBox fx:id="foreignBox" prefHeight="396.0" prefWidth="260.0">
                      <children>
+                        <Label fx:id="columnInfo" textFill="#e1dddd">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="13.0" top="20.0" />
+                           </VBox.margin>
+                        </Label>
                         <CheckBox fx:id="isOnly" mnemonicParsing="false" onAction="#isOnly" text="唯一">
                            <VBox.margin>
-                              <Insets left="17.0" top="20.0" />
+                              <Insets left="17.0" top="14.0" />
                            </VBox.margin>
                         </CheckBox>
                         <CheckBox fx:id="notNull" mnemonicParsing="false" onAction="#isNotNull" text="非空">
