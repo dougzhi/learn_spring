@@ -1,6 +1,7 @@
 package com.dongz.hrm.company.controllers;
 
 import com.dongz.hrm.common.controllers.BaseController;
+import com.dongz.hrm.common.entities.PageResult;
 import com.dongz.hrm.common.entities.Result;
 import com.dongz.hrm.common.shiro.sessions.ApiSession;
 import com.dongz.hrm.domain.company.Company;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author dong
@@ -24,9 +26,17 @@ public class CompanyController extends BaseController {
 
     @RequiresPermissions("API-COMPANY-LIST")
     @GetMapping(value = "list",name = "企业查询")
-    public Result list() {
-        List<Company> query = jdbcTemplate.query("select * from company", new BeanPropertyRowMapper<>(Company.class));
-        return Result.SUCCESS(query);
+    public Result list(
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size
+    ) {
+        StringBuilder sb = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+        sb.append("select * from company");
+
+        PageResult<Map<String, Object>> mapPageResult = this.queryForPagination(sb, params, page, size);
+
+        return Result.SUCCESS(mapPageResult);
     }
 
     @RequiresPermissions("API-COMPANY-INFO")

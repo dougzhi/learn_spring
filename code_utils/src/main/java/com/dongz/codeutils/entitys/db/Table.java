@@ -24,6 +24,10 @@ public class Table implements Cloneable{
 	 */
 	private String className;
 	/**
+	 * 实例名称
+	 */
+	private String shortName;
+	/**
 	 * 介绍
 	 */
 	private String comment;

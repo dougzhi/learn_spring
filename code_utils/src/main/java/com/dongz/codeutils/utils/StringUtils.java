@@ -134,7 +134,7 @@ public class StringUtils {
 
     public static String makeGetName(String sqlName) {
         if (sqlName.startsWith("is_")) {
-            return changeFirstCharacterCase(makeAllWordFirstLetterUpperCase(sqlName), false);
+            return uncapitalize(makeAllWordFirstLetterUpperCase(sqlName));
         } else {
             return "get" + makeAllWordFirstLetterUpperCase(sqlName);
         }

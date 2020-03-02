@@ -65,13 +65,13 @@ public class ${ClassName}Service extends BaseService {
         </#if>
         </#list>
 
-        ${table.className} entity = new ${table.className}();
-        BeanUtils.copyProperties(vo, entity);
-        entity.setId(idWorker.nextId());
+        ${table.className} ${table.shortName} = new ${table.className}();
+        BeanUtils.copyProperties(vo, ${table.shortName});
+        ${table.shortName}.setId(idWorker.nextId());
 
-        setCreate(entity);
-        em.persist(entity);
-        return entity.getId();
+        setCreate(${table.shortName});
+        em.persist(${table.shortName});
+        return ${table.shortName}.getId();
     }
     <#else>
     /**
@@ -106,18 +106,18 @@ public class ${ClassName}Service extends BaseService {
         </#if>
         </#list>
 
-        ${table.className} entity = new ${table.className}();
+        ${table.className} ${table.shortName} = new ${table.className}();
 
-        entity.setId(idWorker.nextId());
+        ${table.shortName}.setId(idWorker.nextId());
         <#list table.columns as column>
         <#if column.selected && !baseEntity?contains(column.fieldName)>
-        entity.${column.setName}(${column.fieldName});
+        ${table.shortName}.${column.setName}(${column.fieldName});
         </#if>
         </#list>
 
-        setCreate(entity);
-        em.persist(entity);
-        return entity.getId();
+        setCreate(${table.shortName});
+        em.persist(${table.shortName});
+        return ${table.shortName}.getId();
     }
     </#if>
 
@@ -140,19 +140,19 @@ public class ${ClassName}Service extends BaseService {
         </#if>
         </#list>
 
-        ${table.className} entity = em.find(${table.className}.class, vo.getId());
-        Assert.notNull(entity, "${table.comment?default('xxx')}不存在， 修改失败");
+        ${table.className} ${table.shortName} = em.find(${table.className}.class, vo.getId());
+        Assert.notNull(${table.shortName}, "${table.comment?default('xxx')}不存在， 修改失败");
         <#if table.extendsBase>
-        Assert.isTrue(!entity.isDeleted(), "${table.comment?default('xxx')}已删除");
+        Assert.isTrue(!${table.shortName}.isDeleted(), "${table.comment?default('xxx')}已删除");
         </#if>
 
         // 唯一
         <#list table.columns as column>
         <#if column.selected && column.only>
-        if (!entity.${column.getName}().equals(vo.${column.getName}())) {
+        if (!${table.shortName}.${column.getName}().equals(vo.${column.getName}())) {
             Optional<${table.className}> optional = em.createQuery("select u from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", ${table.className}.class).setParameter(1, vo.${column.getName}()).getResultStream().findFirst();
             Assert.isTrue(!optional.isPresent() && optional.get().${column.getName}().equals(vo.${column.getName}()), "${column.columnComment?default('xxx')}重复， 修改失败");
-            entity.${column.setName}(vo.${column.getName}());
+            ${table.shortName}.${column.setName}(vo.${column.getName}());
         }
         </#if>
         </#list>
@@ -167,12 +167,12 @@ public class ${ClassName}Service extends BaseService {
 
         <#list table.columns as column>
         <#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
-        entity.${column.setName}(vo.${column.getName}());
+        ${table.shortName}.${column.setName}(vo.${column.getName}());
         </#if>
         </#list>
 
-        setLastUpdate(entity);
-        em.merge(entity);
+        setLastUpdate(${table.shortName});
+        em.merge(${table.shortName});
     }
     <#else>
     /**
@@ -191,19 +191,19 @@ public class ${ClassName}Service extends BaseService {
         </#if>
         </#list>
 
-        ${table.className} entity = em.find(${table.className}.class, id);
-        Assert.notNull(entity, "${table.comment?default('xxx')}不存在， 修改失败");
+        ${table.className} ${table.shortName} = em.find(${table.className}.class, id);
+        Assert.notNull(${table.shortName}, "${table.comment?default('xxx')}不存在， 修改失败");
         <#if table.extendsBase>
-        Assert.isTrue(!entity.isDeleted(), "${table.comment?default('xxx')}已删除");
+        Assert.isTrue(!${table.shortName}.isDeleted(), "${table.comment?default('xxx')}已删除");
         </#if>
 
         // 唯一
         <#list table.columns as column>
         <#if column.selected && column.only>
-        if (!entity.${column.getName}().equals(${column.fieldName})) {
+        if (!${table.shortName}.${column.getName}().equals(${column.fieldName})) {
         Optional<${table.className}> optional = em.createQuery("select u from ${table.className} u where u.${column.fieldName} = ?1 <#if table.extendsBase>and u.isDeleted = false</#if>", ${table.className}.class).setParameter(1, ${column.fieldName}).getResultStream().findFirst();
         Assert.isTrue(!optional.isPresent() || optional.get().${column.getName}().equals(${column.fieldName}), "${column.columnComment?default('xxx')}重复， 修改失败");
-        entity.${column.setName}(${column.fieldName});
+        ${table.shortName}.${column.setName}(${column.fieldName});
         }
         </#if>
         </#list>
@@ -218,12 +218,12 @@ public class ${ClassName}Service extends BaseService {
 
         <#list table.columns as column>
         <#if column.selected && !baseEntity?contains(column.fieldName) && column.fieldName != 'id'>
-        entity.${column.setName}(${column.fieldName});
+        ${table.shortName}.${column.setName}(${column.fieldName});
         </#if>
         </#list>
 
-        setLastUpdate(entity);
-        em.merge(entity);
+        setLastUpdate(${table.shortName});
+        em.merge(${table.shortName});
     }
     </#if>
 
@@ -235,15 +235,15 @@ public class ${ClassName}Service extends BaseService {
     public void delete(Long id) {
         Assert.notNull(id, "要删除的${table.comment?default('xxx')}ID不能为空");
 
-        ${table.className} entity = em.find(${table.className}.class, id);
-        Assert.notNull(entity, "${table.comment?default('xxx')}不存在， 删除失败");
+        ${table.className} ${table.shortName} = em.find(${table.className}.class, id);
+        Assert.notNull(${table.shortName}, "${table.comment?default('xxx')}不存在， 删除失败");
         <#if table.extendsBase>
-        Assert.isTrue(!entity.isDeleted(), "${table.comment?default('xxx')}已删除");
+        Assert.isTrue(!${table.shortName}.isDeleted(), "${table.comment?default('xxx')}已删除");
 
-        setDelete(entity);
-        em.merge(entity);
+        setDelete(${table.shortName});
+        em.merge(${table.shortName});
         <#else>
-        em.remove(entity);
+        em.remove(${table.shortName});
         </#if>
     }
 }
