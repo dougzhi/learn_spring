@@ -21,7 +21,7 @@ public class QrcodeTest {
     @Test
     public void test() throws WriterException, IOException {
         // 1， 二维码中的一些信息
-        String content = "https://dongz.ngrok2.xiaomiqiu.cn";
+        String content = "https://dongz.ngrok2.xiaomiqiu.cn?id=915301110863755200";
         // 2， 通过zxing生成二维码（保存到本地， 通过data url的形式体现）
 
         // 3， 创建QrCodeWriter对象
