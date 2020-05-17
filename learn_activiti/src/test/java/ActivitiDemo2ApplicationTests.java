@@ -1,3 +1,4 @@
+import com.dongz.learn_activiti.config.ApplicationConfiguration;
 import com.dongz.learn_activiti.util.SecurityUtil;
 import org.activiti.api.process.model.ProcessDefinition;
 import org.activiti.api.process.model.ProcessInstance;
@@ -14,13 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+
 /**
  * @author dong
  * @date 2020/5/14 23:43
  * @desc
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = ApplicationConfiguration.class)
 public class ActivitiDemo2ApplicationTests {
 
     @Autowired
