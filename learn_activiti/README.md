@@ -35,3 +35,15 @@
 
 -   ManagerService
     activiti的引擎管理类
+    
+    
+## 启动流程实例
+-   前提是先可以完成流程定义的部署工作
+-   背后影响的表
+    -   act_hi_actinst          已完成的活动信息
+    -   act_hi_identitylicnk    参与者信息
+    -   act_hi_procinst         流程实例
+    -   act_hi_taskinst         任务实例
+    -   act_ru_excution         执行表
+    -   act_ru_identitylink     参与者信息
+    -   act_ru_task             任务
